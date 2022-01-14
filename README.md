@@ -1,4 +1,5 @@
-# COSC 4P02 Canada Games / Brock Chatbot Project, Winter 2022 <img src="https://user-images.githubusercontent.com/15316780/149598722-2eebd76e-7a93-43ed-8d28-059e8e6b88db.png" width="40px">
+
+# COSC 4P02 Canada Games / Brock Chatbot Project, Winter 2022 - Professor Naser Ezzati-Jivan
 
 A chatbot that will receive questions from users and automatically and dynamically answer questions dictated upon scraped information from Canada Games and Brock University webpages. The chatbox is trained with frequently asked questions such as: "How many gold medals did X get?", "When is X offered?"- and the goal is to respond to these questions with as correct information as possible, as fast as possible; as such, the chatbot will regularly scrape these websites and cache these results so it can quickly and, independant upon the websites being available, answer user questions. 
 
