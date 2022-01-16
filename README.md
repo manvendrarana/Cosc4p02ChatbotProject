@@ -34,3 +34,9 @@ Sawyer Fenwick\
 Student Number: 6005011\
 Brock Email: sf15zx@brocku.ca\
 GitHub: sawyerfenwick@gmail.com
+
+Neil Misra\
+Student Number:\
+Brock Email:\
+Github:\
+
