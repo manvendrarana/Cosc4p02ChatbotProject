@@ -36,7 +36,7 @@ Brock Email: sf15zx@brocku.ca\
 GitHub: sawyerfenwick@gmail.com
 
 Neil Misra\
-Student Number:\
-Brock Email:\
-Github:\
+Student Number: 6366298\
+Brock Email: nm17vd@brocku.ca\
+Github: nilaanjann99@gmail.com
 
