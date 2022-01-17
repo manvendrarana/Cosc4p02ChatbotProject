@@ -35,8 +35,8 @@ Student Number: 6005011\
 Brock Email: sf15zx@brocku.ca\
 GitHub: sawyerfenwick@gmail.com
 
-Neil Misra\
-Student Number: 6366298\
-Brock Email: nm17vd@brocku.ca\
-Github: nilaanjann99@gmail.com
+Raghav Bhardwaj\
+Student Number: 6548580\
+Brock Email: rb18nr@brocku.ca\
+Github: raghavmanc@gmail.com
 
