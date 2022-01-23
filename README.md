@@ -44,5 +44,5 @@ Github: raghavmanc@gmail.com
 
 
 
-#Product Backlog/ Sprint Backlog Link
+# Product Backlog/Sprint Backlog
 https://miro.com/app/board/uXjVOVYcNxA=/?invite_link_id=823826101299
