@@ -3,6 +3,9 @@
 
 A chatbot that will receive questions from users and automatically and dynamically answer questions dictated upon scraped information from Canada Games and Brock University webpages. The chatbox is trained with frequently asked questions such as: "How many gold medals did X get?", "When is X offered?"- and the goal is to respond to these questions with as correct information as possible, as fast as possible; as such, the chatbot will regularly scrape these websites and cache these results so it can quickly and, independant upon the websites being available, answer user questions. 
 
+# Product Backlog/Sprint Backlog
+https://miro.com/app/board/uXjVOVYcNxA=/?invite_link_id=823826101299
+
 # Team Members
 
 Eddy Su\
@@ -41,8 +44,3 @@ Brock Email: rb18nr@brocku.ca\
 Github: raghavmanc@gmail.com
 
 
-
-
-
-# Product Backlog/Sprint Backlog
-https://miro.com/app/board/uXjVOVYcNxA=/?invite_link_id=823826101299
