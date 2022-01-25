@@ -1,9 +1,13 @@
 const webdriver = require("selenium-webdriver");
+chrome    = require('selenium-webdriver/chrome')
+options = new chrome.Options();
+options.addArguments('headless');
 const until = webdriver.until;
 const By = webdriver.By;
+
 goldNum = 0;
 
-const driver = new webdriver.Builder().forBrowser("chrome").build();
+const driver = new webdriver.Builder().forBrowser("chrome").setChromeOptions(options).build();
 
 let parseURL = async(url) =>
 {
