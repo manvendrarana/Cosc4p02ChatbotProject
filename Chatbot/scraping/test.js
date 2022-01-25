@@ -34,3 +34,22 @@ let parseURL = async(url) =>
 }
 
 parseURL("https://cg2015.gems.pro/Result/ShowPerson.aspx?Person_GUID=7F1079FC-AF27-4858-82AB-9ECCBD675D7E&SetLanguage=en-CA")
+
+/* results:
+Short Track - 500 m Female
+: 203
+Final position: Gold
+Short Track - 1000 m Female
+: 203
+Final position: Silver
+Short Track - 1500 m Female
+: 203
+Final position: Gold
+Short Track - 3000 m Relay Female
+Team: QC
+: 203
+Final position: Gold
+Short Track - 3000m Points Race Female
+: 203
+Final position: Bronze
+*/
