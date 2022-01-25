@@ -1,7 +1,7 @@
 const webdriver = require("selenium-webdriver");
 const until = webdriver.until;
 const By = webdriver.By;
-var goldNum = 0;
+goldNum = 0;
 
 const driver = new webdriver.Builder().forBrowser("chrome").build();
 
@@ -23,16 +23,12 @@ let parseURL = async(url) =>
                     var goldNum = 0;
                     item.getText().then((result) =>
                     {
-                        if(result.includes("gold") || result.includes("Gold"))
-                        {
                             console.log(result)
-                            goldNum++;
-                        }
+                            goldNum = goldNum + 1;
+
                     });
-                console.log("Number of gold medals: " + goldNum);
                 });
             });
-
         });
     });
 }
