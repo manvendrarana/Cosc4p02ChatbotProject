@@ -35,7 +35,13 @@ CREATE TABLE `Event` (
   `eventID` INT PRIMARY KEY NOT NULL,
   `eventName` varchar(255),
   `sportID` INT,
-  `date` date
+  `datetime` datetime,
+  'location' varchar(255),
+  'sex' varchar(10),
+  'home_team' INT, 
+  'away_team' INT,
+  'home_results' INT,
+  'away_results' INT   
 );
 
 CREATE TABLE `Sports` (
@@ -45,15 +51,20 @@ CREATE TABLE `Sports` (
 
 CREATE TABLE `Teams` (
   `teamID` INT PRIMARY KEY NOT NULL,
-  `sportID` INT,
   `teamName` varchar(255),
-  `provinceName` varchar(255)
+  'gold' INT,
+  'silver' INT,
+  'bronze' INT,
+  'total' INT 
 );
 
 CREATE TABLE `Players` (
   `playerID` INT PRIMARY KEY NOT NULL,
   `playerName` varchar(255),
-  `teamID` INT
+  `teamID` INT,
+  'sportID' INT,
+  'hometown' varchar(255),
+  'age' INT 
 );
 
 ALTER TABLE `Event` ADD FOREIGN KEY (`eventID`) REFERENCES `Sports` (`sportID`) ON DELETE CASCADE;
@@ -68,4 +79,10 @@ CREATE TABLE `Niagara` (
   `niagaraID` INT PRIMARY KEY NOT NULL,
   `links` varchar(255),
   `info` varchar(255)
+);
+
+CREATE TABLE 'CanadaGames' (
+  'canadaID' INT PRIMARY KEY NOT NULL,
+  'links' varchar(255),
+  'info' varchar(255)
 );
