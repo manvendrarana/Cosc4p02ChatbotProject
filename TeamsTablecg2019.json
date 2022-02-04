@@ -1,0 +1,80 @@
+{
+    "website":"https://cg2019.gems.pro/Result/ShowTeam_List.aspx?SetLanguage=en-CA",
+   "Table(id, Example: Columns -> Name, Event)": "#ctl00_ContentPlaceHolder1_tblTeam",
+   "value":{
+       "DataRow(tr class, Odd/Even)": "#DataRow",
+       "value": {
+           
+           "Province": ".LM_ResultFlagContainer",
+           "Sport": ".LM_SportName",
+           "Team":{
+            "website (a href)":"https://cg2019.gems.pro/Result/ShowTeam.aspx?Team_GUID=a9cdca53-e955-4a73-a753-0120426aa6c9&SetLanguage=en-CA",
+            "value":{
+                "Event(id)": "#txtEventName",
+                "Name(id)": "#txtName",
+                "Province/Contingent": "#txtContingent",
+                "Final Position": "#txtFinalPosition",
+                
+               
+
+
+                "Games(Table)": ".LM_ListTable",
+                "value": {
+                   "DataRow(tr class, Odd/Even)" : ".LM_ListDataRowOdd",
+                   "Game" : "https://cg2019.gems.pro/Result/Event.aspx?Event_GUID=91db3d68-7e54-46a6-85a4-eb30dd41850b&Section=PRE_B&SetLanguage=en-CA",
+                   "Date(td)" : "Sunday, February 24, 2019",
+                   "Time(td)" : "19:30",
+                   "Venue(td)": "Centrium",
+
+
+
+
+
+                   "Team Members(Table id)": "#ctl00_ContentPlaceHolder1_tblTeamMembers",
+                   "value": {
+                    "tr id": "#ctl00_ContentPlaceHolder1_trTeamMember_200639",
+                    "value":{
+                        "Picture(td id)": "#ctl00_ContentPlaceHolder1_tdPicture_200639",
+                        "Team member info(td id)": "#ctl00_ContentPlaceHolder1_tdTeamMemberInfo_200639",
+                        "value": {
+                            "Name(td id)": "#ctl00_ContentPlaceHolder1_tdNameText_200639",
+                            "ShowPerson(a id)":"#ctl00_ContentPlaceHolder1_lnkName_200639",
+                            "link(href)": "https://cg2019.gems.pro/Result/ShowPerson.aspx?Person_GUID=01ea4449-55c8-4a34-9cf3-e23660c73aa1&SetLanguage=en-CA",
+                            "Number(td id)": "#ctl00_ContentPlaceHolder1_tdStartNoText_200639",
+                            "Hometown(td id)": "#ctl00_ContentPlaceHolder1_tdHomeTownText_200639",
+                            "Age(td id)": "#ctl00_ContentPlaceHolder1_tdAgeText_200639",
+                            "Height(td id , cm)": "#ctl00_ContentPlaceHolder1_tdHeightText_200709",
+                            "Weight(td id, kg)": "ctl00_ContentPlaceHolder1_tdWeightText200709"
+                            
+
+
+                        }
+
+                            
+
+                    
+
+
+
+                    }
+
+
+
+                   }
+
+                   
+                
+
+
+                }
+                
+                
+
+                
+                
+            }
+           } 
+        
+       }
+   }
+}
