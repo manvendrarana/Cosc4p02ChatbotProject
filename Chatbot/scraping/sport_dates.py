@@ -44,7 +44,7 @@ print(sportDict)
 driver.close();
 
 '''
-Example output
+Example output:
 
 Sport name: Volleyball
 Sport dates:
