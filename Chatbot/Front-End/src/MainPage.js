@@ -4,8 +4,8 @@ import App from './App';
 
 function MainPage(){
     return(
-        <div>
-            <Header />
+        <div className='MainPage'>
+            <Header/>
             <App/>
         </div>
     );
