@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  :root{
+    background-image: url("Background.jpg");
+    --bg: #01263d;
+    --bg-accent: #00bfde;
+    --text-color: #ffffff;
+    --nav-size: 60px;
+    --boarder: 1px solid #68869a;
+    --boarder-radius: 8px;
+    --speed: 500ms;
+  }
+  
+  title{
+    flex-grow: 1;
+    font-size: 30px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: var(--text-color);
+    margin-left: 35vw;
+  }
+  
+  ul{
+    list-style: none;
+    margin: 0%;
+    padding: 0;
+  }
+  
+  a{
+    color: var(--text-color);
+    text-decoration: none;
+  
+  }
+  
+  .navbar{
+    height: var(--nav-size);
+    background-color: var(--bg);
+    padding: 0 1rem;
+    border-bottom: var(--boarder);
+  }
+  
+  .navbar-nav{
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .nav-item{
+    width: calc(var(--nav-size)*0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
+  
+  .icon-button{
+    --button-size: calc(var(var(--nav-size))+0.5);
+    width: var(--button-size);
+    height: var(--button-size);
+    background-color: #68869a;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter 300ms;
+  }
+  
+  .icon-button:hover{
+    filter: brightness(1.4);
+  }
+  
+  .icon-button svg{
+    fill: var(--text-color);
+    width: 25px;
+    height: 25px;
+  }
+  
+  .dropdown{
+    position: absolute;
+    top: 58px;
+    width: 400px;
+    transform: translateX(45%);
+    background-color: var(--bg-accent);
+    border: var(--boarder);
+    border-radius: var(--boarder-radius);
+    padding: 1rem;
+    overflow: hidden;
+  }
+  
+  .menu-item{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--boarder-radius);
+    transition: var(--speed);
+    padding: 0.5rem;
+  }
+  
+  .menu-item:hover{
+    background-color: var(--bg);
+  }
+  
+  .icon-right{
+    margin-left: auto;
+  }
