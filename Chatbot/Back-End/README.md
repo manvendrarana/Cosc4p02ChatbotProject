@@ -10,6 +10,7 @@
  - Python modules
 	 - transformer
 	 - tensorflow
+	 - selenium
 
 ### Initialization steps
 
