@@ -47,15 +47,16 @@ function Chat({ socket, username, room }) {
   }
 
   const startNewChat = async () => {
+    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
     setMessageList([]);
+    sendMessageBot(greetingFinal);
   }
 
-  const sendMessageBot = async () => {
-    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
+  const sendMessageBot = async (message) => {
     const messageData = {
       room: room,
       author: "Chatbot",
-      message: greetingFinal,
+      message: message,
       time:
         new Date(Date.now()).getHours() +
         ":" +
@@ -67,7 +68,8 @@ function Chat({ socket, username, room }) {
   }
 
   useEffect(() => {
-    sendMessageBot("howdy");
+    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
+    sendMessageBot(greetingFinal);
   }, []);
   
   return (
