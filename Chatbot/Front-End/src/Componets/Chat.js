@@ -52,7 +52,6 @@ function Chat({ socket, username, room }) {
 
   const sendMessageBot = async () => {
     var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
-    console.log(greetingFinal);
     const messageData = {
       room: room,
       author: "Chatbot",
