@@ -1,7 +1,7 @@
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from webdriver_manager.chrome import ChromeDriverManager
 
-driver = webdriver.Firefox(executable_path="geckodriver.exe")
+driver = webdriver.Chrome(ChromeDriverManager().install())
 
 sport_page_url = "https://cg2022.gems.pro/Result/Sport_List.aspx?SiteMapTreeExpanded=b970b19b-cbed-45c9-9e45-5fee884be016&SetLanguage=en-CA"  # page that lists all sports and links to each sport's events
 sport_page_table_id = "ctl00_ctl00_ContentPlaceHolderBasicMaster_ContentPlaceHolder1_tblSportmatrix"  # id of the table that lists all sports and links to each sport's events
