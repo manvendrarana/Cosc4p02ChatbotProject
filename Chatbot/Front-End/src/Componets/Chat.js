@@ -84,11 +84,11 @@ function Chat({ socket, username, room }) {
                 id={username === messageContent.author ? "you" : "other"}>
                 <div>
                   <div className="message-content">
-                    <p>{messageContent.message}</p>
+                    <text>{messageContent.message}</text>
                   </div>
                   <div className="message-meta">
-                    <p id="time">{messageContent.time}</p>
-                    <p id="author">{messageContent.author}</p>
+                    <text id="time">{messageContent.time}</text>
+                    <text id="author">{messageContent.author}</text>
                   </div>
                 </div>
               </div>
