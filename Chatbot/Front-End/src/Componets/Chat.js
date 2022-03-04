@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import { FaChevronCircleRight } from 'react-icons/fa';
-import setShowChat from './App.js';
+import { FaChevronCircleRight, } from 'react-icons/fa';
+import { FaEraser } from 'react-icons/fa';
+
 
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
+  const greetings = ["Hello, how may I assist you?", "Hi, what do you need help with?", "Hello, what questions do you have about the games?"];
+
+
+  const clearInput = async () => {
+    setCurrentMessage("");
+  }
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
@@ -33,22 +40,23 @@ function Chat({ socket, username, room }) {
   }, [socket]);
 
 
-  const saveList = async () => {{
-      messageList.map((messageContent) => {
-        console.log(messageContent.message,". From:", messageContent.author, "@:", messageContent.time);
-      })
-    }
+  const saveList = async () => {
+    messageList.map((messageContent) => {
+      console.log(messageContent.message, " From:", messageContent.author, "@:", messageContent.time);
+    });
   }
 
-  const startNewChat = async () =>{
+  const startNewChat = async () => {
+    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
     setMessageList([]);
+    sendMessageBot(greetingFinal);
   }
 
-  const sendMessageBot = async () => {
+  const sendMessageBot = async (message) => {
     const messageData = {
       room: room,
       author: "Chatbot",
-      message: "Peakey Blinders",
+      message: message,
       time:
         new Date(Date.now()).getHours() +
         ":" +
@@ -57,13 +65,16 @@ function Chat({ socket, username, room }) {
 
     await socket.emit("send_message", messageData);
     setMessageList((list) => [...list, messageData]);
-    //THis will clear the chats 
-    //setMessageList([]);
   }
 
+  useEffect(() => {
+    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
+    sendMessageBot(greetingFinal);
+  }, []);
+  
   return (
-    <div className="chat-window">
-      <div className="chat-header"><p>Live Chat</p></div>
+    <div className="chat-window" function = {sendMessageBot}>
+      <div className="chat-header"><text className='chat-title'>Live Chat/Location for Ai Status</text></div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
           {messageList.map((messageContent) => {
@@ -73,11 +84,11 @@ function Chat({ socket, username, room }) {
                 id={username === messageContent.author ? "you" : "other"}>
                 <div>
                   <div className="message-content">
-                    <p>{messageContent.message}</p>
+                    <text>{messageContent.message}</text>
                   </div>
                   <div className="message-meta">
-                    <p id="time">{messageContent.time}</p>
-                    <p id="author">{messageContent.author}</p>
+                    <text id="time">{messageContent.time}</text>
+                    <text id="author">{messageContent.author}</text>
                   </div>
                 </div>
               </div>
@@ -86,8 +97,8 @@ function Chat({ socket, username, room }) {
         </ScrollToBottom>
       </div>
       <div className="chat-footer">
-        <input
-          type="text"
+        <button onClick={clearInput}><FaEraser /></button>
+        <input type="text"
           value={currentMessage}
           placeholder="Type Inquire Here..."
           onChange={(event) => {
@@ -95,8 +106,7 @@ function Chat({ socket, username, room }) {
           }}
           onKeyPress={(event) => {
             event.key === "Enter" && sendMessage();
-          }}
-        />
+          }} />
         <button onClick={sendMessage}><FaChevronCircleRight /></button>
       </div>
       <div className='new-chat'>
@@ -104,7 +114,7 @@ function Chat({ socket, username, room }) {
         <button onClick={startNewChat}>CREATE A NEW CHAT</button>
       </div>
     </div>
+    
   );
 }
-
 export default Chat;
