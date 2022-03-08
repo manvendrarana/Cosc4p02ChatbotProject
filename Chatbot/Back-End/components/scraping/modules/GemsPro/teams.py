@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+import pandas as pd
 
 # this GUID has a page with more txt sections
 #GUID = "80befcce-cda0-4b35-9022-364ce2e1d1fe"
@@ -18,30 +19,31 @@ def scrape_team(GUID, driver):
     txtEvent = ""
     txtTeamName = ""
     txtContingent = ""
+    txtFinalPosition = ""
     teamMembers = []
     teamMatches = []
 
     try:
-        txtEvent = driver.find_element(By.ID, 'txtEventName')
-        print("Team Event: " + txtEvent.text)
+        txtEvent = driver.find_element(By.ID, 'txtEventName').text
+        print("Team Event: " + txtEvent)
     except:
         print("No team event name.") 
 
     try:
-        txtTeamName = driver.find_element(By.ID, 'txtName')
-        print("Team Name: " + txtTeamName.text)
+        txtTeamName = driver.find_element(By.ID, 'txtName').text
+        print("Team Name: " + txtTeamName)
     except:
         print("No team Name.")
 
     try:
-        txtContingent = driver.find_element(By.ID, 'txtContingent')
-        print("Team Contingent: " + txtContingent.text)
+        txtContingent = driver.find_element(By.ID, 'txtContingent').text
+        print("Team Contingent: " + txtContingent)
     except:
         print("No team contingent.")
 
     try:
-        txtFinalPosition = driver.find_element(By.ID, 'txtFinalPosition')
-        print("Team Final Position: " + txtFinalPosition.text)
+        txtFinalPosition = driver.find_element(By.ID, 'txtFinalPosition').text
+        print("Team Final Position: " + txtFinalPosition)
     except:
         print("No final position.")
 
@@ -85,3 +87,12 @@ def scrape_team(GUID, driver):
 
     finally:
         print("Scraped from: " + GUID)
+        teamDict = {
+            'Team Name' : txtTeamName,
+            'Team Members' : joinedTeamMembers,
+            'Team Competitions' : joinedTeamMatches, 
+            'Team Event' : txtEvent, 
+            "Team Contingent" : txtContingent, 
+            "Team Final Position" : txtFinalPosition
+        }
+        return teamDict
