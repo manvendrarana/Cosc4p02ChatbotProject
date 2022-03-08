@@ -63,3 +63,15 @@ try:
     print(joinedTeamMembers)
 except NoSuchElementException:
     print("Element not on this athletes page.")
+
+# example output:
+    
+# Team Event: Table Tennis Doubles Male
+# Team Name: BC
+# Team Contingent: British Columbia
+# Team Final Position: Silver
+# Match Date Time Venue
+# Team Matches: 
+# Encounter 2A, Encounter 1A, Encounter 3A, Gold Medal
+# Team Members:
+# Kenny Kun Jiang, Steve Wang
