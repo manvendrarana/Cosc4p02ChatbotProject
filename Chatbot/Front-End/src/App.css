@@ -156,16 +156,18 @@ body {
   display: flex;
 }
 
-.chat-window .chat-footer input {
+.chat-window .chat-footer textarea {
+  resize: none;
   height: 100%;
-  flex: 85%;
+  flex: 85% 1;
   border: 0;
   padding: 0 0.7em;
   font-size: 1em;
   border-right: 1px dotted #fff;
-
   outline: none;
   font-family: "Open Sans", sans-serif;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .chat-window .chat-footer button {
@@ -368,16 +370,17 @@ body {
     display: flex;
   }
   
-  .chat-window .chat-footer input {
+  .chat-window .chat-footer textarea {
     height: 100%;
     flex: 85%;
     border: 0;
     padding: 0 0.7em;
     font-size: 1em;
     border-right: 1px dotted #fff;
-  
     outline: none;
     font-family: "Open Sans", sans-serif;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   
   .chat-window .chat-footer button {

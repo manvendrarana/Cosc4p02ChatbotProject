@@ -25,16 +25,18 @@ function Chat({ socket, username, room }) {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-
-      await socket.emit("send_message", messageData);
+      
+      await socket.emit("send_message", messageData,(message)=>{sendMessageBot(message)} );
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
   };
 
 
+  // not req
   useEffect(() => {
     socket.on("receive_message", (data) => {
+      console.log("got something", data)
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
@@ -63,7 +65,7 @@ function Chat({ socket, username, room }) {
         new Date(Date.now()).getMinutes(),
     };
 
-    await socket.emit("send_message", messageData);
+    //await socket.emit("send_message", messageData); not needed
     setMessageList((list) => [...list, messageData]);
   }
 
@@ -98,7 +100,7 @@ function Chat({ socket, username, room }) {
       </div>
       <div className="chat-footer">
         <button onClick={clearInput}><FaEraser /></button>
-        <input type="text"
+        <textarea type="text"
           value={currentMessage}
           placeholder="Type Inquire Here..."
           onChange={(event) => {
