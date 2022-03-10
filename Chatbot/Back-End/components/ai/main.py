@@ -1,22 +1,23 @@
 # Requirements to run the ai
 # 
 
+import os
 
-# from traceback import print_tb
-# from transformers import pipeline
-# import pandas as pd
+os.chdir(os.getcwd()+"/Chatbot/Back-End/components/ai/data")
 
-# #if input() == "start":
-# tqa = pipeline(task="table-question-answering",
-#             model="google/tapas-base-finetuned-wtq")
+from traceback import print_tb
+from transformers import pipeline
+import pandas as pd
 
-# table = pd.read_csv("Topics.csv")
-# table = table.astype(str)
-# print("ready")
-# while True:
-#     query = input()
-#     result = tqa(table=table, query=query)
-#     print(result)
+if input() == "start":
+    print("Initializing ai")
+    tqa = pipeline(task="table-question-answering",
+             model="google/tapas-base-finetuned-wtq")
 
-#pickle for storing data
-
+    table = pd.read_csv("Topics.csv")
+    table = table.astype(str)
+    print("Ai is ready for query")
+    while True:
+        query = input()
+        result = tqa(table=table, query=query)
+        print(result)
