@@ -69,7 +69,6 @@ function DevsDropdownMenu() {
                 <span className="devs-icon-button"><FaDatabase /></span>
             </a>
             <h3 className="devs-text">Support team will reach out to you within</h3>
-            <br></br>
             <h3 className="devs-text">3-5 business days</h3>
         </div>
     );
