@@ -6,34 +6,79 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
-DRIVER_PATH = "C:\webdriver\chromedriver.exe"
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+import pandas as pd
 
-driver.get("https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA")
+#DRIVER_PATH = "C:\webdriver\chromedriver.exe"
+#driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
-table = driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblMedals")
-tableColumns = table.find_elements(By.CSS_SELECTOR, "tr")
+def scrape_province_medals(driver):
 
+    driver.get("https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA")
 
-medalDict = {}
-for item in tableColumns:
-    try:
-        individualItem = item.find_elements(By.CLASS_NAME, "LM_ListDataCell")
-        contigent = ""
-        for newItem in individualItem:
-            data = newItem.text
-            if not data.isnumeric():
-                contigent = data
-                if data not in medalDict:
-                    medalDict[data] = list()
-            if data.isnumeric():
-                medalDict[contigent].append(data)
-    except:
-        pass
+    try: 
+        table = driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblMedals")
+        tableColumns = table.find_elements(By.CSS_SELECTOR, "tr")
 
-print(medalDict)
-driver.close();
+        medalDict = {}
+        for item in tableColumns:
+            try:
+                individualItem = item.find_elements(By.CLASS_NAME, "LM_ListDataCell")
+                contigent = ""
+                for newItem in individualItem:
+                    data = newItem.text.lstrip()
+                    if not data.isnumeric():
+                        contigent = data
+                        if data not in medalDict:
+                            medalDict[data] = list()
+                    if data.isnumeric():
+                        medalDict[contigent].append(data)
+            except:
+                print("Datacell unavailable.")
 
+        provinceName = []
+        provinceGold = []
+        provinceSilver = []
+        provinceBronze = []
+        provinceTotal = []
+
+        for province, values in medalDict.items():
+            print("Province Name: " + province)
+            print("Gold Medals: " + values[0])
+            print("Silver Medals: " + values[1])
+            print("Bronze Medals: " + values[2])
+            print("Total Medals: " + values[3])
+            print("\n")
+
+            #medalTuple = (province, values[0], values[1], values[2], values[3])
+            provinceName.append(province)
+            provinceGold.append(values[0])
+            provinceSilver.append(values[1])
+            provinceBronze.append(values[2])
+            provinceTotal.append(values[3])
+            #print("Inserting into db: ")
+            #print(medalTuple)
+
+            #insert medalTuple into db here? tuple is medalTuple in the form (' Saskatchewan', '3', '3', '11', '17'), 
+            # (provname, gold, silver, bronze, total)
+
+            print("Insert successful.\n")
+            
+    except: print("Table unavailable.")
+    #driver.close()
+
+    newDict = {
+        'Province Name' : provinceName,
+        'Province Gold Medals' : provinceGold,
+        'Province Silver Medals' : provinceSilver, 
+        'Province Bronze Medals' : provinceBronze, 
+        "Province Total Medals" : provinceTotal, 
+    }
+
+    table_csv = pd.DataFrame(newDict, columns=['Province Name','Province Gold Medals', 'Province Silver Medals', 'Province Bronze Medals', "Province Total Medals"])
+    table_csv.to_csv("provincemedals.csv", index = [0, 1, 2, 3, 4], encoding = 'utf-8-sig')
+    print(table_csv)
+    print("Done.")
+    return table_csv
 '''
 printing medalDict: 
 
