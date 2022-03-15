@@ -10,7 +10,6 @@ function Chat({ socket, username, room }) {
   const [messageList, setMessageList] = useState([]);
   const greetings = ["Hello, how may I assist you?", "Hi, what do you need help with?", "Hello, what questions do you have about the games?"];
 
-
   const clearInput = async () => {
     setCurrentMessage("");
   }
@@ -33,7 +32,6 @@ function Chat({ socket, username, room }) {
     }
   };
 
-
   // not req
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -42,11 +40,10 @@ function Chat({ socket, username, room }) {
     });
   }, [socket]);
 
-
   const saveList = async () => {
-    let str = '#################################################\nNIAGRA CANADA GAMES 2022 CHAT BOT\nYou have Saved a Chat from the date of ' + new Date(Date.now()).getDate()+"/"+ (new Date(Date.now()).getMonth()+1)+"/"+new Date(Date.now()).getFullYear()+"\n#################################################\n\n";
+    let str = '#################################################\nNIAGRA CANADA GAMES 2022 CHAT BOT\nYou have Saved a Chat from the date of ' + new Date(Date.now()).getDate() + "/" + (new Date(Date.now()).getMonth() + 1) + "/" + new Date(Date.now()).getFullYear() + "\n#################################################\n\n";
     messageList.map(messageContent => {
-     str += ["Message: " + messageContent.message + "\nFrom: " + messageContent.author + "\nTime: "+ messageContent.time + "\n\n"];
+      str += ["Message: " + messageContent.message + "\nFrom: " + messageContent.author + "\nTime: " + messageContent.time + "\n\n"];
     });
     var blob = new Blob([str], { type: "text/plain;charset=utf-8" });
     saveAs(blob, "SavedChatLog.txt");
@@ -111,6 +108,9 @@ function Chat({ socket, username, room }) {
             setCurrentMessage(event.target.value);
           }}
           onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault()
+            }
             event.key === "Enter" && sendMessage();
           }} />
         <button onClick={sendMessage}><FaChevronCircleRight /></button>
