@@ -6,45 +6,78 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
-DRIVER_PATH = "C:\webdriver\chromedriver.exe"
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+import pandas as pd
 
-driver.get("https://cg2022.gems.pro/Result/Sport_List.aspx?SiteMapTreeExpanded=b970b19b-cbed-45c9-9e45-5fee884be016&SetLanguage=en-CA")
+#DRIVER_PATH = "C:\webdriver\chromedriver.exe"
+#driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
-delay = 3 # seconds
-try:
-    awaitElement = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'tr>td>a>img')))
-    print("Page is ready!")
-    dataCell = driver.find_elements(By.CLASS_NAME, 'DataCell')
-    sportDict = {}
-    for item in dataCell:
-        try:
-            splitArray = []
-            itemCell = item.find_element(By.CSS_SELECTOR, "a")
-            splitArray = itemCell.get_attribute('title').split("\n")
-            sportName = splitArray[0]
-            sportTime = splitArray[1]
-            if sportName not in sportDict:
-                sportDict[sportName] = list()
-            sportDict[sportName].append(sportTime)
-        except:
-            pass
-except TimeoutException:
-    print("Loading took too much time!")
+def scrape_sports_dates(driver):
 
-for sport in sportDict:
-    print("\n\nSport name: " + sport)
-    print("Sport dates:")
-    for times in sportDict[sport]:
-        print(times)
+    driver.get("https://cg2022.gems.pro/Result/Sport_List.aspx?SiteMapTreeExpanded=b970b19b-cbed-45c9-9e45-5fee884be016&SetLanguage=en-CA")
 
-print("\n")
-print(sportDict)
+    delay = 5 # seconds
+    try:
+        awaitElement = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'tr>td>a>img')))
+        print("Page is ready!")
+    except:
+        print("Page is taking too long")
 
-driver.close();
+    try:
+        dataCell = driver.find_elements(By.CLASS_NAME, 'DataCell')
+        sportDict = {}
+    except:
+        print("Couldn't find table cells")
+    try:
+        for item in dataCell:
+            try:
+                splitArray = []
+                itemCell = item.find_element(By.CSS_SELECTOR, "a")
+                splitArray = itemCell.get_attribute('title').split("\n")
+                sportName = splitArray[0]
+                sportTime = splitArray[1]
+                if sportName not in sportDict:
+                    sportDict[sportName] = list()
+                sportDict[sportName].append(sportTime)
+            except:
+                pass
+    except TimeoutException:
+        print("Can't iterate through cells")
+
+    sportName = []
+    sportTimes = []
+
+    for sport in sportDict:
+        #print("\n\nSport name: " + sport)
+        sportName.append(sport)
+        #print("Sport tuples:")
+        timeString = ""
+        for times in sportDict[sport]:
+            if timeString != "":
+                timeString = timeString + ", and " + times 
+            if timeString == "":
+                timeString = timeString + times
+            #sports_date_tuple = (sport, times)
+            #print(sports_date_tuple)
+        sportTimes.append(timeString)
+
+    print("\n")
+    print(sportDict)
+
+    newDict = {
+        'Sports Names' : sportName,
+        'Sports Times' : sportTimes
+    }
+
+    table_csv = pd.DataFrame(newDict, columns=['Sports Names', 'Sports Times'])
+    table_csv.to_csv("sports_dates.csv", index = [0, 1, 2, 3, 4, 5], encoding = 'utf-8-sig')
+    print(table_csv)
+    print("Done.")
+    return table_csv
+
+#driver.close();
 
 '''
-Example output:
+Example output
 
 Sport name: Volleyball
 Sport dates:
