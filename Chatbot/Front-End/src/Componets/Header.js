@@ -10,7 +10,6 @@ import { FaRobot } from 'react-icons/fa';
 import { FaCode } from "react-icons/fa";
 import { FaServer } from "react-icons/fa";
 import { FaDatabase } from "react-icons/fa";
-
 import { useState } from 'react';
 
 function Header() {
@@ -25,7 +24,7 @@ function Header() {
                     <FaCog />
                 </a>
             </li>
-            
+
             <title>CHAT BOT NAME HERE</title>
             <NavItem icon={<FaHandsHelping />}>{
                 <DevsDropdownMenu />
@@ -40,31 +39,31 @@ function DevsDropdownMenu() {
     return (
         <div className="devs-dropdown">
             <h1 className="devs-Heading">Support Team</h1>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Rikveet Singh Hayer - AI, Scraping<br></br>rh18vo@gmail.com
                 <span className="devs-icon-button"><FaRobot /></span>
             </a>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Sager Kudrick - Back-End<br></br>sagerkudrick@hotmail.com
                 <span className="devs-icon-button"><FaServer /></span>
             </a>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Sawyer Fenwick - Back-End<br></br>sawyerfenwick@gmail.com
                 <span className="devs-icon-button"><FaServer /></span>
             </a>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Aman Braich - Front-End<br></br>braich_aman3@yahoo.ca
                 <span className="devs-icon-button"><FaCode /></span>
             </a>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Raghav Bhardwaj - Front-End<br></br>raghavmanc@gmail.com
                 <span className="devs-icon-button"><FaCode /></span>
             </a>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Manvendrasinh Rana - Scraping<br></br>manvendrarana@hotmail.com
                 <span className="devs-icon-button"><FaDatabase /></span>
             </a>
-            <a  className="devs-item">
+            <a className="devs-item">
                 Eddy Su - Scraping<br></br>eddysu123@gmail.com
                 <span className="devs-icon-button"><FaDatabase /></span>
             </a>
@@ -89,7 +88,7 @@ function DropdownMenu() {
             </a>
             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="menu-item">
                 <span className="icon-button"><FaQuestion /></span>
-                    Help
+                Help
                 <span className="icon-right"></span>
             </a>
         </div>

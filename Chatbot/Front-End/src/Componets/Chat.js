@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { FaChevronCircleRight, } from 'react-icons/fa';
 import { FaEraser } from 'react-icons/fa';
+import { saveAs } from 'file-saver';
 
 
 function Chat({ socket, username, room }) {
@@ -25,8 +26,8 @@ function Chat({ socket, username, room }) {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      
-      await socket.emit("send_message", messageData,(message)=>{sendMessageBot(message)} );
+
+      await socket.emit("send_message", messageData, (message) => { sendMessageBot(message) });
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
@@ -43,13 +44,16 @@ function Chat({ socket, username, room }) {
 
 
   const saveList = async () => {
-    messageList.map((messageContent) => {
-      console.log(messageContent.message, " From:", messageContent.author, "@:", messageContent.time);
+    let str = '#################################################\nNIAGRA CANADA GAMES 2022 CHAT BOT\nYou have Saved a Chat from the date of ' + new Date(Date.now()).getDate()+"/"+ (new Date(Date.now()).getMonth()+1)+"/"+new Date(Date.now()).getFullYear()+"\n#################################################\n\n";
+    messageList.map(messageContent => {
+     str += ["Message: " + messageContent.message + "\nFrom: " + messageContent.author + "\nTime: "+ messageContent.time + "\n\n"];
     });
+    var blob = new Blob([str], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, "SavedChatLog.txt");
   }
 
   const startNewChat = async () => {
-    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
+    var greetingFinal = greetings[Math.floor(Math.random() * greetings.length)];
     setMessageList([]);
     sendMessageBot(greetingFinal);
   }
@@ -70,12 +74,12 @@ function Chat({ socket, username, room }) {
   }
 
   useEffect(() => {
-    var greetingFinal = greetings[Math.floor(Math.random()*greetings.length)];
+    var greetingFinal = greetings[Math.floor(Math.random() * greetings.length)];
     sendMessageBot(greetingFinal);
   }, []);
-  
+
   return (
-    <div className="chat-window" function = {sendMessageBot}>
+    <div className="chat-window" function={sendMessageBot}>
       <div className="chat-header"><text className='chat-title'>Live Chat/Location for Ai Status</text></div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
@@ -116,7 +120,7 @@ function Chat({ socket, username, room }) {
         <button onClick={startNewChat}>CREATE A NEW CHAT</button>
       </div>
     </div>
-    
+
   );
 }
 export default Chat;
