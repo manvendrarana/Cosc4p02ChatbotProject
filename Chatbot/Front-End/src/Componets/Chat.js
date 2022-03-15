@@ -23,7 +23,8 @@ function Chat({ socket, username, room }) {
         time:
           new Date(Date.now()).getHours() +
           ":" +
-          new Date(Date.now()).getMinutes(),
+          //Added formating so it will show 9:03 for three minutes instead of 9:3
+          (new Date(Date.now()).getMinutes()<10?'0':'') + (new Date(Date.now()).getMinutes()),
       };
 
       await socket.emit("send_message", messageData, (message) => { sendMessageBot(message) });
@@ -63,7 +64,7 @@ function Chat({ socket, username, room }) {
       time:
         new Date(Date.now()).getHours() +
         ":" +
-        new Date(Date.now()).getMinutes(),
+        (new Date(Date.now()).getMinutes()<10?'0':'') + (new Date(Date.now()).getMinutes()),
     };
 
     //await socket.emit("send_message", messageData); not needed
