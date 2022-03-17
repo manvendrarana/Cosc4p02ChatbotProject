@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { FaChevronCircleRight, } from 'react-icons/fa';
 import { FaEraser } from 'react-icons/fa';
+import { FaTwitter, FaFacebook, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 
 
@@ -9,6 +10,13 @@ function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const greetings = ["Hello, how may I assist you?", "Hi, what do you need help with?", "Hello, what questions do you have about the games?"];
+  
+  //adding ai updating title 
+  //let status = "Waiting for user...-Still Need to set up";
+
+  //const changeStatus = () => {
+    //status = "Chatbot is creating a response...";
+  //}
 
   const clearInput = async () => {
     setCurrentMessage("");
@@ -24,12 +32,14 @@ function Chat({ socket, username, room }) {
           new Date(Date.now()).getHours() +
           ":" +
           //Added formating so it will show 9:03 for three minutes instead of 9:3
-          (new Date(Date.now()).getMinutes()<10?'0':'') + (new Date(Date.now()).getMinutes()),
+          (new Date(Date.now()).getMinutes() < 10 ? '0' : '') + (new Date(Date.now()).getMinutes()),
       };
 
       await socket.emit("send_message", messageData, (message) => { sendMessageBot(message) });
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
+      
+      //changeStatus();
     }
   };
 
@@ -64,7 +74,7 @@ function Chat({ socket, username, room }) {
       time:
         new Date(Date.now()).getHours() +
         ":" +
-        (new Date(Date.now()).getMinutes()<10?'0':'') + (new Date(Date.now()).getMinutes()),
+        (new Date(Date.now()).getMinutes() < 10 ? '0' : '') + (new Date(Date.now()).getMinutes()),
     };
 
     //await socket.emit("send_message", messageData); not needed
@@ -78,7 +88,28 @@ function Chat({ socket, username, room }) {
 
   return (
     <div className="chat-window" function={sendMessageBot}>
-      <div className="chat-header"><text className='chat-title'>Live Chat/Location for Ai Status</text></div>
+      <div className="chat-header">
+        <ul className='header-list'>
+          <text className='chat-title'>
+            finsh status method
+          </text>
+          <a href='https://twitter.com/2022canadagames' className='social-button'>
+            <FaTwitter />
+          </a>
+          <a className='social-button' href='https://www.facebook.com/2022canadagames/'>
+            <FaFacebook />
+          </a>
+          <a className='social-button' href='https://www.instagram.com/2022canadagames'>
+            <FaInstagram />
+          </a>
+          <a className='social-button' href='https://www.youtube.com/channel/UCpWP6p7_J_aWuP8TpbTQJnAc'>
+            <FaYoutube />
+          </a>
+          <a className='social-button' href='https://www.tiktok.com/@niagara2022'>
+            <FaTiktok/>
+          </a>
+        </ul>
+      </div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
           {messageList.map((messageContent) => {

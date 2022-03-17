@@ -14,6 +14,26 @@ body {
 }
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700");
 
+a{
+  display: flex;
+  align-items: center;
+}
+
+.social-button{
+  width: auto;
+  height: fit-content;
+  border-radius: 50%;
+  padding: 5px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-button:hover{
+  background-color: #ff0000;
+}
+
 .joinChatContainer {
   display: flex;
   flex-direction: column;
@@ -62,14 +82,18 @@ body {
   border-radius: 6px;
   background: #263238;
   position: relative;
-  cursor: pointer;
 }
+
+.chat-window .chat-header .header-list {
+  padding: 0 1rem 0 1rem;
+  display: flex;
+}
+
 .chat-window .chat-header text {
-  display: block;
-  padding: 0 1em 0 2em;
   color: #fff;
   font-weight: 700;
   line-height: 45px;
+  margin-right: auto;
 }
 
 .chat-window .chat-body {
@@ -272,18 +296,21 @@ body {
     }
   
   .chat-window .chat-header {
-    height: 40px;
+    height: 45px;
     background: #263238;
     position: relative;
-    cursor: pointer;
   }
+
+  .chat-window .chat-header .header-list {
+    padding: 0 0.5rem 0 0.5rem;
+    display: flex;
+  }
+
   .chat-window .chat-header text {
-    display: block;
-    padding: 0 1em 0 1em;
     color: #fff;
     font-weight: 700;
     line-height: 45px;
-    padding-top: 0px;
+    margin-right: auto;
   }
   
   .chat-window .chat-body {
