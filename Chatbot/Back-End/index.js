@@ -5,15 +5,17 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 app.use(cors());
 
-let {PythonShell} = require('python-shell')
+//---------------------- AI Init PART BEGIN -------------------------------//
+const {ai_handler} = require("./components/ai/ai_handler.js");
 
-let ai = new PythonShell("./components/ai/main.py");
+let obj = new ai_handler();
 
-let ai_response = ""
+var initialize_Ai = async function(){
+    console.log(await obj.initialize());
+}
 
-ai.send("start")
-
-
+initialize_Ai();
+//---------------------- AI Init PART END -------------------------------//
 
 const server = http.createServer(app);
 
@@ -33,16 +35,10 @@ io.on("connection", (socket) => {
   });
 
 
-  socket.on("send_message", function(data,cb) {
+  socket.on("send_message",async function(data,cb) {
     console.log("got something", data)
-    // ai_response = ""
-    // ai.send(data.msg)
-    // ai.on("message",function(message){
-    //   console.log(message);
-    //   ai_response = message;
-    // })
-    cb("ai_response");
-    //socket.to(data.room).emit("send_message", data);
+    var ai_respose = await obj.ask(data.message);
+    cb(ai_respose);
   });
 
   socket.on("disconnect", () => {
