@@ -2,28 +2,33 @@ let {PythonShell} = require('python-shell')
 
 
 class ai_handler {
-    constructor(response){
-        console.log("running")
-        const pyshell = new PythonShell(__dirname + "/main.py");
-        this.pyshell = pyshell;
-        pyshell.send("start");
-        pyshell.on('message', function(message){
-            response(message);
-        })
-        pyshell.on("pythonError", function(error){
-            console.log(error);
+    pyshell;
+
+    async initialize(){
+        console.log("starting to initialize")
+        this.pyshell = new PythonShell(__dirname + "/main.py");
+        this.pyshell.send("start");
+        return new Promise(resolve=>{
+            this.pyshell.on("message", function(message){
+                if (message === "Ai is ready for query"){
+                    resolve("ready");
+                }
+            })
         })
     }
 
     ask(message){
-        this.pyshell.send(message)
+        return new Promise((resolve,reject)=>{
+            console.log("sent")
+            this.pyshell.send(message)
+            this.pyshell.on('message', function(message){
+                resolve(message);
+            });
+            this.pyshell.on("pythonError", function(error){
+                reject(error);
+            })
+        })
     }
 }
 
-
-function resp (message){
-    console.log(message)
-}
-
-let obj = new ai_handler(resp);
-obj.ask("what are the locations of steeplechase events?");
+module.exports.ai_handler = ai_handler;
