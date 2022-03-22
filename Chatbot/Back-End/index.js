@@ -11,7 +11,7 @@ const {ai_handler} = require("./components/ai/ai_handler.js");
 let obj = new ai_handler();
 
 const initialize_Ai = async function () {
-  console.log(await obj.initialize());
+  await obj.initialize();
 };
 
 let aiInitialized = false;
@@ -40,9 +40,13 @@ io.on("connection", (socket) => {
 
   socket.on("send_message",async function(data,cb) {
     console.log("got something", data)
-
-    const ai_response = await obj.ask(data.message);
-    cb(ai_response);
+    if(aiInitialized){
+      const ai_response = await obj.ask(data.message);
+      cb(ai_response);
+    }
+   else{
+     cb("I am sorry the system is not ready yet. Please ask again soon!")
+    }
   });
 
   socket.on("disconnect", () => {
