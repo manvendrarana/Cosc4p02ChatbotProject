@@ -164,7 +164,7 @@ a{
   position: absolute;
   top: 58px;
   width: 400px;
-  transform: translateX(-48vw);
+  transform: translateX(-45vw);
   color: black;
   background-color: white;
   border: var(--boarder);
@@ -371,7 +371,7 @@ a{
     position: absolute;
     top: 58px;
     width: 375px;
-    transform: translateX(-42.5vw);
+    transform: translateX(-32.5vw);
     color: black;
     background-color: white;
     border: var(--boarder);
