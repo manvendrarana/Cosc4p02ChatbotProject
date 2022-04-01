@@ -11,13 +11,6 @@ function Chat({ socket, username, room }) {
   const [messageList, setMessageList] = useState([]);
   const greetings = ["Hello, how may I assist you?", "Hi, what do you need help with?", "Hello, what questions do you have about the games?"];
   
-  //adding ai updating title 
-  //let status = "Waiting for user...-Still Need to set up";
-
-  //const changeStatus = () => {
-    //status = "Chatbot is creating a response...";
-  //}
-
   const clearInput = async () => {
     setCurrentMessage("");
   }
@@ -39,7 +32,8 @@ function Chat({ socket, username, room }) {
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
       
-      //changeStatus();
+      var element = document.getElementById("state");
+      element.innerHTML = "Chatbot is creating a response...";
     }
   };
 
@@ -64,6 +58,8 @@ function Chat({ socket, username, room }) {
     var greetingFinal = greetings[Math.floor(Math.random() * greetings.length)];
     setMessageList([]);
     sendMessageBot(greetingFinal);
+    var element = document.getElementById("state");
+    element.innerHTML = "Waiting for user...";
   }
 
   const sendMessageBot = async (message) => {
@@ -91,7 +87,7 @@ function Chat({ socket, username, room }) {
       <div className="chat-header">
         <ul className='header-list'>
           <text className='chat-title'>
-            finsh status method
+            <text id='state'>Waiting for user...</text>
           </text>
           <a href='https://twitter.com/2022canadagames' className='social-button'>
             <FaTwitter />
