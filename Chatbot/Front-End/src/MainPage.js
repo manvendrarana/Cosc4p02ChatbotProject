@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Componets/Header';
+import Header from './Components/Header';
 import App from './App';
 
 function MainPage(){

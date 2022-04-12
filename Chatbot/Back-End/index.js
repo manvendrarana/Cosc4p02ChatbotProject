@@ -1,54 +1,81 @@
-const express = require("express");
-const app = express();
-const http = require("http");
-const cors = require("cors");
-const { Server } = require("socket.io");
-app.use(cors());
+require('dotenv').config()
+// const app = require("express")();
+// const http = require("http");
+// const cors = require("cors");
+// const {Server} = require("socket.io");
+// app.use(cors());
+const app = require('express')();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {cors: {origin: "*"}});
 
-//---------------------- AI Init PART BEGIN -------------------------------//
-const {ai_handler} = require("./components/ai/ai_handler.js");
+dev_mode = true
 
-let obj = new ai_handler();
-
-var initialize_Ai = async function(){
-    console.log(await obj.initialize());
+function log(message) {
+    if (dev_mode) {
+        console.log(message);
+    }
 }
 
-initialize_Ai();
-//---------------------- AI Init PART END -------------------------------//
+//---------------------- Updates BEGIN -------------------------------//
+let num_users_connected = 0
+const components_status = {
+    "scraper": {
+        "status": "not_initialized",
+        "msg_log": ["N/A"]
+    },
+    "database": {
+        "status": "not_initialized",
+        "msg_log": ["N/A"]
+    },
+    "ai": {
+        "status": "not_initialized",
+        "msg_log": ["N/A"]
+    },
+    "test": {
+        "status": "not_initialized",
+        "msg_log": ["N/A"]
+    }
+}
 
-const server = http.createServer(app);
+function components_updater(component, status, message) {
+    log(component, message, status);
+    components_status[component]["status"] = status
+    components_status[component]["msg_log"].push(message)
+}
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
+//---------------------- Updates END -------------------------------//
+
+//---------------------- Init PART BEGIN -------------------------------//
+const {py_handler} = require("./components/py_handler.js");
+
+const python_handler = new py_handler();
+python_handler.initialize(components_updater, log).then(r => {
+    log("py handler ready");
+    log(components_status)
 });
 
+//---------------------- Init PART END -------------------------------//
+
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+    num_users_connected += 1;
+    log(`User Connected: ${socket.id}`);
+    socket.on("message", async function (data, cb) {
+        log("got a message from", socket.id, data)
+        log("current status", components_status)
+        if (components_status["ai"]["status"] === "working" && python_handler !== undefined) {
+            const ai_response = await python_handler.ask(data.message, socket.id);
+            cb(ai_response);
+        } else {
+            cb({"title": "N/A", "url": "N/A", "answer": "I am sorry the bot is currently busy."})
+        }
+    });
 
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
-  });
-
-
-  socket.on("send_message",async function(data,cb) {
-    console.log("got something", data)
-    var ai_respose = await obj.ask(data.message);
-    cb(ai_respose);
-
-    var element = document.getElementById("state");
-    element.innerHTML = "Waiting for user...";
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
-  });
+    socket.on("disconnect", () => {
+        num_users_connected -= 1;
+        log("User Disconnected", socket.id);
+    });
 });
 
 server.listen(3001, () => {
-  console.log("SERVER RUNNING");
+    console.log("SERVER RUNNING");
 });
