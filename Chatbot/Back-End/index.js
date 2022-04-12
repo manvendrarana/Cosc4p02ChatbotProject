@@ -39,6 +39,9 @@ io.on("connection", (socket) => {
     console.log("got something", data)
     var ai_respose = await obj.ask(data.message);
     cb(ai_respose);
+
+    var element = document.getElementById("state");
+    element.innerHTML = "Waiting for user...";
   });
 
   socket.on("disconnect", () => {

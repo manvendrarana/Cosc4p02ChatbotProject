@@ -16,6 +16,7 @@ import { FaNewspaper } from "react-icons/fa";
 import { FaMedal } from "react-icons/fa"
 import { FaHashtag } from "react-icons/fa";
 import { useState } from 'react';
+import element from "./Chat";
 
 
 function Header() {
@@ -63,6 +64,7 @@ function TransitDropdownMenu() {
 }
 
 function DevsDropdownMenu() {
+    element.innerHTML = "Waiting for user...";
     return (
         <div className="devs-dropdown">
             <h1 className="devs-Heading">Support Team</h1>
