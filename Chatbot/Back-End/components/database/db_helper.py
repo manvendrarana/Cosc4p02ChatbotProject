@@ -1,6 +1,9 @@
-import mysql.connector, csv
+import mysql.connector
+import pandas as pd
+import json
 
-class DbHelper():
+
+class DbHelper:
     """ This class defines a Database Helper that can:
 
     - create tables
@@ -10,8 +13,62 @@ class DbHelper():
     - update records
     - return tables as csv files
     """
-    
-    def create(table, cursor):
+
+    def __init__(self, username, password, output_buffer, host="127.0.0.1"):
+        self.output_buffer = output_buffer
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "busy",
+                                           "update_message": "initializing"
+                                           }))
+        self.__user = username
+        self.__password = password
+        self.__host = host
+        self.__connection = mysql.connector.connect(user=self.__user, password=self.__password, host=self.__host)
+        self.__cursor = self.__connection.cursor()
+        self.__db_connection = None
+        self.__db_cursor = None
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "working",
+                                           "update_message": "Initialized"
+                                           }))
+
+    def get_databases(self):
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "busy",
+                                           "update_message": "Getting all databases"
+                                           }))
+        self.__cursor.execute("SHOW DATABASES")
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "working",
+                                           "update_message": "Databases returned"
+                                           }))
+        return self.__cursor.fetchall()
+
+    def reset_database(self, database_name):
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "busy",
+                                           "update_message": "Deleting all current documents"
+                                           }))
+        self.__cursor.execute("DROP DATABASE IF EXISTS " + database_name)
+        self.__cursor.execute("CREATE DATABASE " + database_name)
+        self.__cursor.execute("ALTER DATABASE " + database_name + " CHARACTER SET utf8")
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "working",
+                                           "update_message": "Documents db reset"
+                                           }))
+
+    def set_database(self, database_name):
+        self.__db_connection = mysql.connector.connect(user=self.__user, password=self.__password, host=self.__host,
+                                                       database=database_name)
+        self.__db_cursor = self.__db_connection.cursor()
+
+    def __create_table(self, table_name, config):
         """ Creates a Table in the Database
         
         Keyword Arguments:
@@ -20,129 +77,76 @@ class DbHelper():
 
         Table has the form: name (col_name_1 TYPE, col_name_2 TYPE, ... col_name_n TYPE)
         """
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "busy",
+                                           "update_message": "Creating table " + table_name
+                                           }))
+        sql_statement = "CREATE TABLE `" + table_name + "` ( " + config + " );"
+        if self.__db_connection is not None:
+            self.__db_cursor.execute(sql_statement)
 
-        sql_statement = "CREATE TABLE " + table
-        cursor.execute(sql_statement)
+    def check_document_info_table(self):
+        self.__create_table("document_info", "`key` VARCHAR(255), `url` VARCHAR(255), `title` VARCHAR(255), "
+                                             "`section_title` VARCHAR(255), PRIMARY KEY(`key`)")
 
-    def drop(table, cursor):
-        """ Deletes a Table from the Database. 
-        
-        Keyword Arguments:
-        table       -- name of the table to delete from the database 
-        cursor      -- database cursor which manages the context of a fetch operation 
+    def __insert(self, sql):
+        # sanatize
+        self.__db_cursor.execute(sql)
 
-        Table has the form: name 
-        DROP TABLE IF EXISTS table 
-        """
+    def set_documents(self, documents):
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "busy",
+                                           "update_message": "Starting to load documents to the database"
+                                           }))
+        self.check_document_info_table()
+        table_info_sql = "INSERT INTO document_info VALUES ('%s','%s','%s','%s')"
+        for key, document in documents.items():
+            self.__insert(table_info_sql % (key, document["url"], document["title"], document["section_title"]))
+            config = "`id` INT, "
+            indicator = "%s, "
+            indicator += (len(document["columns"])) * "'%s', "
+            for column in document["columns"]:
+                config += "`" + column.replace(" ", "_") + "`" + " VARCHAR(255), "
+            config += "PRIMARY KEY (`id`)"
+            indicator = indicator[:-2]
+            self.__create_table(key, config)
+            tuple_id = 0
+            insert_sql = "INSERT INTO " + key + " VALUES (" + indicator + ")"
+            for value in document["values"]:
+                self.__insert(insert_sql % tuple([tuple_id] + value))
+                tuple_id += 1
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "working",
+                                           "update_message": "All documents loaded"
+                                           }))
 
-        sql_statement = "DROP TABLE IF EXISTS " + table
-        cursor.execute(sql_statement)
-
-    def insert(table, record, cursor):
-        """ Inserts a single record into the appropriate Table. 
-        
-        Keyword Arguments: 
-        table  -- name of the table to insert the record into 
-        record -- a tuple of data which will be inserted into the table 
-        cursor -- database cursor which manages the context of a fetch operation
-
-        Table has the form: name(col, col... col, col)
-        INSERT INTO table (col_1, col_2, ... col_n) VALUES (%s_1, %s_2 ... %s_n) 
-        """
-
-        s = ""
-        for i in range(0, len(record)):
-            s += "%s" if i == len(record) - 1 else "%s, "
-
-        sql_statement = "INSERT INTO " + table + " VALUES (" + s + ")"
-        cursor.execute(sql_statement, record)
-        print(cursor.rowcount, "Record Inserted")
-
-    def insert_many(table, records, cursor):
-        """ Inserts multiple records into the appropriate Table. 
-        
-        Keyword Arguments:
-        table   -- name of the table to insert the record into
-        records -- a list of tuples which will be inserted into the table 
-        cursor  -- database cursor which manages the context of a fetch operation 
-
-        Table has the form: name(col, col... col, col)
-        INSERT INTO table (col_1, col_2, ... col_n) VALUES (%s_1, %s_2 ... %s_n) 
-        """
-
-        record = records[0]
-        s = ""
-        for i in range(0, len(record)):
-            s += "%s" if i == len(record) - 1 else "%s, "
-
-        sql_statement = "INSERT INTO " + table + " VALUES (" + s + ")"
-        cursor.executemany(sql_statement, records)
-        print(cursor.rowcount, "Record(s) Inserted")
-
-    def delete(table, col, placeholder, cursor):
-        """ Deletes a single record from the appropriate Table. 
-        
-        Keyword Arguments:
-        table       -- name of the table to delete the record from 
-        col         -- name of the column used to find row to delete
-        placeholder -- represents the key that will be deleted  
-        cursor      -- database cursor which manages the context of a fetch operation 
-
-        Table has the form: name 
-        Placeholder must be a tuple, list or dict
-        DELETE FROM table WHERE col = placeholder 
-        """
-
-        sql_statement = "DELETE FROM " + table + " WHERE " + col + " = %s"
-        cursor.execute(sql_statement, placeholder)
-        print(cursor.rowcount, "Record(s) Deleted")
-        
-    def update(table, columns, values, condition, cursor):
-        """ Updates a single record from the appropriate Table. 
-        
-        Keyword Arguments: 
-        table     -- name of the table where the update will happen 
-        columns   -- list of the column names that will be updated
-        values    -- list of the new values to place inside columns 
-        condition -- 
-        cursor    -- database cursor which manages the context of a fetch operation 
-
-        Table has the form: name
-        Condition has the form: column_name = condition (ex/ gold = 3)
-        UPDATE table SET col_1 = val_1, col_2 = val_2 ... col_n = val_n WHERE condition
-        """
-        
-        s = ""
-        i = 0
-        for c in columns:
-            s += c + " = " + str(values[i]) if c == columns[-1] else c + " = " + str(values[i]) + ", " 
-            i += 1
-
-        sql_statement = "UPDATE " + table + " SET " + s + " WHERE " + condition
-        cursor.execute(sql_statement)
-        print(cursor.rowcount, "Record(s) Updated")
-
-    def to_csv(table, filename, cursor):
-        """ Returns a Database Table as a csv file. 
-        
-        Keyword Arguments:
-        table    -- name of the table to return 
-        filename -- name of the .csv file to create 
-        cursor   -- database cursor which manages the context of a fetch operation 
-
-        Do not include '.csv' in your file name 
-        """
-
-        sql_statement = "SELECT * FROM " + table 
-
-        cursor.execute(sql_statement)
-        rows = cursor.fetchall()
-
-        filename += ".csv"
-    
-        f = open(filename, "w", newline='', encoding='utf-8')
-        writer = csv.writer(f)
-        field_names = [i[0] for i in cursor.description]
-        writer.writerow(field_names)
-        writer.writerows(rows)
-        f.close()
+    def get_documents(self):
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "busy",
+                                           "update_message": "Getting all documents from the database"
+                                           }))
+        self.__db_cursor.execute("select * from document_info")
+        documents = self.__db_cursor.fetchall()
+        ai_documents = {}
+        for table_name, url, title, section_title in documents:
+            self.__db_cursor.execute("DESCRIBE " + table_name)
+            columns = [column[0] for column in self.__db_cursor.fetchall()][1:]
+            self.__db_cursor.execute("select * from " + table_name)
+            results = [result[1:] for result in self.__db_cursor.fetchall()]
+            # do not need the "Id" as it is just an int not req in Ai tables hence [1:]
+            ai_documents[table_name] = {
+                "title": title,
+                "section_title": section_title,
+                "url": url,
+                "df": pd.DataFrame(results, columns=columns)
+            }
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "database",
+                                           "update": "working",
+                                           "update_message": "Documents returned"
+                                           }))
+        return ai_documents
