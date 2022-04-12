@@ -13,6 +13,11 @@ h4{
   padding-left: 10px;
   padding-right: 10px;
 }
+h4{
+  margin: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 :root{
   background-image: url("Background.jpg");
