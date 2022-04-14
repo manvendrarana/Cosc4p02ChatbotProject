@@ -377,7 +377,6 @@ class EventScraper:
         decathlon_urls = athletics_urls[52:53]
         heptathlon_urls = athletics_urls[53:54]
 
-        print("Starting Events Scraping")
         documents |= self.sports(main_section="canoe", main_url="not available", urls=canoekayak_urls,
                                  columns=["score"])
         return documents

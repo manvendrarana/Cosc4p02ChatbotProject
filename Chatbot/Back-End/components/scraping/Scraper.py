@@ -10,7 +10,7 @@ from scraping.modules.event import EventScraper  # add components to run in pyth
 
 class Scraper:
     def __init__(self, output_buffer):
-        service = ChromeService(executable_path=ChromeDriverManager().install())
+        service = ChromeService(executable_path="./scraping/chromedriver.exe")
         self.driver = webdriver.Chrome(service=service)
         self.output_buffer = output_buffer
 
