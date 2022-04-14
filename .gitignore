@@ -2,3 +2,7 @@ Chatbot/Back-End/node_modules
 Chatbot/Back-End/venv
 mlruns
 Chatbot/Front-End/node_modules
+Chatbot/Back-End/components/database/pycache
+Chatbot/Back-End/components/ai/pycache
+Chatbot/Back-End/components/scraping/pycache
+Chatbot/Back-End/components/scraping/modules/pycache
