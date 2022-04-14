@@ -1,0 +1,150 @@
+.main-admin-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-container {
+    height: fit-content;
+    width: fit-content;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .form-heading {
+        transition: all 2s;
+        color: black;
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: bold;
+        font-size: 23px;
+        text-align: center;
+      }
+
+      .form-error {
+        text-align: center;
+        color: red;
+      }
+
+      .input-container {
+        padding: 10px;
+      }
+
+      .input-field {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        color: rgb(38, 50, 56);
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 1px;
+        background: rgb(255, 255, 255);
+        padding: 10px 20px;
+        border-radius: 20px;
+        outline: none;
+        box-sizing: border-box;
+        border: 2px solid rgba(0, 0, 0, 0.02);
+        text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+
+        &:hover {
+          border-color: rgba(0, 37, 62, 0.58);
+          box-shadow: none;
+        }
+
+        &:focus {
+          border-color: rgba(0, 37, 62);
+          box-shadow: none;
+        }
+      }
+
+      // taken from https://codepen.io/yukulele/pen/DzwyNp
+
+      $s: 100% / 8;
+      $t: 0.001%;
+
+      @keyframes border-loading {
+        #{$s * 0} {
+          border-top-left-radius: 0 20px;
+        }
+        #{$s * 1} {
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+        }
+        #{$s * 2} {
+          border-top-right-radius: 0 5px;
+        }
+        #{$s * 2 + $t} {
+          border-top-right-radius: 20px 0;
+        }
+        #{$s * 3} {
+          border-top-right-radius: 20px;
+          border-bottom-right-radius: 20px;
+        }
+        #{$s * 4} {
+          border-bottom-right-radius: 20px 0;
+        }
+        #{$s * 4 + $t} {
+          border-bottom-right-radius: 0 20px;
+        }
+        #{$s * 5} {
+          border-bottom-right-radius: 20px;
+          border-bottom-left-radius: 20px;
+        }
+        #{$s * 6} {
+          border-bottom-left-radius: 0 20px;
+        }
+        #{$s * 6 + $t} {
+          border-bottom-left-radius: 20px 0;
+        }
+        #{$s * 7} {
+          border-bottom-left-radius: 20px;
+          border-top-left-radius: 20px;
+        }
+        #{$s * 8} {
+          border-top-left-radius: 20px 0;
+        }
+      }
+
+      .input-submit {
+        cursor: pointer;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px 40px;
+        overflow: hidden;
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(to right, rgb(9, 78, 91), rgb(1, 164, 191)) no-repeat;
+        border-radius: 20px;
+        border-width: 0;
+        transition: border-radius 1s;
+        transition-timing-function: ease-in-out;
+
+        &:hover {
+          border-radius: 0;
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          pointer-events: none;
+          background: linear-gradient(to right, rgba(9, 78, 91, 0.39), rgba(1, 164, 191, 0.39)) no-repeat;
+        }
+      }
+
+      .active {
+        animation: border-loading 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+    }
+
+  }
+}

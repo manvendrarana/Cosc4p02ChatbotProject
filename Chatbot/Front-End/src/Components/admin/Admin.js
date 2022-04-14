@@ -43,7 +43,7 @@ function Admin({socket, connect, wifi}) {
     return (
         <div className="main-admin-container">
             {(user.username !== "" && user.sid !== "") ?
-                (<div><Dashboard user={user} Logout={Logout}/></div>) :
+                (<div><Dashboard wifi={wifi} user={user} Logout={Logout}/></div>) :
                 (<div className={"login-container"}>
                 <LoginForm Login={Login} error={error} checking_credentials={checking_credentials}/></div>)}
         </div>
