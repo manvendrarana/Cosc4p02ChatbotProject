@@ -31,6 +31,14 @@ class py_handler {
                     this.components_updater(result["component"],result["update"],result["update_message"])
                     break;
                 }
+                case "test_result":{
+                    let t_result = {
+                        component_name: "xyz",
+                        unit_name: "",
+                        test_result: ""
+                    }
+                    break;
+                }
                 case "ai_query": { // gets back id, url, title and answer
                     const id = result["id"];
                     this.user_message_buffer[id]["resolve"]({

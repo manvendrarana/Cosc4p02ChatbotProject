@@ -1,25 +1,25 @@
 import "./Header.css";
-import React from 'react';
-import { FaCog } from 'react-icons/fa';
-import { FaBars } from 'react-icons/fa';
-import { FaTicketAlt } from 'react-icons/fa';
-import { FaGlobe } from 'react-icons/fa';
-import { FaQuestion } from 'react-icons/fa';
-import { FaHandsHelping } from 'react-icons/fa';
-import { FaRobot } from 'react-icons/fa';
-import { FaCode } from "react-icons/fa";
-import { FaServer } from "react-icons/fa";
-import { FaDatabase } from "react-icons/fa";
-import { FaBus } from "react-icons/fa";
-import { FaMap } from "react-icons/fa";
-import { FaNewspaper } from "react-icons/fa";
-import { FaMedal } from "react-icons/fa"
-import { FaHashtag } from "react-icons/fa";
-import { useState } from 'react';
+import React, {useState} from 'react';
+import {
+    FaBars,
+    FaBus,
+    FaCode,
+    FaDatabase,
+    FaGlobe,
+    FaHandsHelping,
+    FaHashtag,
+    FaMap,
+    FaMedal,
+    FaNewspaper,
+    FaQuestion,
+    FaRobot,
+    FaServer,
+    FaTicketAlt
+} from 'react-icons/fa';
 import element from "./Chat";
 
 
-function Header() {
+function Header({wifi}) {
     return (
         <Navbar>
             <NavItem icon={<FaBars/>}>{
@@ -35,6 +35,7 @@ function Header() {
                 <TransitDropdownMenu/>
             }
             </NavItem>
+            <NavItem icon={wifi}/>
         </Navbar>
     );
 }
@@ -42,15 +43,16 @@ function Header() {
 function TransitDropdownMenu() {
     return (
         <div className="transit-dropdown">
-            <a href="https://www.niagararegion.ca/transit/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item" target="_blank">
                 <span className="icon-right"></span>
                 <h4 className="label">Niagara Transit</h4>
-                <span className="icon-button"><FaBus /></span>
+                <span className="icon-button"><FaBus/></span>
             </a>
-            <a href="https://www.niagararegion.ca/transit/routes.aspx?home_task=1" className="menu-item">
+            <a href="https://www.niagararegion.ca/transit/routes.aspx?home_task=1" className="menu-item" target="_blank"
+               rel="noreferrer">
                 <span className="icon-right"></span>
                 <h4 className="label">St. Catharines Transit</h4>
-                <span className="icon-button"><FaBus /></span>
+                <span className="icon-button"><FaBus/></span>
             </a>
 
         </div>
@@ -62,19 +64,19 @@ function DevsDropdownMenu() {
     return (
         <div className="devs-dropdown">
             <h1 className="devs-Heading">Support Team</h1>
-            <a className="devs-item">
+            <a className="devs-item" href="https://github.com/CaptKillSwitch" target="_blank" rel="noreferrer">
                 Rikveet Singh Hayer - AI, Scraping<br></br>rh18vo@gmail.com
                 <span className="devs-icon-button"><FaRobot/></span>
             </a>
-            <a className="devs-item">
+            <a className="devs-item" href="https://github.com/SagerKudrick" target="_blank" rel="noreferrer">
                 Sager Kudrick - Back-End<br></br>sagerkudrick@hotmail.com
                 <span className="devs-icon-button"><FaServer/></span>
             </a>
-            <a className="devs-item">
+            <a className="devs-item" href="https://github.com/sawyerfenwick" target="_blank" rel="noreferrer">
                 Sawyer Fenwick - Back-End<br></br>sawyerfenwick@gmail.com
                 <span className="devs-icon-button"><FaServer/></span>
             </a>
-            <a className="devs-item">
+            <a className="devs-item" href="https://github.com/mraman3" target="_blank" rel="noreferrer">
                 Aman Braich - Front-End<br></br>braich_aman3@yahoo.ca
                 <span className="devs-icon-button"><FaCode/></span>
             </a>
@@ -82,11 +84,11 @@ function DevsDropdownMenu() {
                 Raghav Bhardwaj - Front-End<br></br>raghavmanc@gmail.com
                 <span className="devs-icon-button"><FaCode/></span>
             </a>
-            <a className="devs-item">
+            <a className="devs-item" href="https://github.com/d3v3lopingCod3" target="_blank" rel="noreferrer">
                 Manvendrasinh Rana - Scraping<br></br>manvendrarana@hotmail.com
                 <span className="devs-icon-button"><FaDatabase/></span>
             </a>
-            <a className="devs-item">
+            <a className="devs-item" href="https://github.com/EddySu718" target="_blank" rel="noreferrer">
                 Eddy Su - Scraping<br></br>eddysu123@gmail.com
                 <span className="devs-icon-button"><FaDatabase/></span>
             </a>
@@ -99,7 +101,7 @@ function DevsDropdownMenu() {
 function DropdownMenu() {
     return (
         <div className="dropdown">
-            <a href="https://niagara2022games.ca/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item">
                 <span className="icon-button"><FaGlobe/></span>
                 <ul>
                     <h4 className="label">Niagara Games 2022<br></br></h4>
@@ -107,7 +109,7 @@ function DropdownMenu() {
                 </ul>
                 <span className="icon-right"></span>
             </a>
-            <a href="https://niagara2022games.ca/tickets/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item">
                 <span className="icon-button"><FaTicketAlt/></span>
                 <ul>
                     <h4 className="label">Tickets<br></br></h4>
@@ -115,7 +117,7 @@ function DropdownMenu() {
                 </ul>
                 <span className="icon-right"></span>
             </a>
-            <a href="https://niagara2022games.ca/news/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item">
                 <span className="icon-button"><FaNewspaper/></span>
                 <ul>
                     <h4>News<br></br></h4>
@@ -123,7 +125,7 @@ function DropdownMenu() {
                 </ul>
                 <span className="icon-right"></span>
             </a>
-            <a href="https://niagara2022games.ca/media/releases/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item">
                 <span className="icon-button"><FaHashtag/></span>
                 <ul>
                     <h4>Media Releases<br></br></h4>
@@ -131,7 +133,7 @@ function DropdownMenu() {
                 </ul>
                 <span className="icon-right"></span>
             </a>
-            <a href="https://niagara2022games.ca/media/releases/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item">
                 <span className="icon-button"><FaMedal/></span>
                 <ul>
                     <h4>Canada Games Alumni<br></br></h4>
@@ -139,7 +141,7 @@ function DropdownMenu() {
                 </ul>
                 <span className="icon-right"></span>
             </a>
-            <a href="https://www.niagarathisweek.com/niagarafalls-on-news/" className="menu-item">
+            <a href="src/Components/chat/Header" className="menu-item">
                 <span className="icon-button"><FaNewspaper/></span>
                 <ul>
                     <h4>Local News<br></br></h4>
@@ -147,7 +149,7 @@ function DropdownMenu() {
                 </ul>
                 <span className="icon-right"></span>
             </a>
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="menu-item">
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="menu-item" target="_blank">
                 <span className="icon-button"><FaQuestion/></span>
                 <ul>
                     <h4>Help<br></br></h4>
@@ -178,4 +180,5 @@ function NavItem(props) {
         </li>
     );
 }
+
 export default Header;

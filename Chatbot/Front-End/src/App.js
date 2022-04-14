@@ -1,40 +1,98 @@
-import "./App.css";
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {GoHome} from "react-icons/go";
+import {BiWifi0, BiWifi2, BiWifiOff} from "react-icons/bi";
+import Header from './Components/chat/Header';
+import ChatLogin from './Components/chat/ChatLogin';
+import Admin from "./Components/admin/Admin";
 import io from "socket.io-client";
-import { useState } from "react";
-import Chat from "./Components/Chat";
-
-
-let socket = undefined;
 
 function App() {
-  const [username, setUsername] = useState("");
-  const [showChat, setShowChat] = useState(false);
+    const [socket, setSocket] = useState(undefined);
+    const [wifi, setWifi] = useState(<BiWifi0/>)
 
-  const joinRoom = () => {
-    if (username !== "") {
-      setShowChat(true);
-      socket = io.connect("http://localhost:3001");
+    useEffect(()=>{ // janky code
+        if(socket !== undefined){
+            socket.on('connect_error', function (err){
+                setWifi(<BiWifiOff/>)
+            })
+            socket.on('connect', function (){
+                setWifi(<BiWifi2/>)
+            })
+        }
+    },[socket])
+
+
+    function connectToServer(){
+        setSocket(io.connect("http://localhost:3001"));
     }
-  };
 
-  return (
-      <div className="App">
-          {!showChat ? (
-              <div className="joinChatContainer">
-                  <input
-                      type="text"
-                      placeholder="John..."
-                      onChange={(event) => {
-                          setUsername(event.target.value);
-                      }}
-                  />
-                  <button onClick={joinRoom}>START CHAT</button>
-              </div>
-          ) : (
-              <Chat socket={socket} username={username}/>
-          )}
-      </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element=
+                    {
+                        <div className='MainPage'>
+                            <Header wifi={wifi} />
+                            <ChatLogin socket={socket} connect={connectToServer} />
+                        </div>
+                    }
+                />
+                <Route path="/admin" element={<Admin socket={socket} wifi={wifi} connect={connectToServer}/>}/>
+                <Route path="*" element={
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        height: "100vh",
+                        width: "100vw",
+                        background: "rgb(255,255,255)"
+                    }
+                    }>
+                        <div style={{
+                            position: "relative"
+                        }}>
+                            < img style={{
+                                height: "95vh"
+                            }
+                            } src={"404.jpg"} alt="Vectors by Vecteezy"/>
+                            <a href={"/"}>
+                                <GoHome style={
+                                    {
+                                        color: "black",
+                                        height: "20vh",
+                                        width: "20vw",
+                                        position: "absolute",
+                                        zIndex: "1",
+                                        justifySelf: "center",
+                                        top: "0",
+                                        left: "0",
+                                        right: "0",
+                                        marginLeft: "auto",
+                                        marginRight: "auto"
+                                    }}/>
+                            </a>
+                            <a href="https://www.vecteezy.com/free-vector/404" target="_blank">
+                                <text style={
+                                    {
+                                        position: "absolute",
+                                        bottom: "20px",
+                                        left: "0",
+                                        right: "0",
+                                        marginLeft: "auto",
+                                        marginRight: "auto",
+                                        color: "black"
+
+                                    }}>
+                                    Attribution to 404 Vectors by Vecteezy
+                                </text>
+                            </a>
+                        </div>
+                    </div>
+                }/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
+
 
 export default App;

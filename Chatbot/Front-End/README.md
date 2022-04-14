@@ -2,9 +2,9 @@
 
 ## Requirements
 
- - React js
+- React js
 
 ### Initialization steps
 
- - npm install on the "Front-End" directory
- - npm run
+- npm install on the "Front-End" directory
+- npm run

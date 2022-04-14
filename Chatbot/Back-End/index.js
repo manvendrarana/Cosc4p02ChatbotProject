@@ -7,6 +7,7 @@ require('dotenv').config()
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {cors: {origin: "*"}});
+const crypto = require('crypto') // for md5
 
 dev_mode = true
 
@@ -56,22 +57,73 @@ python_handler.initialize(components_updater, log).then(r => {
 
 //---------------------- Init PART END -------------------------------//
 
+//---------------------- Admin Begin ---------------------------//
+
+let date = new Date();
+let admins = {}
+
+
+//--------------------- Admin End ----------------------------//
+
+
 io.on("connection", (socket) => {
     num_users_connected += 1;
     log(`User Connected: ${socket.id}`);
-    socket.on("message", async function (data, cb) {
+    socket.on("login", async function (credentials, callback) {
+        if (admins[socket.id] === undefined) {
+            if (credentials.username === "a") {
+                if (credentials.password === "a") {
+                    console.log(credentials)
+                    admins[socket.id] = {
+                        username: credentials.username,
+                        sid: crypto.createHash('md5').update(socket.id + process.env.SALT).digest("hex"),
+                        date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " at "
+                            + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+                    }
+                    console.log(admins)
+                    log("Creating session for ", credentials.username, "session id ", admins[socket.id]["sid"])
+                    callback({result: "verified", sid: admins[socket.id].sid, status: components_status});
+                } else {
+                    callback({result: "failed", msg: "Invalid Password"});
+                }
+            } else {
+                callback({result: "failed", msg: "User does not exist"});
+            }
+        }
+        else{
+            callback({result:"failed", msg:"User already logged in"})
+        }
+    })
+
+    socket.on("logout", async function(user, callback){
+        if(admins[socket.id]=== user.sid){
+            admins[socket.id] = undefined;
+            callback({result:"logged out"});
+        }else{
+            if(admins[socket.id]===undefined){
+                callback({result: "user already logged out"})
+            }else{
+                callback({result: "WTF"})
+            }
+        }
+    })
+
+    socket.on("message", async function (data, callback) {
         log("got a message from", socket.id, data)
         log("current status", components_status)
         if (components_status["ai"]["status"] === "working" && python_handler !== undefined) {
             const ai_response = await python_handler.ask(data.message, socket.id);
-            cb(ai_response);
+            callback(ai_response);
         } else {
-            cb({"title": "N/A", "url": "N/A", "answer": "I am sorry the bot is currently busy."})
+            callback({"title": "N/A", "url": "N/A", "answer": "I am sorry the bot is currently busy."})
         }
     });
 
     socket.on("disconnect", () => {
         num_users_connected -= 1;
+        if(admins[socket.id]!==undefined){
+            admins[socket.id] = undefined
+        }
         log("User Disconnected", socket.id);
     });
 });

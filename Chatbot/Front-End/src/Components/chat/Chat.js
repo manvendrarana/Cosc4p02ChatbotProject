@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import {FaChevronCircleRight,} from 'react-icons/fa';
-import {FaEraser} from 'react-icons/fa';
-import {FaTwitter, FaFacebook, FaInstagram, FaYoutube, FaTiktok} from 'react-icons/fa';
+import {FaChevronCircleRight, FaEraser, FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube,} from 'react-icons/fa';
 import {FcInfo} from 'react-icons/fc';
 import {saveAs} from 'file-saver';
 
@@ -11,7 +9,7 @@ function Chat({socket, username}) {
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
     const greetings = ["Hello, how may I assist you?", "Hi, what do you need help with?", "Hello, what questions do you have about the games?"];
-    let chatbot_ready = true;
+    const [chatbot_ready, setChatbotReady] = useState(true);
 
     const sendMessageAsBot = async (message) => {
         const messageData = {
@@ -38,11 +36,10 @@ function Chat({socket, username}) {
                     (new Date(Date.now()).getMinutes() < 10 ? '0' : '') + (new Date(Date.now()).getMinutes()),
             };
             if (socket.connected !== false) {
-                chatbot_ready = false
-                console.log(chatbot_ready)
+                setChatbotReady(false);
                 socket.emit("message", messageData, (message) => {
                     sendMessageAsBot(message)
-                    chatbot_ready = true
+                    setChatbotReady(true);
                 });
                 setMessageList((list) => [...list, messageData]);
                 setCurrentMessage("");
@@ -80,7 +77,7 @@ function Chat({socket, username}) {
     return (<div className="chat-window" function={sendMessageAsBot}>
             <div className="chat-header">
                 <ul className='header-list'>
-                    <text className='chat-title'>
+                    <text  className='chat-title' key="title">
                         <text id='state'>
                             {
                                 chatbot_ready ? "Waiting for user..." : "Chatbot is creating a response"
@@ -91,7 +88,7 @@ function Chat({socket, username}) {
                        rel="noreferrer">
                         <FaTwitter/>
                     </a>
-                    <a className='social-button' href='https://www.facebook.com/2022canadagames/' target="_blank"
+                    <a className='social-button' href='src/Components/chat/Chat' target="_blank"
                        rel="noreferrer">
                         <FaFacebook/>
                     </a>
@@ -122,10 +119,11 @@ function Chat({socket, username}) {
                                 <div className="message-meta">
                                     <text id="time">{messageContent.time}</text>
                                     <text id="author">{messageContent.author}</text>
-                                    {messageContent.url!=="N/A" &&
+                                    {messageContent.url !== "N/A" &&
                                         (<text>
                                             {username === messageContent.author ? "" :
-                                                <a href={messageContent.url} title={messageContent.title} target="_blank"
+                                                <a href={messageContent.url} title={messageContent.title}
+                                                   target="_blank"
                                                    rel="noreferrer" className='social-button'>
                                                     <FcInfo/>
                                                 </a>
@@ -153,7 +151,7 @@ function Chat({socket, username}) {
                               }
                               event.key === "Enter" && sendMessage();
                           }}
-                          readOnly={!chatbot_ready}
+                          disabled={!chatbot_ready}
                 />
                 <button onClick={sendMessage}><FaChevronCircleRight/></button>
             </div>
