@@ -25,9 +25,9 @@ class Main:
         # self.database.reset_database("testDb")
         # self.database.set_database("testDb")  # database name
 
-        self.scraper = Scraper(output_buffer)
-        data = self.scraper.scrape()
-        self.database.set_documents(data)
+        # self.scraper = Scraper(output_buffer)
+        # data = self.scraper.scrape()
+        # self.database.set_documents(data)
 
         self.query_buffer = mp.Queue()
         self.max_ai_processes = int(sys.argv[4])  # max num of ai processes

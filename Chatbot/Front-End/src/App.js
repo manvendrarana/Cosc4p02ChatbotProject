@@ -6,24 +6,33 @@ import Header from './Components/chat/Header';
 import ChatLogin from './Components/chat/ChatLogin';
 import Admin from "./Components/admin/Admin";
 import io from "socket.io-client";
+import "./App.scss";
 
 function App() {
     const [socket, setSocket] = useState(undefined);
+    const [connected_to_server, setConnectedToServer] = useState(false);
     const [wifi, setWifi] = useState(<BiWifi0/>)
 
-    useEffect(()=>{ // janky code
-        if(socket !== undefined){
-            socket.on('connect_error', function (err){
-                setWifi(<BiWifiOff/>)
+    useEffect(() => { // janky code
+        if (socket !== undefined) {
+            socket.on('connect_error', function (err) {
+                setWifi(<BiWifiOff className="failed-connection" style={{fill: "red"}}/>)
+                setTimeout((() => {
+                    setWifi(<BiWifiOff className="blink-icon" alt="Retry connection" onClick={connectToServer}/>)
+                    socket.disconnect();
+                    setSocket(undefined);
+                    setConnectedToServer(false);
+                }), 2000);
             })
-            socket.on('connect', function (){
+            socket.on('connect', function () {
                 setWifi(<BiWifi2/>)
+                setConnectedToServer(true);
             })
         }
-    },[socket])
+    }, [socket])
 
 
-    function connectToServer(){
+    function connectToServer() {
         setSocket(io.connect("http://localhost:3001"));
     }
 
@@ -33,12 +42,15 @@ function App() {
                 <Route path="/" element=
                     {
                         <div className='MainPage'>
-                            <Header wifi={wifi} />
-                            <ChatLogin socket={socket} connect={connectToServer} />
+                            <Header wifi={wifi}/>
+                            <ChatLogin connected_to_server={connected_to_server} socket={socket}
+                                       connect={connectToServer}/>
                         </div>
                     }
                 />
-                <Route path="/admin" element={<Admin socket={socket} wifi={wifi} connect={connectToServer}/>}/>
+                <Route path="/admin"
+                       element={<Admin connected_to_server={connected_to_server} socket={socket} wifi={wifi}
+                                       connect={connectToServer}/>}/>
                 <Route path="*" element={
                     <div style={{
                         display: "flex",

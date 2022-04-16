@@ -42,17 +42,20 @@ class EventScraper:
         Returns:
         list    -- array of tables/labels scraped from the URL 
         """
-        self.driver.get(url)
-        table_labels_elements = self.driver.find_elements(By.CLASS_NAME, 'LM_CollapsibleSectionName')[:-1]
-        tables = []
-        for element in table_labels_elements:
-            table_content_id = element.get_attribute('id').replace("Label", "Content")
-            table_content_element = self.driver.find_element(By.ID, table_content_id)
-            content_children_elements = table_content_element.find_elements(By.CLASS_NAME,
-                                                                            "DataRowOdd") + table_content_element.find_elements(
-                By.CLASS_NAME, "DataRowEven")
-            tables.append(([[element.get_attribute("innerText")]], content_children_elements))
-        return tables
+        try:
+            self.driver.get(url)
+            table_labels_elements = self.driver.find_elements(By.CLASS_NAME, 'LM_CollapsibleSectionName')[:-1]
+            tables = []
+            for element in table_labels_elements:
+                table_content_id = element.get_attribute('id').replace("Label", "Content")
+                table_content_element = self.driver.find_element(By.ID, table_content_id)
+                content_children_elements = table_content_element.find_elements(By.CLASS_NAME,
+                                                                                "DataRowOdd") + table_content_element.find_elements(
+                    By.CLASS_NAME, "DataRowEven")
+                tables.append(([[element.get_attribute("innerText")]], content_children_elements))
+            return tables
+        except:
+            return []
 
     def get_names_and_urls(self, url: str, prefix="") -> list:
         """ Receives a URL, scrapes the URL for all event names and associated hyperlinks 
@@ -62,13 +65,17 @@ class EventScraper:
         Returns:
         list    -- array of event names, and it's associated URL. 
         """
-        self.driver.get(url)
-        table = self.driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblSport").find_element(By.XPATH,
-                                                                                                   "*").find_elements(
-            By.XPATH, "*")[1:]  # get the list of all elements holding events.
-        return [((prefix + " " + tpl.find_elements(By.XPATH, "*")[0].get_attribute("innerText")).strip(),
-                 tpl.find_elements(By.XPATH, "*")[0].find_element(By.TAG_NAME, "a").get_attribute("href")) for tpl in
-                table]  # name, url
+        try:
+            self.driver.get(url)
+            table = self.driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblSport").find_element(By.XPATH,
+                                                                                                       "*").find_elements(
+                By.XPATH, "*")[1:]  # get the list of all elements holding events.
+            return [((prefix + " " + tpl.find_elements(By.XPATH, "*")[0].get_attribute("innerText")).strip(),
+                     tpl.find_elements(By.XPATH, "*")[0].find_element(By.TAG_NAME, "a").get_attribute("href")) for tpl
+                    in
+                    table]  # name, url
+        except:
+            return []
 
     def sports(self, main_section, main_url, urls, columns):
         """ Scrapes the Sports type events that don't conform to the 'Team' type, and puts all data inside a DataFrame, and exports to a CSV file
@@ -80,63 +87,68 @@ class EventScraper:
         """
         documents = {}
         main_events = []
-        for main_event_name, url in urls:
-            main_events.append([main_event_name])
-            self.driver.get(url)
-            result = []
-            table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
-                            :-1]  # remove final standings
-            table_content = [self.driver.find_element(By.ID, heading.get_attribute("id").replace("Label", "Content"))
-                             for heading in table_headers]
-            for content in table_content:
-                rows = content.find_elements(By.XPATH, "*")[:-1]
-                event_details = []
-                for row in rows:
-                    if len(event_details) <= 0:
-                        event_details = row.find_elements(By.CLASS_NAME, "LM_ResultGameName")
-                    else:
-                        score_rows = row.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd") + row.find_elements(
-                            By.CLASS_NAME, "LM_ListDataRowEven")
-                        scores = [r.find_elements(By.XPATH, "*") for r in score_rows]
-                        for score_row in scores:
-                            sub_values = [entry.get_attribute("innerText") for entry in event_details + score_row]
-                            if sub_values[5] == '':
-                                sub_values.remove('')
-                            # else:
-                            #     print("false")
-                            if sub_values[0] == '\n':
-                                sub_values.remove('\n')
-                            if len(sub_values) == 6:
-                                sub_values.insert(4, "N/A")
-                            values = sub_values
-                            values[0] += " " + self.clean_key(
-                                main_event_name.replace("-", "_").replace(" ", "_") + "_" +
-                                main_section.replace(" ", "_")).replace("_", " ")
-                            # values[1] = values[1].replace("\xa0", "")
-                            values[5] = values[5].replace("\xa0", "")
-                            result.append(values)
-                        event_details = []
-            key = self.clean_key(
-                main_section.replace(" ", "_") + "_" + main_event_name.replace("-", "_").replace(" ", "_"))
+        try:
+            for main_event_name, url in urls:
+                main_events.append([main_event_name])
+                self.driver.get(url)
+                result = []
+                table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
+                                :-1]  # remove final standings
+                table_content = [
+                    self.driver.find_element(By.ID, heading.get_attribute("id").replace("Label", "Content"))
+                    for heading in table_headers]
+                for content in table_content:
+                    rows = content.find_elements(By.XPATH, "*")[:-1]
+                    event_details = []
+                    for row in rows:
+                        if len(event_details) <= 0:
+                            event_details = row.find_elements(By.CLASS_NAME, "LM_ResultGameName")
+                        else:
+                            score_rows = row.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd") + row.find_elements(
+                                By.CLASS_NAME, "LM_ListDataRowEven")
+                            scores = [r.find_elements(By.XPATH, "*") for r in score_rows]
+                            for score_row in scores:
+                                sub_values = [entry.get_attribute("innerText") for entry in event_details + score_row]
+                                if sub_values[5] == '':
+                                    sub_values.remove('')
+                                # else:
+                                #     print("false")
+                                if sub_values[0] == '\n':
+                                    sub_values.remove('\n')
+                                if len(sub_values) == 6:
+                                    sub_values.insert(4, "N/A")
+                                values = sub_values
+                                values[0] += " " + self.clean_key(
+                                    main_event_name.replace("-", "_").replace(" ", "_") + "_" +
+                                    main_section.replace(" ", "_")).replace("_", " ")
+                                # values[1] = values[1].replace("\xa0", "")
+                                values[5] = values[5].replace("\xa0", "")
+                                result.append(values)
+                            event_details = []
+                key = self.clean_key(
+                    main_section.replace(" ", "_") + "_" + main_event_name.replace("-", "_").replace(" ", "_"))
 
-            documents[key] = {
-                "url": url,
-                "title": key.replace("_", " ").capitalize(),
-                "section_title": "Information of events ,location, time, date, participants, " + " ,".join(
-                    columns) + " for " + main_event_name.replace("-", " ") + main_section.replace("_", " "),
-                "columns": ['event name', "date", "time", "location", "number", "name"] + columns,
-                "values": result
-            }
-        documents["list_events_" + main_section.replace(" ", "_")] = {
-            "url": main_url,
-            "title": main_section.replace(" ", "_"),
-            "section_title": "Information of all the events in " + main_section,
-            "columns": ["Events"],
-            "values": main_events
-        }
-        return documents
+                documents[key] = {
+                    "url": url,
+                    "title": key.replace("_", " ").capitalize(),
+                    "section_title": "Information of events ,location, time, date, participants, " + " ,".join(
+                        columns) + " for " + main_event_name.replace("-", " ") + main_section.replace("_", " "),
+                    "columns": ['event name', "date", "time", "location", "number", "name"] + columns,
+                    "values": result
+                }
+            if len(documents) > 0:
+                documents["list_events_" + main_section.replace(" ", "_")] = {
+                    "url": main_url,
+                    "title": main_section.replace(" ", "_"),
+                    "section_title": "Information of all the events in " + main_section,
+                    "columns": ["Events"],
+                    "values": main_events
+                }
+            return documents
+        except:
+            return {}
 
-    def team_sport(self, urls, columns):
+    def team_sport(self, main_section, main_url, urls, columns):
         """ Scrapes the Team Sports type events and puts all data inside a DataFrame, and exports to a CSV file
         
         Keyword Arguments:
@@ -144,41 +156,46 @@ class EventScraper:
         filename  -- name of CSV to create
         columns   -- extra columns associated with the particular team sport (score is 'Runs' in Baseball but 'Points' in Basketball for example.)
         """
-        documents = {}
-        for main_event_name, url in urls:
-            extracted_data = self.get_labels_and_content(url)
-            result = []
-            for match_type, content_children_elements in extracted_data:
-                copy_value = []
-                for child in content_children_elements:
-                    values = [value.get_attribute("innerText") for value in child.find_elements(By.XPATH, "*")]
-                    values = [value.split("\n") for value in values]
-                    if len(values) == 6 or len(values) == 2:
-                        if len(copy_value) <= 0:
-                            values = values[1:-1]  # deleting empty spaces
-                            copy_value = values
-                        else:
-                            values = copy_value + values
-                            copy_value = []
-                            values = match_type + values
-                            values = [value.replace("\xa0", " ").strip() for value in list(itertools.chain(*values))]
-                            if len(values) < 10:
-                                values = values[:2] + ["Not Available"] + values[2:]
-                            values[6] = values[6].replace('-', '/').split('/')[-1].strip()
-                            values[8] = values[8].replace('-', '/').split('/')[-1].strip()
-                            values = [" ".join(values[0:3])] + values[4:]
-
-                            result.append(values)
-
-                documents[(main_event_name + "_" + match_type[0][0].replace("\xa0", " ")).replace(" ", "_")] = {
-                    "url": url,
-                    "title": main_event_name + " " + match_type[0][0].replace("\xa0", " "),
-                    "section_title": "Information of events , time, location ," + " ,".join(
-                        columns) + " for " + main_event_name + " " + match_type[0][0].replace("\xa0", " "),
-                    "df": pd.DataFrame(result, columns=['event', "time", "location"] + columns)
-                }
+        try:
+            documents = {}
+            for main_event_name, url in urls:
+                extracted_data = self.get_labels_and_content(url)
                 result = []
-        return documents
+                for match_type, content_children_elements in extracted_data:
+                    copy_value = []
+                    for child in content_children_elements:
+                        values = [value.get_attribute("innerText") for value in child.find_elements(By.XPATH, "*")]
+                        values = [value.split("\n") for value in values]
+                        if len(values) == 6 or len(values) == 2:
+                            if len(copy_value) <= 0:
+                                values = values[1:-1]  # deleting empty spaces
+                                copy_value = values
+                            else:
+                                values = copy_value + values
+                                copy_value = []
+                                values = match_type + values
+                                values = [value.replace("\xa0", " ").strip() for value in
+                                          list(itertools.chain(*values))]
+                                if len(values) < 10:
+                                    values = values[:2] + ["Not Available"] + values[2:]
+                                values[6] = values[6].replace('-', '/').split('/')[-1].strip()
+                                values[8] = values[8].replace('-', '/').split('/')[-1].strip()
+                                values = [" ".join(values[0:3])] + values[4:]
+
+                                result.append(values)
+
+                    documents[(main_event_name + "_" + match_type[0][0].replace("\xa0", " ")).replace(" ", "_")] = {
+                        "url": url,
+                        "title": main_event_name + " " + match_type[0][0].replace("\xa0", " "),
+                        "section_title": "Information of events , time, location ," + " ,".join(
+                            columns) + " for " + main_event_name + " " + match_type[0][0].replace("\xa0", " "),
+                        "columns": ['event', "time", "location"] + columns,
+                        "values": result,
+                    }
+                    result = []
+            return documents
+        except:
+            return {}
 
     # ----------------------- NEEDS FIXING BEGIN -----------------------
     def golf(self, urls, filename, type):
@@ -189,45 +206,49 @@ class EventScraper:
         filename  -- name of CSV to create
         type      -- team or individual (0 or 1 respectively)
         """
-        documents = {}
-        if type == 0:
-            name = 'name'
-        else:
-            name = 'team'
-        for main_event_name, url in urls:
-            self.driver.get(url)
-            result = []
-            table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
-                            :-1]  # remove final standings
-            table_content = [(heading.get_attribute("innerText"),
-                              self.driver.find_element(By.ID, heading.get_attribute("id").replace("Label", "Content")))
-                             for heading in table_headers]
-            for match_type, content in table_content:
-                rows = content.find_elements(By.XPATH, "*")[:-1]
-                event_details = []
-                for row in rows:
-                    if len(event_details) <= 0:
-                        event_details = row.find_elements(By.CLASS_NAME, "LM_ResultGameName")
-                    else:
-                        score_rows = row.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd") + row.find_elements(
-                            By.CLASS_NAME, "LM_ListDataRowEven")
-                        scores = [r.find_elements(By.XPATH, "*") for r in score_rows]
-                        for score_row in scores:
-                            sub_values = [entry.get_attribute("innerText") for entry in event_details + score_row]
-                            sub_values = sub_values[21:28]
-                            values = [main_event_name] + sub_values
-                            result.append(values)
-                        event_details = []
-            documents[(main_event_name + "_" + match_type[0][0].replace("\xa0", " ")).replace(" ", "_")] = {
-                "url": url,
-                "title": main_event_name + " " + match_type[0][0].replace("\xa0", " "),
-                "section_title": "Information of event name ," + name + "round 1, round 2, round 3, final round, total"
-                                 + " for " + main_event_name + " " + match_type[0][0].replace("\xa0", " "),
-                "df": pd.DataFrame(result,
-                                   columns=['Main event name', name, 'round 1', 'round 2', 'round 3', 'final round',
-                                            'total'])
-            }
-        return documents
+        try:
+            documents = {}
+            if type == 0:
+                name = 'name'
+            else:
+                name = 'team'
+            for main_event_name, url in urls:
+                self.driver.get(url)
+                result = []
+                table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
+                                :-1]  # remove final standings
+                table_content = [(heading.get_attribute("innerText"),
+                                  self.driver.find_element(By.ID,
+                                                           heading.get_attribute("id").replace("Label", "Content")))
+                                 for heading in table_headers]
+                for match_type, content in table_content:
+                    rows = content.find_elements(By.XPATH, "*")[:-1]
+                    event_details = []
+                    for row in rows:
+                        if len(event_details) <= 0:
+                            event_details = row.find_elements(By.CLASS_NAME, "LM_ResultGameName")
+                        else:
+                            score_rows = row.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd") + row.find_elements(
+                                By.CLASS_NAME, "LM_ListDataRowEven")
+                            scores = [r.find_elements(By.XPATH, "*") for r in score_rows]
+                            for score_row in scores:
+                                sub_values = [entry.get_attribute("innerText") for entry in event_details + score_row]
+                                sub_values = sub_values[21:28]
+                                values = [main_event_name] + sub_values
+                                result.append(values)
+                            event_details = []
+                documents[(main_event_name + "_" + match_type[0][0].replace("\xa0", " ")).replace(" ", "_")] = {
+                    "url": url,
+                    "title": main_event_name + " " + match_type[0][0].replace("\xa0", " "),
+                    "section_title": "Information of event name ," + name + "round 1, round 2, round 3, final round, total"
+                                     + " for " + main_event_name + " " + match_type[0][0].replace("\xa0", " "),
+                    "df": pd.DataFrame(result,
+                                       columns=['Main event name', name, 'round 1', 'round 2', 'round 3', 'final round',
+                                                'total'])
+                }
+            return documents
+        except:
+            return {}
 
     def thlons(self, urls, filename, columns, type):
         """ Scrapes the Decathlon/Hepthlon events and puts all data inside a DataFrame, and exports to a CSV file
@@ -237,36 +258,40 @@ class EventScraper:
         filename  -- name of CSV to create
         type      -- team or individual (0 or 1 respectively)
         """
-        result = []
-        for main_event_name, url in urls:
-            self.driver.get(url)
-            table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
-                            :-1]  # remove final standings
-            table_content = [(heading.get_attribute("innerText"),
-                              self.driver.find_element(By.ID, heading.get_attribute("id").replace("Label", "Content")))
-                             for heading in table_headers]
-            for match_type, content in table_content:
-                rows = content.find_elements(By.XPATH, "*")[:-1]
-                event_details = []
-                for row in rows:
-                    if len(event_details) <= 0:
-                        event_details = row.find_elements(By.CLASS_NAME, "LM_ResultGameName")
-                    else:
-                        score_rows = row.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd") + row.find_elements(
-                            By.CLASS_NAME, "LM_ListDataRowEven")
-                        scores = [r.find_elements(By.XPATH, "*") for r in score_rows]
-                        for score_row in scores:
-                            sub_values = [entry.get_attribute("innerText") for entry in event_details + score_row]
-                            if type == 0:
-                                sub_values = sub_values[51:64]
-                            else:
-                                sub_values = sub_values[36:46]
-                            values = [main_event_name] + sub_values
-                            result.append(values)
-                        event_details = []
-        table_csv = pd.DataFrame(result, columns=['Main event name', 'number', 'name'] + columns)
-        table_csv.to_csv(filename, index=False)
-        print(table_csv)
+        try:
+            result = []
+            for main_event_name, url in urls:
+                self.driver.get(url)
+                table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
+                                :-1]  # remove final standings
+                table_content = [(heading.get_attribute("innerText"),
+                                  self.driver.find_element(By.ID,
+                                                           heading.get_attribute("id").replace("Label", "Content")))
+                                 for heading in table_headers]
+                for match_type, content in table_content:
+                    rows = content.find_elements(By.XPATH, "*")[:-1]
+                    event_details = []
+                    for row in rows:
+                        if len(event_details) <= 0:
+                            event_details = row.find_elements(By.CLASS_NAME, "LM_ResultGameName")
+                        else:
+                            score_rows = row.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd") + row.find_elements(
+                                By.CLASS_NAME, "LM_ListDataRowEven")
+                            scores = [r.find_elements(By.XPATH, "*") for r in score_rows]
+                            for score_row in scores:
+                                sub_values = [entry.get_attribute("innerText") for entry in event_details + score_row]
+                                if type == 0:
+                                    sub_values = sub_values[51:64]
+                                else:
+                                    sub_values = sub_values[36:46]
+                                values = [main_event_name] + sub_values
+                                result.append(values)
+                            event_details = []
+            table_csv = pd.DataFrame(result, columns=['Main event name', 'number', 'name'] + columns)
+            table_csv.to_csv(filename, index=False)
+            print(table_csv)
+        except:
+            return {}
 
     def tennis(self, urls, filename, columns):
         """ Scrapes the Tennis events and puts all data inside a DataFrame, and exports to a CSV file

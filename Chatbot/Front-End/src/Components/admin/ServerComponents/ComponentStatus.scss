@@ -1,0 +1,137 @@
+@media (max-width: 900px) {
+  .component {
+    display: block;
+    .type{
+      font-size: medium;
+    }
+    .status{
+      font-size: small;
+    }
+    .msg-log-container{
+      min-width: 200px;
+      min-height: 200px;
+    }
+  }
+}
+
+.component-status-container{
+  display: block;
+  width: 100%;
+  height: 100%;
+  .component-status-header{
+    display: inline-flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    justify-content: space-evenly;
+    width: 100%;
+    box-sizing: border-box;
+    div{
+      text-align: center;
+      border-bottom: solid 2px black;
+      font-size: 20px;
+    }
+  }
+  .components{
+    display: flex;
+    padding: 10px;
+    min-height: fit-content;
+    max-height: 50vh;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    justify-items: center;
+    justify-content: space-around;
+    gap: 50px;
+    .component{
+      position: relative;
+      height: 100px;
+      width: 200px;
+      padding: .5rem;
+      aspect-ratio: 16 / 9;
+      text-align: center;
+      border: 5px solid #e7e7e7;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.83);
+      margin: auto;
+
+      *{
+        font-family: Arial, Helvetica, sans-serif;
+        position: absolute;
+      }
+
+      .type{
+        top:25%;
+        bottom: 25%;
+        left: 0;
+        right: 0;
+        font-size: xx-large;
+      }
+      .status{
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        font-size: large;
+      }
+      .notification-icon{
+        right: 10px;
+        height: 20%;
+        width: auto;
+        cursor: pointer;
+      }
+    }
+    .status-not-connected{
+      pointer-events: none;
+      background: #68869a;
+      border-color: #68869a;
+    }
+    .status-not-initialized{
+      border-color: rgba(1, 164, 191, 0.38);
+    }
+    .status-working{
+      border-color: rgba(15, 255, 0, 0.65);
+    }
+    .status-busy{
+      border-color: rgba(247, 255, 0, 0.65)
+    }
+    .status-error{
+      border-color: rgba(255, 0, 0, 0.65)
+    }
+    .msg-log-container{
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      min-width: 500px;
+      min-height: 500px;
+      height: fit-content;
+      max-height: 100%;
+      max-width: 100%;
+      overflow-y: auto;
+      opacity: 0;
+      width: fit-content;
+      align-items: center;
+      background: white;
+      padding: 20px;
+      .msg{
+        width: 100%;
+      }
+      svg{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+    }
+    .show{
+      display: flex;
+      flex-direction: column;
+      border: 2px solid black;
+      border-radius: 10px;
+      z-index: 10;
+      opacity: 1;
+    }
+  }
+  .component-status-footer{}
+
+}

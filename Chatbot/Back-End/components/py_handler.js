@@ -4,7 +4,8 @@ const path = require("path");
 
 class py_handler {
     pyshell;
-    initresolve;
+    initResolve;
+    initReject;
     user_message_buffer = {}
     components_updater;
 
@@ -24,7 +25,7 @@ class py_handler {
             log(result)
             switch (result["type"]) {
                 case "init": { // gets back message
-                    this.initresolve();
+                    this.initResolve();
                     break;
                 }
                 case "update": { // gets back component, update and update_msg
@@ -67,7 +68,7 @@ class py_handler {
             crashed(message);
         })
         return new Promise((resolve, reject) => {
-            this.initresolve = resolve;
+            this.initResolve = resolve;
         })
 
     }

@@ -5,7 +5,7 @@ import {FcInfo} from 'react-icons/fc';
 import {saveAs} from 'file-saver';
 
 
-function Chat({socket, username}) {
+function Chat({connected_to_server, socket, username}) {
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
     const greetings = ["Hello, how may I assist you?", "Hi, what do you need help with?", "Hello, what questions do you have about the games?"];
@@ -23,8 +23,11 @@ function Chat({socket, username}) {
     }
 
     useEffect(() => {
-        const greetingFinal = greetings[Math.floor(Math.random() * greetings.length)];
-        sendMessageAsBot({title: "N/A", url: "N/A", answer: greetingFinal});
+        console.log(messageList.length)
+        if(messageList.length===0){
+            const greetingFinal = greetings[Math.floor(Math.random() * greetings.length)];
+            sendMessageAsBot({title: "N/A", url: "N/A", answer: greetingFinal});
+        }
     }, []);
 
     const sendMessage = async () => {
@@ -35,7 +38,7 @@ function Chat({socket, username}) {
                 time: new Date(Date.now()).getHours() + ":" + //Added formating so it will show 9:03 for three minutes instead of 9:3
                     (new Date(Date.now()).getMinutes() < 10 ? '0' : '') + (new Date(Date.now()).getMinutes()),
             };
-            if (socket.connected !== false) {
+            if (connected_to_server) {
                 setChatbotReady(false);
                 socket.emit("message", messageData, (message) => {
                     sendMessageAsBot(message)
@@ -49,7 +52,7 @@ function Chat({socket, username}) {
                 await sendMessageAsBot({
                     "title": "N/A",
                     "url": "N/A",
-                    "answer": "Server is down, message was not sent."
+                    "answer": "Server is down, you can try to reconnect by clicking on the wifi icon in the top right."
                 });
             }
         }
@@ -77,7 +80,7 @@ function Chat({socket, username}) {
     return (<div className="chat-window" function={sendMessageAsBot}>
             <div className="chat-header">
                 <ul className='header-list'>
-                    <text  className='chat-title' key="title">
+                    <text className='chat-title' key="title">
                         <text id='state'>
                             {
                                 chatbot_ready ? "Waiting for user..." : "Chatbot is creating a response"

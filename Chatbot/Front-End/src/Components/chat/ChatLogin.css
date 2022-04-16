@@ -197,6 +197,7 @@ a {
     overflow-wrap: break-word;
     word-break: break-word;
 }
+
 .chat-window .chat-footer textarea:disabled {
     cursor: not-allowed;
 }
