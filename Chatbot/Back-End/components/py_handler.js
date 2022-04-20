@@ -7,6 +7,7 @@ class py_handler {
     initResolve;
     initReject;
     user_message_buffer = {}
+    admin_request_buffer = {}
     components_updater;
 
 
@@ -29,10 +30,10 @@ class py_handler {
                     break;
                 }
                 case "update": { // gets back component, update and update_msg
-                    this.components_updater(result["component"],result["update"],result["update_message"])
+                    this.components_updater(result["component"], result["update"], result["update_message"])
                     break;
                 }
-                case "test_result":{
+                case "test_result": {
                     let t_result = {
                         component_name: "xyz",
                         unit_name: "",
@@ -50,21 +51,24 @@ class py_handler {
                     // rejection not handled !!!
                     break;
                 }
-                case "failed": {
+                case "failed_admin": {
+                    break;
+                }
+                case "success_admin": {
                     break;
                 }
             }
         })
-        let crashed = (message)=>{
+        let crashed = (message) => {
             this.components_updater("scraper", "crashed", message)
             this.components_updater("database", "crashed", message)
             this.components_updater("ai", "crashed", message)
             console.log(message)
         }
-        this.pyshell.on("pythonError", (message)=> {
+        this.pyshell.on("pythonError", (message) => {
             crashed(message);
         })
-        this.pyshell.on("error",(message)=>{
+        this.pyshell.on("error", (message) => {
             crashed(message);
         })
         return new Promise((resolve, reject) => {
@@ -79,6 +83,25 @@ class py_handler {
             this.user_message_buffer[id] = {
                 "resolve": resolve,
                 "reject": reject
+            }
+        })
+    }
+
+    request(request_type, id) {
+        return new Promise((resolve, reject) => {
+            this.pyshell.send({"type": request_type, "id": id})
+            if (this.admin_request_buffer[id] === undefined) {
+                this.admin_request_buffer[id] = {
+                    request_type: {
+                        "resolve": resolve,
+                        "reject": reject
+                    }
+                }
+            } else {
+                this.admin_request_buffer[id][request_type] = {
+                    "resolve": resolve,
+                    "reject": reject
+                }
             }
         })
     }

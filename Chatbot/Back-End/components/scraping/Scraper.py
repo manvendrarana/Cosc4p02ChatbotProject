@@ -1,17 +1,18 @@
 import json
 
+from scraping.modules.event import EventScraper  # add components to run in python only mode
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from scraping.modules.event import EventScraper  # add components to run in python only mode
 
 
 class Scraper:
     def __init__(self, output_buffer):
-        service = ChromeService(executable_path="./scraping/chromedriver.exe")
-        self.driver = webdriver.Chrome(service=service)
+        self.driver = None
+        self.service = ChromeService(executable_path="./scraping/chromedriver.exe")
         self.output_buffer = output_buffer
 
     def scrape(self):
+        self.driver = webdriver.Chrome(service=self.service)
         documents = {}
         self.output_buffer.put(json.dumps({"type": "update",
                                            "component": "scraper",

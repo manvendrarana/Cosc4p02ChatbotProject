@@ -1,40 +1,26 @@
-import os
-from tkinter.tix import Select
-from unicodedata import name
-import selenium
-from selenium.webdriver.support.ui import Select
-
-
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 url = "https://niagara2022games.ca/events/"
-PATH = "C:\Program Files (x86)\chromedriver.exe" 
+PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
 
-
 driver.get(url)
-
-
-
-
 
 try:
     check = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "card-body")))
     print("page ready for scrape")
-    newsList = driver.find_elements(By.CLASS_NAME,'card-body')
+    newsList = driver.find_elements(By.CLASS_NAME, 'card-body')
     for e in newsList:
         news = e.text
         print(news)
-    
-    
+
+
 
 except:
-    
+
     pass
 
 """

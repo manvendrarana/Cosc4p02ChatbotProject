@@ -1,22 +1,22 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+
 
 # this GUID has a page with more txt sections
-#GUID = "80befcce-cda0-4b35-9022-364ce2e1d1fe"
+# GUID = "80befcce-cda0-4b35-9022-364ce2e1d1fe"
 
 # this GUID has less txt sections so some elements won't exist
-#GUID = '32d36b04-4953-44d6-af58-9a4f058e9198'
+# GUID = '32d36b04-4953-44d6-af58-9a4f058e9198'
 
 def countMedals(array, type):
     return sum(type in arr for arr in array)
 
-def scrape_individual_athlete(GUID, driver):
 
+def scrape_individual_athlete(GUID, driver):
     url = 'https://cg2019.gems.pro/Result/ShowPerson.aspx?Person_GUID=' + GUID + '&SetLanguage=en-CA'
 
-    #DRIVER_PATH = "C:\webdriver\chromedriver.exe"
-    #driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+    # DRIVER_PATH = "C:\webdriver\chromedriver.exe"
+    # driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
     driver.get(url)
 
@@ -99,7 +99,7 @@ def scrape_individual_athlete(GUID, driver):
             print("Couldn't find player name.")
 
         try:
-            #province
+            # province
             txtContingent = driver.find_element(By.ID, 'txtContingent').text
             print(txtContingent)
         except:
@@ -154,7 +154,7 @@ def scrape_individual_athlete(GUID, driver):
             # forward/ext in hockey
             txtTeamPosition = driver.find_element(By.ID, 'txtTeamPosition').text
             print(txtTeamPosition)
-        except: 
+        except:
             print("Couldn't find team position")
 
         try:
@@ -218,7 +218,7 @@ def scrape_individual_athlete(GUID, driver):
                 positionSplit = placement.split("position: ")
                 positionString = positionSplit[1]
                 txtAthletePlacing = txtName + " got " + positionString + " in " + event
-                
+
                 # appending to arrays our values we've scraped
                 athleteEvents.append(event)
                 athletePlacings.append(txtAthletePlacing)
@@ -231,7 +231,7 @@ def scrape_individual_athlete(GUID, driver):
             accomplishmentTable = driver.find_elements(By.CLASS_NAME, 'Gems_RwdContentContainer')
         except:
             print("Couldn't find accomplishments.")
-            
+
     except NoSuchElementException:
         print("Error.")
 
@@ -250,28 +250,27 @@ def scrape_individual_athlete(GUID, driver):
         athletePlacingsCount = athleteGoldsCount + athleteSilversCount + athleteBronzesCount
 
         athleteDict = {
-        dictName : txtName,
-        dictContingent : txtContingent,
-        dictType : txtType,
-        dictSport : txtSport,
-        dictAge : txtAge,
-        dictHeight : txtHeight,
-        dictWeight : txtWeight,
-        dictClubTeam : txtClubTeam,
-        dictCoach : txtCoach,
-        dictTeamPosition : txtTeamPosition,
-        dictPrevSameGames : txtPrevSameGames,
-        dictPrevGames : txtPrevGames,
-        dictGoals : txtGoals,
-        dictPersonalBest : txtPersonalBest,
-        dictAwards : txtAwards,
-        dictRoleModel : txtRoleModel,
-        dictMediaInfo : txtMediaInfo,
-        dictEvents : athleteConcatEvents,
-        dictGolds : athleteGoldsCount,
-        dictSilvers : athleteSilversCount,
-        dictBronzes : athleteBronzesCount,
-        dictPlacings : athletePlacingsCount
-    }
+            dictName: txtName,
+            dictContingent: txtContingent,
+            dictType: txtType,
+            dictSport: txtSport,
+            dictAge: txtAge,
+            dictHeight: txtHeight,
+            dictWeight: txtWeight,
+            dictClubTeam: txtClubTeam,
+            dictCoach: txtCoach,
+            dictTeamPosition: txtTeamPosition,
+            dictPrevSameGames: txtPrevSameGames,
+            dictPrevGames: txtPrevGames,
+            dictGoals: txtGoals,
+            dictPersonalBest: txtPersonalBest,
+            dictAwards: txtAwards,
+            dictRoleModel: txtRoleModel,
+            dictMediaInfo: txtMediaInfo,
+            dictEvents: athleteConcatEvents,
+            dictGolds: athleteGoldsCount,
+            dictSilvers: athleteSilversCount,
+            dictBronzes: athleteBronzesCount,
+            dictPlacings: athletePlacingsCount
+        }
         return athleteDict
-

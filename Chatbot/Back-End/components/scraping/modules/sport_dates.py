@@ -1,23 +1,21 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-
 import pandas as pd
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
-#DRIVER_PATH = "C:\webdriver\chromedriver.exe"
-#driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+
+# DRIVER_PATH = "C:\webdriver\chromedriver.exe"
+# driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
 def scrape_sports_dates(driver):
+    driver.get(
+        "https://cg2022.gems.pro/Result/Sport_List.aspx?SiteMapTreeExpanded=b970b19b-cbed-45c9-9e45-5fee884be016&SetLanguage=en-CA")
 
-    driver.get("https://cg2022.gems.pro/Result/Sport_List.aspx?SiteMapTreeExpanded=b970b19b-cbed-45c9-9e45-5fee884be016&SetLanguage=en-CA")
-
-    delay = 5 # seconds
+    delay = 5  # seconds
     try:
-        awaitElement = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'tr>td>a>img')))
+        awaitElement = WebDriverWait(driver, delay).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'tr>td>a>img')))
         print("Page is ready!")
     except:
         print("Page is taking too long")
@@ -47,34 +45,35 @@ def scrape_sports_dates(driver):
     sportTimes = []
 
     for sport in sportDict:
-        #print("\n\nSport name: " + sport)
+        # print("\n\nSport name: " + sport)
         sportName.append(sport)
-        #print("Sport tuples:")
+        # print("Sport tuples:")
         timeString = ""
         for times in sportDict[sport]:
             if timeString != "":
-                timeString = timeString + ", and " + times 
+                timeString = timeString + ", and " + times
             if timeString == "":
                 timeString = timeString + times
-            #sports_date_tuple = (sport, times)
-            #print(sports_date_tuple)
+            # sports_date_tuple = (sport, times)
+            # print(sports_date_tuple)
         sportTimes.append(timeString)
 
     print("\n")
     print(sportDict)
 
     newDict = {
-        'Sports Names' : sportName,
-        'Sports Times' : sportTimes
+        'Sports Names': sportName,
+        'Sports Times': sportTimes
     }
 
     table_csv = pd.DataFrame(newDict, columns=['Sports Names', 'Sports Times'])
-    table_csv.to_csv("sports_dates.csv", index = [0, 1, 2, 3, 4, 5], encoding = 'utf-8-sig')
+    table_csv.to_csv("sports_dates.csv", index=[0, 1, 2, 3, 4, 5], encoding='utf-8-sig')
     print(table_csv)
     print("Done.")
     return table_csv
 
-#driver.close();
+
+# driver.close();
 
 '''
 Example output

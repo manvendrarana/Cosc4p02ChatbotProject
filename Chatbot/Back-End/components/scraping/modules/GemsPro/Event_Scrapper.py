@@ -117,7 +117,8 @@ def get_match_data_dataCell(dataCell1, dataCell2):
         except:
             print(str(info))
 
-        data = [match, str(info[0]) + str(info[1]) + str(temp[0]), str(temp[1]), str(temp[2]), team1_abbreviation, team1_sets_won, team1_set1_points,
+        data = [match, str(info[0]) + str(info[1]) + str(temp[0]), str(temp[1]), str(temp[2]), team1_abbreviation,
+                team1_sets_won, team1_set1_points,
                 team1_set2_points,
                 team1_set3_points, team2_abbreviation, team2_sets_won, team2_set1_points, team2_set2_points,
                 team2_set3_points]
@@ -130,9 +131,10 @@ def get_match_data_dataCell(dataCell1, dataCell2):
         team2_points = dataCell2.pop(0).text
 
         temp = info[2].split("\n")
-        #print("info: " + str(info[0]) + " " + str(info[1]) + " " + str(temp[0]) + " " + temp[1] + " " + temp[2])
+        # print("info: " + str(info[0]) + " " + str(info[1]) + " " + str(temp[0]) + " " + temp[1] + " " + temp[2])
 
-        data = [match, str(info[0]) + str(info[1]) + str(temp[0]), str(temp[1]), str(temp[2]), team1_abbreviation, team1_points, team2_abbreviation,
+        data = [match, str(info[0]) + str(info[1]) + str(temp[0]), str(temp[1]), str(temp[2]), team1_abbreviation,
+                team1_points, team2_abbreviation,
                 team2_points]
     return data
 
@@ -182,7 +184,6 @@ def get_specific_event_information(event_info):
                                 test[0].text == "Tie" or
                                 test[0].text == "Duel" or
                                 test[0].text == "Bout"):
-
                             data = get_match_data_dataCell(test,
                                                            event_links_even.pop(0).find_elements_by_class_name(
                                                                "DataCell"))
@@ -207,6 +208,6 @@ def get_specific_event_information(event_info):
 if __name__ == '__main__':
     basic_event_info = get_all_basic_event_information()
     for i in basic_event_info:
-        #[sport id, event id, event name, event url, [match name, heat name, date, time, location], results]
+        # [sport id, event id, event name, event url, [match name, heat name, date, time, location], results]
         print(get_specific_event_information(i))
     driver.close()

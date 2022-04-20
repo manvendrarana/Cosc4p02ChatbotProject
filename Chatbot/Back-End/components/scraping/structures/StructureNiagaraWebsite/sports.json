@@ -1,30 +1,19 @@
 {
-    "website":"https://niagara2022games.ca/sports/",
-   "All Sports Column(div class)": "col-sm-12 col-lg-9",
-   "value":{
-       
-       
-
-       "Article(id)": "Baseball",
-       "value": {
-           "img src": "https://niagara2022games.ca/content/images/sports/_ansel_image_cache/bc09eadb89b6727c7568725361d76cc3.jpg",
-           "Article Title(h1 class)": "Athletics, Para-Athletics and Special Olympics",
-           "venue(a href)": "https://niagara2022games.ca/venues#Canada-Games-Park/ Canada Games Park",
-           "paragraph(p)": "Athletics, or Track and Field, is a staple sport at any multi-sport competition worldwide. Athletics has been a part of the Canada Summer Games since the second edition in 1973. In 2022, there will be opportunities for para-athletes and Special Olympic athletes to compete as well. Athletics will be held at the new Canada Games Park. ",
-           "Athlete(#text)" : "Greg Joy | 1973",
-           "Competition Details(href)" : "https://www.canadagames.ca/sports/athletics",
-           "Sponsor(a class href)": "https://www.healthyplanetcanada.com/",
-           "Sponsor img(img class)" : "https://niagara2022games.ca/content/images/sponsors/healthy-planet-1445-1636489629.png"
-           
-           
-
-
-       }
-
-
-
-
-
-       }}
+  "website": "https://niagara2022games.ca/sports/",
+  "All Sports Column(div class)": "col-sm-12 col-lg-9",
+  "value": {
+    "Article(id)": "Baseball",
+    "value": {
+      "img src": "https://niagara2022games.ca/content/images/sports/_ansel_image_cache/bc09eadb89b6727c7568725361d76cc3.jpg",
+      "Article Title(h1 class)": "Athletics, Para-Athletics and Special Olympics",
+      "venue(a href)": "https://niagara2022games.ca/venues#Canada-Games-Park/ Canada Games Park",
+      "paragraph(p)": "Athletics, or Track and Field, is a staple sport at any multi-sport competition worldwide. Athletics has been a part of the Canada Summer Games since the second edition in 1973. In 2022, there will be opportunities for para-athletes and Special Olympic athletes to compete as well. Athletics will be held at the new Canada Games Park. ",
+      "Athlete(#text)": "Greg Joy | 1973",
+      "Competition Details(href)": "https://www.canadagames.ca/sports/athletics",
+      "Sponsor(a class href)": "https://www.healthyplanetcanada.com/",
+      "Sponsor img(img class)": "https://niagara2022games.ca/content/images/sponsors/healthy-planet-1445-1636489629.png"
+    }
+  }
+}
 
 

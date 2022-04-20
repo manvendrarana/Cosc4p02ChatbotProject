@@ -1,227 +1,174 @@
-
 {
-    "website":"https://cgc.gems.pro/AlumCgc/Alumni/FindAlumni_List.aspx?UseSessionState=Y&SetLanguage=en-CA",
-   "key": "#ctl00_ContentPlaceHolder1_tdFilterEntry",
-   "value":{
-       "FilterByFirstName": "#ctl00_ContentPlaceHolder1_txtFirstName",
-       "FilterByLastName": "#ctl00_ContentPlaceHolder1_txtLastName",
-
-       "key(GamesFilter)" : "ctl00_ContentPlaceHolder1_selSetOfGames",
-       "value":{
-                "Beijing 2022 (XXIV Olympic Winter Games)" : "e8408ccc-dd1d-4934-8e34-8f56b1d58057",
-                "Beijing 2022 (XIII Paralympic Winter Games)" : "cedae0ed-49c5-44f8-a446-1dd34a100fbf",
-                "2019 Canada Winter Games" : "dbff767a-8151-403f-83ac-95babd757614",
-                "2017 Canada Summer Games": "2aea06cb-4e94-4482-985f-f4eb82862d44",
-                "2015 Canada Winter Games" : "e159be6a-148e-484f-b565-62b293abd9fc",
-                "2013 Canada Summer Games" : "45035854-9ccf-48a0-b1d9-8422b1966dbc",
-                "2011 Canada Winter Games" : "1052a60e-2ffc-4fcb-b604-749537ef30d2",
-                "2007 Canada Winter Games" : "a5b7524a-8bad-4b22-b511-49f7a1dbdac3",
-                "2005 Canada Summer Games" : "e6308122-a7ba-4dc7-8fc6-07c6810d9097",
-                "2003 Canada Winter Games" : "f9595ed2-73a8-4196-8f6e-dbed6ead4b71",
-                "2001 Canada Summer Games" : "8e0c41fe-cad9-4849-a633-030d82b918e7",
-                "1999 Canada Winter Games" : "887d38e0-52c2-43f7-9489-c5c628ed82f9",
-                "1997 Canada Summer Games" : "6b97dc2d-e4cb-4293-b96b-18872d489a86",
-                "1995 Canada Winter Games" : "aefaff66-d2e6-4003-975e-fda7dbed01df",
-                "1993 Canada Summer Games" : "b8e48caa-2bde-4366-bdae-095a26e04ad4",
-                "1991 Canada Winter Games" : "85c9b636-39ba-4257-bbdf-2dda41e63744",
-                "1989 Canada Summer Games" : "1d3f53da-1604-4fff-adc6-df2ae93a7ecf",
-                "1987 Canada Winter Games" : "34b21b1f-815c-45cf-8497-011b6e6da0f4",
-                "1985 Canada Summer Games" : "77bb51a4-865d-4d47-bcce-8c2c25c4e666",
-                "1983 Canada Winter Games" : "3123a137-da80-4d4d-bc08-4047b4210304",
-                "1981 Canada Summer Games" : "a126b77c-51d0-4faf-b09e-364356bcf53c",
-                "1979 Canada Winter Games" : "ac07095b-c861-41be-9e88-111d91104883",
-                "1977 Canada Summer Games" : "1813f941-3e74-4a7a-a952-42e7ad08cc81",
-                "1975 Canada Winter Games" : "878bc623-2304-40a8-a8b2-499f1838a53a",
-                "1973 Canada Summer Games" : "c1569792-7a7f-4114-9e54-6f0e6efd9f31",
-                "1971 Canada Winter Games" : "60ce1d98-ae28-4911-945a-98b7954fe03f",
-                "1969 Canada Summer Games" : "87fb48c1-4192-4304-b59a-ffdf5f317ed5",
-                "1967 Canada Winter Games" : "17757bb0-dc30-4375-9154-084f40fa9dfc",
-                "Tokyo 2020 (XXXII Olympic Games)" : "c6b05b76-ce51-45af-b4dc-4f31667aff53",
-                "PyeongChang 2018 (XXIII Olympic Winter Games)" : "962e3e89-781e-4334-89ae-d8b5777c8cc3",
-                "Rio de Janeiro 2016 (XXXI Olympic Games)" : "4167bb85-fb0b-41f7-ba08-a02377ddd731",
-                "Sochi 2014 (XXII Olympic Winter Games)" : "d98231cc-0b2e-4237-98d2-c9403e0fea4a",
-                "London 2012 (XXX Olympic Games)" : "75ec2fce-4050-452c-999f-806b186f31ac",
-                "Vancouver 2010 (XXI Olympic Winter Games)" : "7ce65958-1f52-4730-b066-b481562e7238",
-                "Beijing 2008 (XXIX Olympic Games)" : "d4e714fd-1363-403e-be24-2c32e03aac33",
-                "Turin 2006 (XX Olympic Winter Games)" : "ea3a4623-b3bc-4bea-b9a6-07bdca928def",
-                "Athens 2004 (XXVIII Olympic Games)" : "3bb6298a-d63e-4dc1-9550-75756a7a4dad",
-                "Salt Lake City 2002 (XIX Olympic Winter Games)" : "f123fc26-9ffb-4fe2-b4b6-777a32ccfef8",
-                "Sydney 2000 (XXVII Olympic Games)" : "d6935b49-f28d-4dfa-ad40-6e386316084c",
-                "Nagano 1998 (XVIII Olympic Winter Games)" : "241d9e46-c05e-436f-b53f-692790564ba7",
-                "Atlanta 1996 (XXVI Olympic Games)" : "241d9e46-c05e-436f-b53f-692790564ba7",
-                "Lillehammer 1994 (XVII Olympic Winter Games)" : "241d9e46-c05e-436f-b53f-692790564ba7",
-                "Barcelona 1992 (XXV Olympic Games)" : "241d9e46-c05e-436f-b53f-692790564ba7",
-                "Albertville 1992 (XVI Olympic Winter Games)" : "26bb3ff4-53f7-439d-9e76-0001cb2aa9ac",
-                "Seoul 1988 (XXIV Olympic Games)" : "482db7c1-b7ae-47a9-9eb1-5de8d6c18958",
-                "Calgary 1988 (XV Olympic Winter Games)" : "bff6870b-bc64-4b29-b002-51f405466d87",
-                "Los Angeles 1984 (XXIII Olympic Games)" : "ee6b67a9-d6b8-4a60-accb-a455784f38a7",
-                "Sarajevo 1984 (XIV Olympic Winter Games)" : "a1a7e5e6-ecbb-47ff-a1f0-29cf2a492bed",
-                "Lake Placid 1980 (XII Olympic Winter Games)" : "2aacecdd-84b2-4ad0-8c9b-a83ceabc47bb",
-                "Montreal 1976 (XXI Olympic Games)" : "50dd1f0c-914a-46d2-9331-b32deea44aca",
-                "Innsbruck 1976 (XII Olympic Winter Games)" : "cf405e89-b7e3-4c3c-95ea-eb837bbfd8ee",
-                "Munich 1972 (XX Olympic Games)" : "fe6a43ee-1515-4b1b-ae8a-84595ae72835",
-                "Sapporo 1972 (XI Olympic Winter Games)" : "b0b4658d-43c7-46ba-ad5e-18a971dcc4fa",
-                "Mexico City 1968 (XIX Olympic Games)" : "86da48bd-f564-4c83-aac5-a6d11fa7f2ce",
-                "Tokyo 2020 (XVI Paralympic Summer Games)" : "1f42872f-a077-40eb-afb9-3a955a0cda01",
-                "PyeongChang 2018 (XII Paralympic Winter Games)" : "949a8b96-bf21-4f0e-afce-c3539c93e53a",
-                "Rio 2016 (XV Paralympic Summer Games)" : "e6ff4899-b09a-4d92-af7e-64a9f8cdf5d3",
-                "Sochi 2014 (XI Paralympic Winter Games)" : "e0808d31-cbe4-407f-882c-949d6c3ffe96",
-                "London 2012 (XIV Paralympic Summer Games)" : "cfe57a29-015e-4125-8f45-65b38ad2ce70",
-                "Vancouver - Whistler 2010 (X Paralympic Winter Games)" : "a0704b12-de2a-4ff5-a50a-ed981e698c46",
-                "Beijing 2008 (XIII Paralympic Summer Games)" : "44a1f10e-f23b-49d0-8235-c76d93e5c522",
-                "Turin 2006 (IX Paralympic Winter Games)" : "6b5aa0a8-f87e-450b-b825-c3567f1d7798",
-                "Athens 2004 (XII Paralympic Summer Games)" : "698dd186-72ce-4d82-b786-fba37c5b8515",
-                "Salt Lake City 2002 (VIII Paralympic Winter Games)" : "0b4012f8-ae75-4ac4-8e17-f7598c130e25",
-                "Sydney 2000 (XI Paralympic Summer Games)" : "a4d1cd9f-13ba-4050-a756-e104346851c0",
-                "Nagano 1998 (VII Paralympic Winter Games)" : "e388c9fa-18e4-40fa-9033-b8f6051905d3",
-                "Atlanta 1996 (X Paralympic Summer Games)" : "6906b95b-e578-4641-b005-109edd7952b1",
-                "Lillehammer 1994 (VI Paralympic Winter Games)" : "e023a071-ad74-444e-b439-45c7afe70750",
-                "Barcelona / Madrid 1992 (IX Paralympic Summer Games)" : "a0dd8b94-7823-420c-883e-095a9147ddde",
-
-                "key(ContingentFilter)" : "ctl00_ContentPlaceHolder1_selContingent",
-                "value" :{
-                    "Alberta" : "3f4d5d06-1496-4114-ab9f-6f7514e0ff13",
-                    "British Columbia" : "c28587f4-d153-4137-8ccd-87eafe618128",
-                    "Manitoba" : "9f075d78-d1fe-490b-bd0b-6527e7f0eba0",
-                    "New Brunswick" : "1fd7ee57-304d-4ad9-9c5d-9a3d19ad72f6",
-                    "Newfoundland and Labrador" : "19a528d5-fd0d-4071-a4b1-eba1a73000b6",
-                    "Northwest Territories" : "023f6b9e-fdcc-49db-a1f7-8f14bce88075",
-                    "Nova Scotia" : "0dfd729f-3d9d-4517-8301-e8a89c51e701",
-                    "Nunavut" : "31c6edbb-07f3-4233-9a6b-6e2cd3a74fd3",
-                    "Ontario" : "14c34316-5560-43de-a25e-aa3ee8b0e41a",
-                    "Prince Edward Island" : "e8265297-0589-489a-aaf1-59462b1b98a2",
-                    "Quebec" : "77e948b4-d3e6-4ba0-90c4-786828d306d5",
-                    "Saskatchewan" : "2b41f842-f965-4ec8-aeb9-9d8201b7b0df",
-                    "Yukon" : "51c8b7ec-155f-47ff-8402-2a701c2f93e5",
-                    "Canada" : "fba3e96d-8c0a-4f8a-b5aa-19d1305f0ee3",
-
-
-                    "key(TypeFilter)" : "ctl00_ContentPlaceHolder1_selParticipantType",
-                    "value" :{
-                        "Athlete" : "fe2afcc9-1a8c-41d6-b4da-200a99c570a1",
-                        "Coach" : "dd2b37a0-15c1-40b9-9cbc-483d8cdd0f22",
-                        "Apprentice Coach" : "3b9cbd4c-151f-4dd1-922e-a5417f6d6459",
-                        "Manager" : "150043d5-2983-4052-afcb-30fd21cb1c53",
-                        "Technical Support" : "106e16a9-c932-4b1a-8578-de6889132055",
-                        "Athlete Assistant" : "207881df-6673-49b1-96ab-704230fd98e2",
-                        "Guide" : "fd6ad683-597e-4eed-8601-179564860ba3",
-                        "National Artist Program" : "07cb1922-c950-4f8f-a3ce-a118669c8b88",
-                        "Team Manager - NAP" : "f276a02b-b69f-4d1a-bd44-196cdf8b3220",
-
-
-
-                        "key(SportFilter)" : "ctl00_ContentPlaceHolder1_selSport",
-                        "value": {
-                            "No sport" : "22222222-2222-2222-2222-222222222222",
-                            "Alpine skiing" : "f4b53f0c-5e64-48e2-98a1-7c23887622d5",
-                            "Archery" : "a6b51db9-bd41-46da-aa69-4ab42f0a927c",
-                            "Artistic Swimming" : "eb659168-66f3-4512-858d-e09c1b973123",
-                            "Athletics" : "0834f0d1-c6ef-4296-b511-d243b22e211e",
-                            "Badminton" : "accbe8c9-dc8b-4868-84fb-fc7d6a6b9dfe",
-                            "Baseball" : "c43b9a5d-812a-46e7-af66-9954494bc512",
-                            "Basketball" : "b1220e06-9d50-49d4-a05e-15dc3092a21d",
-                            "Biathlon" : "46ed1b00-32f4-4195-9bef-3d3c8f4f4d48",
-                            "Boxing" : "93842a4f-ef09-4694-8156-c9e472f0620b",
-                            "Canoe Kayak" : "88590167-b04b-4eaf-8dcc-b3ae510745d5",
-                            "Cross Country Skiing" : "d5e65f81-40ff-4249-a36f-91dd6fe6f96e",
-                            "Curling" : "18162bb6-9c8e-4eee-857d-ef00c5b59fe7",
-                            "Cycling" : "c51cb107-0b5c-4c87-b969-0700c601ce13",
-                            "Diving" : "6994bb09-2605-4757-8fe0-0c42a27b47a7",
-                            "Fencing" : "1c076eb3-4c5c-4965-b310-6f97e3abb693",
-                            "Figure Skating" : "4959c15d-fb65-4bcc-9ed0-6f1eb6025927",
-                            "Freestyle Skiing" : "cc788b9d-9f31-48cd-a8d9-960e6043923f",
-                            "Golf" : "c365820c-af26-46d0-87b1-a9aebd8c67eb",
-                            "Gymnastics" : "3ff83f8d-6fba-492f-b4eb-564bd9914ba9",
-                            "Hockey" : "17606d79-5554-4128-a8d0-7cb116a7df36",
-                            "Judo" : "ef96bcef-ec8c-4fd0-afdc-32ed3196c0ac",
-                            "Ringette" : "ba2699dc-5e96-4601-99a2-8bd0f31d3a71",
-                            "Rowing " : "2dc3c8dc-7e2e-498b-94eb-82b59c0071fa",
-                            "Rugby" : "2c282ae5-a88a-4ec7-accd-b59728d2738c",
-                            "Sailing" : "183acc28-277e-461f-8824-ba1e84d4ed5b",
-                            "Snowboard" : "a19f8df4-4d4f-4240-ab90-9c8494fb51e2",
-                            "Soccer" : "ca7215f4-e9ce-4ffb-a3de-e9790e5ff1ef",
-                            "Softball" : "11035a44-ff80-46e0-b007-77d3460e74e5",
-                            "Speed Skating " : "80fd3242-e1c9-471b-aeeb-39b4b81a2448",
-                            "Squash" : "70825df9-94a9-46d6-87a6-8fd1b1a63328",
-                            "Swimming" : "6ecdb09e-89db-4e6f-9a75-863f9e7aa4e0",
-                            "Table Tennis" : "cc429fff-f9d5-4404-99e8-ff487dcbd8d2",
-                            "Tennis" : "4ae2c6e5-ba71-43b1-8f30-066f5b98c153",
-                            "Triathlon" : "c2eec94e-6a21-4ff5-9b73-b80c261711f2",
-                            "Volleyball" : "2f6e1a8e-6183-4471-b136-b44958d1e91a",
-                            "Wheelchair Basketball" : "ed55fccd-9bfc-411b-9afb-6e15c1c5a9e9",
-                            "Wrestling" : "5d7bff8b-d15f-4ffd-a3a4-891f0bfd997a",
-                            "Bobsleigh" : "69f89001-220f-40cb-aa43-e1a7efcac23c",
-                            "Bowling" : "f9bfde1e-cca3-4b06-8283-48d42d2f79e5",
-                            "Field Hockey" : "5c0dffb5-b833-4435-b3db-837cbab515e6",
-                            "Goalball" : "0354ebfa-0b95-4f21-999f-8953d4a0e69b",
-                            "Lacrosse" : "8698e4ae-5986-4d8c-8559-477a998e9626",
-                            "Lawn Bowling" : "34ed8a9e-713f-4792-bbbb-de8457e11f2d",
-                            "Modern Pentathlon" : "7d538b1d-8733-4b75-baf3-4414f28f1e13",
-                            "Racquetball" : "a51b9e09-85b2-492b-a084-da9dbb8d3ec1",
-                            "Skateboard" : "daa0b1ff-cf2b-436a-9c3e-17743d0fbce3",
-                            "Ski Jumping" : "0ad81864-88bd-47b8-af20-01060818274f",
-                            "Taekwondo" : "7c722e81-4bc3-48d6-8ceb-fc9c5e6c3495",
-                            "Target Shooting" : "457c8d49-fa7d-4e85-bb75-bdbf6219560e",
-                            "Water Polo" : "d28c7475-2cd1-489c-a797-2540595ece5a",
-                            "Water Ski" : "39a03f32-199e-4a86-bdc5-13fc421b2e30",
-                            "Weightlifting" : "78b91b9b-6637-47d6-97ab-5fd062b59e4c",
-                            "Wheelchair Rugby" : "43616574-7316-42f8-96d2-9e46bcbaffc7",
-
-                            "key(findButton)" : "ctl00_ContentPlaceHolder1_btnFind",
-                            "value": {
-                                    "ctl00$ContentPlaceHolder1$btnFind" : "Find",
-
-
-
-
-                            
-
-                            "key(clearButton)" : "ctl00_ContentPlaceHolder1_btnClear",
-                            "value": {
-                                    "ctl00$ContentPlaceHolder1$btnClear" : "Clear"
-
-                            }
-
-
-
-
-                            }
-                           
-                            
-
-
-
-
-                        
-
-
-
-                        }
-                        
-
-
-                    }
-                    
-                    
-
-
-
-
-                    
-                }
-                
-
-
-
-
-
-
-                  } 
-                  
-                  
-                  
-
-    
-        
-       }
-   }
+  "website": "https://cgc.gems.pro/AlumCgc/Alumni/FindAlumni_List.aspx?UseSessionState=Y&SetLanguage=en-CA",
+  "key": "#ctl00_ContentPlaceHolder1_tdFilterEntry",
+  "value": {
+    "FilterByFirstName": "#ctl00_ContentPlaceHolder1_txtFirstName",
+    "FilterByLastName": "#ctl00_ContentPlaceHolder1_txtLastName",
+    "key(GamesFilter)": "ctl00_ContentPlaceHolder1_selSetOfGames",
+    "value": {
+      "Beijing 2022 (XXIV Olympic Winter Games)": "e8408ccc-dd1d-4934-8e34-8f56b1d58057",
+      "Beijing 2022 (XIII Paralympic Winter Games)": "cedae0ed-49c5-44f8-a446-1dd34a100fbf",
+      "2019 Canada Winter Games": "dbff767a-8151-403f-83ac-95babd757614",
+      "2017 Canada Summer Games": "2aea06cb-4e94-4482-985f-f4eb82862d44",
+      "2015 Canada Winter Games": "e159be6a-148e-484f-b565-62b293abd9fc",
+      "2013 Canada Summer Games": "45035854-9ccf-48a0-b1d9-8422b1966dbc",
+      "2011 Canada Winter Games": "1052a60e-2ffc-4fcb-b604-749537ef30d2",
+      "2007 Canada Winter Games": "a5b7524a-8bad-4b22-b511-49f7a1dbdac3",
+      "2005 Canada Summer Games": "e6308122-a7ba-4dc7-8fc6-07c6810d9097",
+      "2003 Canada Winter Games": "f9595ed2-73a8-4196-8f6e-dbed6ead4b71",
+      "2001 Canada Summer Games": "8e0c41fe-cad9-4849-a633-030d82b918e7",
+      "1999 Canada Winter Games": "887d38e0-52c2-43f7-9489-c5c628ed82f9",
+      "1997 Canada Summer Games": "6b97dc2d-e4cb-4293-b96b-18872d489a86",
+      "1995 Canada Winter Games": "aefaff66-d2e6-4003-975e-fda7dbed01df",
+      "1993 Canada Summer Games": "b8e48caa-2bde-4366-bdae-095a26e04ad4",
+      "1991 Canada Winter Games": "85c9b636-39ba-4257-bbdf-2dda41e63744",
+      "1989 Canada Summer Games": "1d3f53da-1604-4fff-adc6-df2ae93a7ecf",
+      "1987 Canada Winter Games": "34b21b1f-815c-45cf-8497-011b6e6da0f4",
+      "1985 Canada Summer Games": "77bb51a4-865d-4d47-bcce-8c2c25c4e666",
+      "1983 Canada Winter Games": "3123a137-da80-4d4d-bc08-4047b4210304",
+      "1981 Canada Summer Games": "a126b77c-51d0-4faf-b09e-364356bcf53c",
+      "1979 Canada Winter Games": "ac07095b-c861-41be-9e88-111d91104883",
+      "1977 Canada Summer Games": "1813f941-3e74-4a7a-a952-42e7ad08cc81",
+      "1975 Canada Winter Games": "878bc623-2304-40a8-a8b2-499f1838a53a",
+      "1973 Canada Summer Games": "c1569792-7a7f-4114-9e54-6f0e6efd9f31",
+      "1971 Canada Winter Games": "60ce1d98-ae28-4911-945a-98b7954fe03f",
+      "1969 Canada Summer Games": "87fb48c1-4192-4304-b59a-ffdf5f317ed5",
+      "1967 Canada Winter Games": "17757bb0-dc30-4375-9154-084f40fa9dfc",
+      "Tokyo 2020 (XXXII Olympic Games)": "c6b05b76-ce51-45af-b4dc-4f31667aff53",
+      "PyeongChang 2018 (XXIII Olympic Winter Games)": "962e3e89-781e-4334-89ae-d8b5777c8cc3",
+      "Rio de Janeiro 2016 (XXXI Olympic Games)": "4167bb85-fb0b-41f7-ba08-a02377ddd731",
+      "Sochi 2014 (XXII Olympic Winter Games)": "d98231cc-0b2e-4237-98d2-c9403e0fea4a",
+      "London 2012 (XXX Olympic Games)": "75ec2fce-4050-452c-999f-806b186f31ac",
+      "Vancouver 2010 (XXI Olympic Winter Games)": "7ce65958-1f52-4730-b066-b481562e7238",
+      "Beijing 2008 (XXIX Olympic Games)": "d4e714fd-1363-403e-be24-2c32e03aac33",
+      "Turin 2006 (XX Olympic Winter Games)": "ea3a4623-b3bc-4bea-b9a6-07bdca928def",
+      "Athens 2004 (XXVIII Olympic Games)": "3bb6298a-d63e-4dc1-9550-75756a7a4dad",
+      "Salt Lake City 2002 (XIX Olympic Winter Games)": "f123fc26-9ffb-4fe2-b4b6-777a32ccfef8",
+      "Sydney 2000 (XXVII Olympic Games)": "d6935b49-f28d-4dfa-ad40-6e386316084c",
+      "Nagano 1998 (XVIII Olympic Winter Games)": "241d9e46-c05e-436f-b53f-692790564ba7",
+      "Atlanta 1996 (XXVI Olympic Games)": "241d9e46-c05e-436f-b53f-692790564ba7",
+      "Lillehammer 1994 (XVII Olympic Winter Games)": "241d9e46-c05e-436f-b53f-692790564ba7",
+      "Barcelona 1992 (XXV Olympic Games)": "241d9e46-c05e-436f-b53f-692790564ba7",
+      "Albertville 1992 (XVI Olympic Winter Games)": "26bb3ff4-53f7-439d-9e76-0001cb2aa9ac",
+      "Seoul 1988 (XXIV Olympic Games)": "482db7c1-b7ae-47a9-9eb1-5de8d6c18958",
+      "Calgary 1988 (XV Olympic Winter Games)": "bff6870b-bc64-4b29-b002-51f405466d87",
+      "Los Angeles 1984 (XXIII Olympic Games)": "ee6b67a9-d6b8-4a60-accb-a455784f38a7",
+      "Sarajevo 1984 (XIV Olympic Winter Games)": "a1a7e5e6-ecbb-47ff-a1f0-29cf2a492bed",
+      "Lake Placid 1980 (XII Olympic Winter Games)": "2aacecdd-84b2-4ad0-8c9b-a83ceabc47bb",
+      "Montreal 1976 (XXI Olympic Games)": "50dd1f0c-914a-46d2-9331-b32deea44aca",
+      "Innsbruck 1976 (XII Olympic Winter Games)": "cf405e89-b7e3-4c3c-95ea-eb837bbfd8ee",
+      "Munich 1972 (XX Olympic Games)": "fe6a43ee-1515-4b1b-ae8a-84595ae72835",
+      "Sapporo 1972 (XI Olympic Winter Games)": "b0b4658d-43c7-46ba-ad5e-18a971dcc4fa",
+      "Mexico City 1968 (XIX Olympic Games)": "86da48bd-f564-4c83-aac5-a6d11fa7f2ce",
+      "Tokyo 2020 (XVI Paralympic Summer Games)": "1f42872f-a077-40eb-afb9-3a955a0cda01",
+      "PyeongChang 2018 (XII Paralympic Winter Games)": "949a8b96-bf21-4f0e-afce-c3539c93e53a",
+      "Rio 2016 (XV Paralympic Summer Games)": "e6ff4899-b09a-4d92-af7e-64a9f8cdf5d3",
+      "Sochi 2014 (XI Paralympic Winter Games)": "e0808d31-cbe4-407f-882c-949d6c3ffe96",
+      "London 2012 (XIV Paralympic Summer Games)": "cfe57a29-015e-4125-8f45-65b38ad2ce70",
+      "Vancouver - Whistler 2010 (X Paralympic Winter Games)": "a0704b12-de2a-4ff5-a50a-ed981e698c46",
+      "Beijing 2008 (XIII Paralympic Summer Games)": "44a1f10e-f23b-49d0-8235-c76d93e5c522",
+      "Turin 2006 (IX Paralympic Winter Games)": "6b5aa0a8-f87e-450b-b825-c3567f1d7798",
+      "Athens 2004 (XII Paralympic Summer Games)": "698dd186-72ce-4d82-b786-fba37c5b8515",
+      "Salt Lake City 2002 (VIII Paralympic Winter Games)": "0b4012f8-ae75-4ac4-8e17-f7598c130e25",
+      "Sydney 2000 (XI Paralympic Summer Games)": "a4d1cd9f-13ba-4050-a756-e104346851c0",
+      "Nagano 1998 (VII Paralympic Winter Games)": "e388c9fa-18e4-40fa-9033-b8f6051905d3",
+      "Atlanta 1996 (X Paralympic Summer Games)": "6906b95b-e578-4641-b005-109edd7952b1",
+      "Lillehammer 1994 (VI Paralympic Winter Games)": "e023a071-ad74-444e-b439-45c7afe70750",
+      "Barcelona / Madrid 1992 (IX Paralympic Summer Games)": "a0dd8b94-7823-420c-883e-095a9147ddde",
+      "key(ContingentFilter)": "ctl00_ContentPlaceHolder1_selContingent",
+      "value": {
+        "Alberta": "3f4d5d06-1496-4114-ab9f-6f7514e0ff13",
+        "British Columbia": "c28587f4-d153-4137-8ccd-87eafe618128",
+        "Manitoba": "9f075d78-d1fe-490b-bd0b-6527e7f0eba0",
+        "New Brunswick": "1fd7ee57-304d-4ad9-9c5d-9a3d19ad72f6",
+        "Newfoundland and Labrador": "19a528d5-fd0d-4071-a4b1-eba1a73000b6",
+        "Northwest Territories": "023f6b9e-fdcc-49db-a1f7-8f14bce88075",
+        "Nova Scotia": "0dfd729f-3d9d-4517-8301-e8a89c51e701",
+        "Nunavut": "31c6edbb-07f3-4233-9a6b-6e2cd3a74fd3",
+        "Ontario": "14c34316-5560-43de-a25e-aa3ee8b0e41a",
+        "Prince Edward Island": "e8265297-0589-489a-aaf1-59462b1b98a2",
+        "Quebec": "77e948b4-d3e6-4ba0-90c4-786828d306d5",
+        "Saskatchewan": "2b41f842-f965-4ec8-aeb9-9d8201b7b0df",
+        "Yukon": "51c8b7ec-155f-47ff-8402-2a701c2f93e5",
+        "Canada": "fba3e96d-8c0a-4f8a-b5aa-19d1305f0ee3",
+        "key(TypeFilter)": "ctl00_ContentPlaceHolder1_selParticipantType",
+        "value": {
+          "Athlete": "fe2afcc9-1a8c-41d6-b4da-200a99c570a1",
+          "Coach": "dd2b37a0-15c1-40b9-9cbc-483d8cdd0f22",
+          "Apprentice Coach": "3b9cbd4c-151f-4dd1-922e-a5417f6d6459",
+          "Manager": "150043d5-2983-4052-afcb-30fd21cb1c53",
+          "Technical Support": "106e16a9-c932-4b1a-8578-de6889132055",
+          "Athlete Assistant": "207881df-6673-49b1-96ab-704230fd98e2",
+          "Guide": "fd6ad683-597e-4eed-8601-179564860ba3",
+          "National Artist Program": "07cb1922-c950-4f8f-a3ce-a118669c8b88",
+          "Team Manager - NAP": "f276a02b-b69f-4d1a-bd44-196cdf8b3220",
+          "key(SportFilter)": "ctl00_ContentPlaceHolder1_selSport",
+          "value": {
+            "No sport": "22222222-2222-2222-2222-222222222222",
+            "Alpine skiing": "f4b53f0c-5e64-48e2-98a1-7c23887622d5",
+            "Archery": "a6b51db9-bd41-46da-aa69-4ab42f0a927c",
+            "Artistic Swimming": "eb659168-66f3-4512-858d-e09c1b973123",
+            "Athletics": "0834f0d1-c6ef-4296-b511-d243b22e211e",
+            "Badminton": "accbe8c9-dc8b-4868-84fb-fc7d6a6b9dfe",
+            "Baseball": "c43b9a5d-812a-46e7-af66-9954494bc512",
+            "Basketball": "b1220e06-9d50-49d4-a05e-15dc3092a21d",
+            "Biathlon": "46ed1b00-32f4-4195-9bef-3d3c8f4f4d48",
+            "Boxing": "93842a4f-ef09-4694-8156-c9e472f0620b",
+            "Canoe Kayak": "88590167-b04b-4eaf-8dcc-b3ae510745d5",
+            "Cross Country Skiing": "d5e65f81-40ff-4249-a36f-91dd6fe6f96e",
+            "Curling": "18162bb6-9c8e-4eee-857d-ef00c5b59fe7",
+            "Cycling": "c51cb107-0b5c-4c87-b969-0700c601ce13",
+            "Diving": "6994bb09-2605-4757-8fe0-0c42a27b47a7",
+            "Fencing": "1c076eb3-4c5c-4965-b310-6f97e3abb693",
+            "Figure Skating": "4959c15d-fb65-4bcc-9ed0-6f1eb6025927",
+            "Freestyle Skiing": "cc788b9d-9f31-48cd-a8d9-960e6043923f",
+            "Golf": "c365820c-af26-46d0-87b1-a9aebd8c67eb",
+            "Gymnastics": "3ff83f8d-6fba-492f-b4eb-564bd9914ba9",
+            "Hockey": "17606d79-5554-4128-a8d0-7cb116a7df36",
+            "Judo": "ef96bcef-ec8c-4fd0-afdc-32ed3196c0ac",
+            "Ringette": "ba2699dc-5e96-4601-99a2-8bd0f31d3a71",
+            "Rowing ": "2dc3c8dc-7e2e-498b-94eb-82b59c0071fa",
+            "Rugby": "2c282ae5-a88a-4ec7-accd-b59728d2738c",
+            "Sailing": "183acc28-277e-461f-8824-ba1e84d4ed5b",
+            "Snowboard": "a19f8df4-4d4f-4240-ab90-9c8494fb51e2",
+            "Soccer": "ca7215f4-e9ce-4ffb-a3de-e9790e5ff1ef",
+            "Softball": "11035a44-ff80-46e0-b007-77d3460e74e5",
+            "Speed Skating ": "80fd3242-e1c9-471b-aeeb-39b4b81a2448",
+            "Squash": "70825df9-94a9-46d6-87a6-8fd1b1a63328",
+            "Swimming": "6ecdb09e-89db-4e6f-9a75-863f9e7aa4e0",
+            "Table Tennis": "cc429fff-f9d5-4404-99e8-ff487dcbd8d2",
+            "Tennis": "4ae2c6e5-ba71-43b1-8f30-066f5b98c153",
+            "Triathlon": "c2eec94e-6a21-4ff5-9b73-b80c261711f2",
+            "Volleyball": "2f6e1a8e-6183-4471-b136-b44958d1e91a",
+            "Wheelchair Basketball": "ed55fccd-9bfc-411b-9afb-6e15c1c5a9e9",
+            "Wrestling": "5d7bff8b-d15f-4ffd-a3a4-891f0bfd997a",
+            "Bobsleigh": "69f89001-220f-40cb-aa43-e1a7efcac23c",
+            "Bowling": "f9bfde1e-cca3-4b06-8283-48d42d2f79e5",
+            "Field Hockey": "5c0dffb5-b833-4435-b3db-837cbab515e6",
+            "Goalball": "0354ebfa-0b95-4f21-999f-8953d4a0e69b",
+            "Lacrosse": "8698e4ae-5986-4d8c-8559-477a998e9626",
+            "Lawn Bowling": "34ed8a9e-713f-4792-bbbb-de8457e11f2d",
+            "Modern Pentathlon": "7d538b1d-8733-4b75-baf3-4414f28f1e13",
+            "Racquetball": "a51b9e09-85b2-492b-a084-da9dbb8d3ec1",
+            "Skateboard": "daa0b1ff-cf2b-436a-9c3e-17743d0fbce3",
+            "Ski Jumping": "0ad81864-88bd-47b8-af20-01060818274f",
+            "Taekwondo": "7c722e81-4bc3-48d6-8ceb-fc9c5e6c3495",
+            "Target Shooting": "457c8d49-fa7d-4e85-bb75-bdbf6219560e",
+            "Water Polo": "d28c7475-2cd1-489c-a797-2540595ece5a",
+            "Water Ski": "39a03f32-199e-4a86-bdc5-13fc421b2e30",
+            "Weightlifting": "78b91b9b-6637-47d6-97ab-5fd062b59e4c",
+            "Wheelchair Rugby": "43616574-7316-42f8-96d2-9e46bcbaffc7",
+            "key(findButton)": "ctl00_ContentPlaceHolder1_btnFind",
+            "value": {
+              "ctl00$ContentPlaceHolder1$btnFind": "Find",
+              "key(clearButton)": "ctl00_ContentPlaceHolder1_btnClear",
+              "value": {
+                "ctl00$ContentPlaceHolder1$btnClear": "Clear"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

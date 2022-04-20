@@ -1,46 +1,23 @@
 {
-    "website":"https://niagara2022games.ca/news/",
-   "All news Row Section(div class)": "row justify-content-center text-center text-md-left",
-   "value":{
-       "Container News Card 1(div class)": "col-sm-6 col-lg-4 col-xl-3 mb-4",
-       "value": {
-           "link(a href)" : "https://niagara2022games.ca/news/article/torchbearer-en/",
-           "date(small class)": "card-subtitle mb-2 text-muted",
-           "Card Title(h1 class)": "h4 card-title",
-            "paragraph(p)" : "Represent your local community in the lead up to Niagara 2022 by applying to take part in the Torch Relay!",
-            "link to read(a href)" : "https://niagara2022games.ca/news/article/torchbearer-en/",
-
-
-
-
-
-            "Container News Card 2(div class just to show difference between card 1)": "col-sm-6 col-lg-4 col-xl-3 mb-4",
-            "value":{
-                "link(a href)" : "https://niagara2022games.ca/news/article/niagara-college-becomes-the-official-experiential-digital-production-partner-of-the-niagara-2022-canada-summer-games/",
-                "date(small class)" : "card-subtitle mb-2 text-muted",
-                "Card Title(h1 class)" : "h4 card-title",
-                "text(within h1 class)": "Niagara College becomes the Official Experiential & Digital Production Partner of the Niagara 2022 Canada Summer Games",
-                "Paragraph(p)" : "Niagara College will be responsible for management and oversight of the full digital production of Niagara 2022.",
-                "link to read(a hred)": "https://niagara2022games.ca/news/article/niagara-college-becomes-the-official-experiential-digital-production-partner-of-the-niagara-2022-canada-summer-games/"
-
-                
-                
-
-
-
-
-
-            }
-
-
-
-
-           
-
-
-
-            
-       }
-
+  "website": "https://niagara2022games.ca/news/",
+  "All news Row Section(div class)": "row justify-content-center text-center text-md-left",
+  "value": {
+    "Container News Card 1(div class)": "col-sm-6 col-lg-4 col-xl-3 mb-4",
+    "value": {
+      "link(a href)": "https://niagara2022games.ca/news/article/torchbearer-en/",
+      "date(small class)": "card-subtitle mb-2 text-muted",
+      "Card Title(h1 class)": "h4 card-title",
+      "paragraph(p)": "Represent your local community in the lead up to Niagara 2022 by applying to take part in the Torch Relay!",
+      "link to read(a href)": "https://niagara2022games.ca/news/article/torchbearer-en/",
+      "Container News Card 2(div class just to show difference between card 1)": "col-sm-6 col-lg-4 col-xl-3 mb-4",
+      "value": {
+        "link(a href)": "https://niagara2022games.ca/news/article/niagara-college-becomes-the-official-experiential-digital-production-partner-of-the-niagara-2022-canada-summer-games/",
+        "date(small class)": "card-subtitle mb-2 text-muted",
+        "Card Title(h1 class)": "h4 card-title",
+        "text(within h1 class)": "Niagara College becomes the Official Experiential & Digital Production Partner of the Niagara 2022 Canada Summer Games",
+        "Paragraph(p)": "Niagara College will be responsible for management and oversight of the full digital production of Niagara 2022.",
+        "link to read(a hred)": "https://niagara2022games.ca/news/article/niagara-college-becomes-the-official-experiential-digital-production-partner-of-the-niagara-2022-canada-summer-games/"
+      }
     }
+  }
 }

@@ -1,7 +1,9 @@
 import json
 import unittest
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+
 from components.scraping.modules.event import EventScraper
 
 

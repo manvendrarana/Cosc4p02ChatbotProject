@@ -1,18 +1,15 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-import pandas as pd
+
 
 # this GUID has a page with more txt sections
-#GUID = "80befcce-cda0-4b35-9022-364ce2e1d1fe"
+# GUID = "80befcce-cda0-4b35-9022-364ce2e1d1fe"
 
 # this GUID has less txt sections so some elements won't exist
-#GUID = '293e6863-c874-4e84-94df-233eface2fd0'
-#DRIVER_PATH = "C:\webdriver\chromedriver.exe"
-#driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+# GUID = '293e6863-c874-4e84-94df-233eface2fd0'
+# DRIVER_PATH = "C:\webdriver\chromedriver.exe"
+# driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
 def scrape_team(GUID, driver):
-
     url = 'https://cg2019.gems.pro/Result/ShowTeam.aspx?Team_GUID=' + GUID + '&SetLanguage=en-CA'
 
     driver.get(url)
@@ -27,7 +24,7 @@ def scrape_team(GUID, driver):
         txtEvent = driver.find_element(By.ID, 'txtEventName').text
         print("Team Event: " + txtEvent)
     except:
-        print("No team event name.") 
+        print("No team event name.")
 
     try:
         txtTeamName = driver.find_element(By.ID, 'txtName').text
@@ -51,17 +48,17 @@ def scrape_team(GUID, driver):
         tblOdd = driver.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd")
         for row in tblOdd:
             teamMatches.append(row.find_elements(By.CSS_SELECTOR, "td")[0].text)
-            #for item in row.find_elements(By.CLASS_NAME, "LM_ListDataCell"):
-                #print(item.text)
+            # for item in row.find_elements(By.CLASS_NAME, "LM_ListDataCell"):
+            # print(item.text)
     except:
         print("No matches.")
 
     try:
         tblEven = driver.find_elements(By.CLASS_NAME, "LM_ListDataRowEven")
         for row in tblEven:
-                teamMatches.append(row.find_elements(By.CSS_SELECTOR, "td")[0].text)
-            #for item in row.find_elements(By.CLASS_NAME, "LM_ListDataCell"):
-                #print(item.text)
+            teamMatches.append(row.find_elements(By.CSS_SELECTOR, "td")[0].text)
+        # for item in row.find_elements(By.CLASS_NAME, "LM_ListDataCell"):
+        # print(item.text)
     except:
         print("No even row matches.")
 
@@ -88,11 +85,11 @@ def scrape_team(GUID, driver):
     finally:
         print("Scraped from: " + GUID)
         teamDict = {
-            'Team Name' : txtTeamName,
-            'Team Members' : joinedTeamMembers,
-            'Team Competitions' : joinedTeamMatches, 
-            'Team Event' : txtEvent, 
-            "Team Contingent" : txtContingent, 
-            "Team Final Position" : txtFinalPosition
+            'Team Name': txtTeamName,
+            'Team Members': joinedTeamMembers,
+            'Team Competitions': joinedTeamMatches,
+            'Team Event': txtEvent,
+            "Team Contingent": txtContingent,
+            "Team Final Position": txtFinalPosition
         }
         return teamDict

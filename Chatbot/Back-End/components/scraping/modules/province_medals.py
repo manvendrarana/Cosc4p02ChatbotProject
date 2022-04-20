@@ -1,21 +1,14 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-
 import pandas as pd
+from selenium.webdriver.common.by import By
 
-#DRIVER_PATH = "C:\webdriver\chromedriver.exe"
-#driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+
+# DRIVER_PATH = "C:\webdriver\chromedriver.exe"
+# driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
 def scrape_province_medals(driver):
-
     driver.get("https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA")
 
-    try: 
+    try:
         table = driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblMedals")
         tableColumns = table.find_elements(By.CSS_SELECTOR, "tr")
 
@@ -49,36 +42,40 @@ def scrape_province_medals(driver):
             print("Total Medals: " + values[3])
             print("\n")
 
-            #medalTuple = (province, values[0], values[1], values[2], values[3])
+            # medalTuple = (province, values[0], values[1], values[2], values[3])
             provinceName.append(province)
             provinceGold.append(values[0])
             provinceSilver.append(values[1])
             provinceBronze.append(values[2])
             provinceTotal.append(values[3])
-            #print("Inserting into db: ")
-            #print(medalTuple)
+            # print("Inserting into db: ")
+            # print(medalTuple)
 
-            #insert medalTuple into db here? tuple is medalTuple in the form (' Saskatchewan', '3', '3', '11', '17'), 
+            # insert medalTuple into db here? tuple is medalTuple in the form (' Saskatchewan', '3', '3', '11', '17'),
             # (provname, gold, silver, bronze, total)
 
             print("Insert successful.\n")
-            
-    except: print("Table unavailable.")
-    #driver.close()
+
+    except:
+        print("Table unavailable.")
+    # driver.close()
 
     newDict = {
-        'Province Name' : provinceName,
-        'Province Gold Medals' : provinceGold,
-        'Province Silver Medals' : provinceSilver, 
-        'Province Bronze Medals' : provinceBronze, 
-        "Province Total Medals" : provinceTotal, 
+        'Province Name': provinceName,
+        'Province Gold Medals': provinceGold,
+        'Province Silver Medals': provinceSilver,
+        'Province Bronze Medals': provinceBronze,
+        "Province Total Medals": provinceTotal,
     }
 
-    table_csv = pd.DataFrame(newDict, columns=['Province Name','Province Gold Medals', 'Province Silver Medals', 'Province Bronze Medals', "Province Total Medals"])
-    table_csv.to_csv("provincemedals.csv", index = [0, 1, 2, 3, 4], encoding = 'utf-8-sig')
+    table_csv = pd.DataFrame(newDict, columns=['Province Name', 'Province Gold Medals', 'Province Silver Medals',
+                                               'Province Bronze Medals', "Province Total Medals"])
+    table_csv.to_csv("provincemedals.csv", index=[0, 1, 2, 3, 4], encoding='utf-8-sig')
     print(table_csv)
     print("Done.")
     return table_csv
+
+
 '''
 printing medalDict: 
 

@@ -1,32 +1,23 @@
 import json
 from threading import *
+
 from haystack import Document
-from haystack.nodes.retriever import TableTextRetriever
 from haystack.document_stores import InMemoryDocumentStore
 from haystack.nodes import TableReader
+from haystack.nodes.retriever import TableTextRetriever
 
 
 class Ai:
-    def __init__(self, data, output_buffer):
-        self.output_buffer = output_buffer
-        self.tables = data
-        self.retriever = None
-        self.reader = None
-        self.document_index = "document"
-        self.document_store = InMemoryDocumentStore(embedding_dim=512)
-        self.processedTables = []
-        self.ai_processes = []
-        self.__processInfo()
-        self.__initPipeline()
-
-    def updateData(self, data):
-        while self.__len__() > 0:  # wait for current requests to complete
-            self.clear_dead_processes()
-        self.document_store = InMemoryDocumentStore(embedding_dim=512)
-        self.processedTables = []
-        self.tables = data
-        self.__processInfo()
-        self.__initPipeline()
+    def __printError(self, admin_req_id, error):
+        if admin_req_id is not None:
+            self.output_buffer.put(json.dumps({"type": "failed_admin",
+                                               "id": admin_req_id,
+                                               "error": error}))
+        else:
+            self.output_buffer.put(json.dumps({"type": "update",
+                                               "component": "ai",
+                                               "update": "error",
+                                               "update_message": error}))
 
     def __processInfo(self):
         # Add the tables to the DocumentStore.
@@ -71,45 +62,76 @@ class Ai:
                                            "update_message": "Ai Initialized"
                                            }))
 
-    def clear_dead_processes(self):
+    def __clear_dead_processes(self):
         # only keep the alive processes
         self.ai_processes = [ai_process for ai_process in self.ai_processes if ai_process.is_alive()]
 
     def __len__(self):
-        self.clear_dead_processes()
+        self.__clear_dead_processes()
         return len(self.ai_processes)
 
-    def ask(self, request, join):
-        msg_id, query = request
-        if join:
-            self.ai_processes[0].join()
-            self.clear_dead_processes()
-        ai_thread = Thread(target=self.run, args=[query, msg_id, self.output_buffer])
-        ai_thread.start()
-        self.ai_processes.append(ai_thread)
-
-    def run(self, query, msg_id, output_buffer):
-        # print(query, msg_id, output_buffer)
+    def __init__(self, data, output_buffer, admin_req_id=None):
         try:
-            if query is not None:
-                retrieved_tables = self.retriever.retrieve(query, top_k=5)
-                # Get highest scored table
-                if len(retrieved_tables) > 0:
-                    # print(retrieved_tables[0].id)
-                    table_doc = self.document_store.get_document_by_id(retrieved_tables[0].id)
-                    prediction = self.reader.predict(query=query, documents=[table_doc])
+            self.output_buffer = output_buffer
+            self.tables = data
+            self.retriever = None
+            self.reader = None
+            self.document_index = "document"
+            self.document_store = InMemoryDocumentStore(embedding_dim=512)
+            self.processedTables = []
+            self.ai_processes = []
+            self.__processInfo()
+            self.__initPipeline()
+        except BaseException as e:
+            self.__printError(admin_req_id, 'Failed to initialize Ai, \n system message: {}'.format(e))
+
+    def updateData(self, data, admin_req_id=None):
+        try:
+            while self.__len__() > 0:  # wait for current requests to complete
+                self.__clear_dead_processes()
+            self.document_store = InMemoryDocumentStore(embedding_dim=512)
+            self.processedTables = []
+            self.tables = data
+            self.__processInfo()
+            self.__initPipeline()
+        except BaseException as e:
+            self.__printError(admin_req_id, "Failed to update the ai, system error {}".format(e))
+
+    def ask(self, request, join, admin_req_id=None):
+        try:
+            msg_id, query = request
+            if join:
+                self.ai_processes[0].join()
+                self.__clear_dead_processes()
+
+            def threadFunction(query_msg, query_msg_id, output_buffer):
+                try:
+                    if query_msg is not None:
+                        retrieved_tables = self.retriever.retrieve(query, top_k=5)
+                        # Get highest scored table
+                        if len(retrieved_tables) > 0:
+                            # print(retrieved_tables[0].id)
+                            table_doc = self.document_store.get_document_by_id(retrieved_tables[0].id)
+                            prediction = self.reader.predict(query=query, documents=[table_doc])
+                            output = {"type": "ai_query",
+                                      "id": query_msg_id,
+                                      "url": table_doc.meta["url"],
+                                      "title": table_doc.meta["title"],
+                                      "answer": " ".join([obj.answer for obj in prediction["answers"]])
+                                      }
+                            output_buffer.put(json.dumps(output))
+                except BaseException as e:
                     output = {"type": "ai_query",
-                              "id": msg_id,
-                              "url": table_doc.meta["url"],
-                              "title": table_doc.meta["title"],
-                              "answer": " ".join([obj.answer for obj in prediction["answers"]])
+                              "id": query_msg_id,
+                              "url": "N/A",
+                              "title": "N/A",
+                              "answer": "Sorry the ai cannot process this query"
                               }
                     output_buffer.put(json.dumps(output))
-        except:
-            output = {"type": "ai_query",
-                      "id": msg_id,
-                      "url": "N/A",
-                      "title": "N/A",
-                      "answer": "Sorry the ai cannot process this query"
-                      }
-            output_buffer.put(json.dumps(output))
+
+            ai_thread = Thread(target=threadFunction, args=[query, msg_id, self.output_buffer])
+            ai_thread.start()
+            self.ai_processes.append(ai_thread)
+        except BaseException as e:
+            self.__printError(admin_req_id, "Ai did not process the query, system message {}".format(e))
+

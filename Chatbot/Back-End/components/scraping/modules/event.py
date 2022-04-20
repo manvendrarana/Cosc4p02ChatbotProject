@@ -1,16 +1,9 @@
-from pprint import pprint
-from re import sub
-import webbrowser
-from numpy import extract
-from pyparsing import col
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 import itertools
 import re
+
 import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 
 class EventScraper:
