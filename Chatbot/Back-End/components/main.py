@@ -67,7 +67,7 @@ class Main:
             self.scraper = Scraper(output_buffer)
             if type(self.scraper) is not None:
                 self.scraped_data = self.scraper.scrape()
-                if type(self.database) == type(DbHelper):
+                if type(self.database) is not None:
                     self.database.set_documents(self.scraped_data)
             else:
                 output_buffer.put(json.dumps({"type": "failed_admin",
