@@ -65,7 +65,7 @@ class Main:
     def scrape_pages(self, message):
         try:
             self.scraper = Scraper(output_buffer)
-            if type(self.scraper) == type(Scraper):
+            if type(self.scraper) is not None:
                 self.scraped_data = self.scraper.scrape()
                 if type(self.database) == type(DbHelper):
                     self.database.set_documents(self.scraped_data)
@@ -134,7 +134,7 @@ def output_message_handler():
 
 Thread(target=output_message_handler).start()
 
-dev_mode = False
+dev_mode = True
 main_obj = None
 if dev_mode:
     sys.argv.append("root")
@@ -142,9 +142,11 @@ if dev_mode:
     sys.argv.append("testDb")
     sys.argv.append("1")
     main_obj = Main()
-    main_obj.scrape_pages("")
+    main_obj.execute(json.loads(json.dumps({
+        "type": "scrape_pages"
+    })))
+
 else:
     main_obj = Main()
-
-while True:
-    main_obj.execute(json.loads(input()))
+    while True:
+        main_obj.execute(json.loads(input()))
