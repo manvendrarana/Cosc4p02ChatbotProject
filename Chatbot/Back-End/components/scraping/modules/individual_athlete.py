@@ -274,3 +274,8 @@ def scrape_individual_athlete(GUID, driver):
             dictPlacings: athletePlacingsCount
         }
         return athleteDict
+
+
+def scrape():
+    documents = {}
+    return documents

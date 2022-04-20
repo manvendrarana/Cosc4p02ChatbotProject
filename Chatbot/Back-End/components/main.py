@@ -62,7 +62,7 @@ class Main:
                                           "answer": "Sorry the ai cannot process this query"
                                           }))
 
-    def __scrape_pages(self, message):
+    def scrape_pages(self, message):
         try:
             self.scraper = Scraper(output_buffer)
             if type(self.scraper) == type(Scraper):
@@ -84,7 +84,7 @@ class Main:
 
     def __view_scraped_data(self, message):
         if not self.gettingDocuments:
-            Thread(target=self.get_all_documents_thread).start()
+            Thread(target=self.__get_all_documents_thread).start()
 
     def __change_max_ai_process(self, message):
         pass
@@ -93,7 +93,7 @@ class Main:
         pass
 
     def __system_test(self, message):
-        if not self.testing:
+        if not self.busyTesting:
             def test_thread(self):
                 pass
 
@@ -101,17 +101,17 @@ class Main:
 
     def __get_all_documents_thread(self):  # to show documents on the front end in admin
         self.gettingDocuments = True
-        while self.accessingDb:  # db is being accessed
+        while self.busyDb:  # db is being accessed
             time.sleep(1)
         self.accessingDb = True
         self.database.get_documents()
         self.accessingDb = False
         self.gettingDocuments = False
 
-    def __execute(self, message):
+    def execute(self, message):
         switcher = {
             "ai_query": self.__add_ai_query,
-            "scrape_pages": self.__scrape_pages,
+            "scrape_pages": self.scrape_pages,
             "view_scraped_data": self.__view_scraped_data,
             "change_ai_max_process_by": self.__change_max_ai_process,
             "restart_system": self.__restart,
@@ -134,11 +134,17 @@ def output_message_handler():
 
 Thread(target=output_message_handler).start()
 
-# sys.argv.append("root")
-# sys.argv.append("e#uoo!5YPZMQ3G")
-# sys.argv.append("testDb")
-# sys.argv.append("1")
-main_obj = Main()
+dev_mode = False
+main_obj = None
+if dev_mode:
+    sys.argv.append("root")
+    sys.argv.append("e#uoo!5YPZMQ3G")
+    sys.argv.append("testDb")
+    sys.argv.append("1")
+    main_obj = Main()
+    main_obj.scrape_pages("")
+else:
+    main_obj = Main()
 
 while True:
     main_obj.execute(json.loads(input()))
