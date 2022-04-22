@@ -84,7 +84,7 @@ class SportsDateScraper:
         key = "info_sports_dates"
         documents = {}
         documents[key] = {
-            "url": "https://cg2022.gems.pro/Result/Sport",
+            "url": "https://cg2022.gems.pro/Result/Sport_List.aspx?SiteMapTreeExpanded=b970b19b-cbed-45c9-9e45-5fee884be016&SetLanguage=en-CA",
             "title": key.replace("_", " ").capitalize(),
             "section_title":     "Sports Name, Sports Dates",
             "columns":          ["Sports Name", "Sports Dates"],
