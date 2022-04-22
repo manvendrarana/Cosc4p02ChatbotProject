@@ -21,27 +21,19 @@ function log(...args) {
 let num_users_connected = 0
 const components_status = {
     "scraper": {
-        "status": "not_initialized",
-        "msg_log": ["N/A"]
-    },
-    "database": {
-        "status": "not_initialized",
-        "msg_log": ["N/A"]
-    },
-    "ai": {
-        "status": "not_initialized",
-        "msg_log": ["N/A"]
-    },
-    "test": {
-        "status": "not_initialized",
-        "msg_log": ["N/A"]
+        "status": "not_initialized", "msg_log": [""]
+    }, "database": {
+        "status": "not_initialized", "msg_log": [""]
+    }, "ai": {
+        "status": "not_initialized", "msg_log": [""]
+    }, "test": {
+        "status": "not_initialized", "msg_log": [""]
     }
 }
 
 function notify_single_admin(admin) {
     admin.socket.emit("update_components", {
-        "num_users_connected": num_users_connected,
-        "components_status": admin.components_status
+        "num_users_connected": num_users_connected, "components_status": admin.components_status
     })
     for (const [type, values] of Object.entries(admin.components_status)) {
         admin.components_status[type]["msg_log"] = []
@@ -89,8 +81,25 @@ let date = new Date();
 let admins = {}
 
 
-//--------------------- Admin End ----------------------------//
+function handlerAdminRequest(requestType, socket_id, sid, callback, input_data=undefined) {
+    if (admins[socket_id] !== undefined) {
+        if (admins[socket_id]["sid"] === sid && admins[socket_id]["socket"] !== undefined) {
+            python_handler.request(requestType, input_data, socket_id).then((resolve, reject) => {
+                if (resolve) {
+                    callback(resolve["response"]);
+                } else {
+                    callback(reject["error"]);
+                }
+            });
+        } else {
+            callback({"result": "failed", "msg": "Invalid session id please login again."});
+        }
+    } else {
+        callback({"result": "failed", "msg": "Session lost please login again."});
+    }
+}
 
+//--------------------- Admin End ----------------------------//
 
 io.on("connection", (socket) => {
     num_users_connected += 1;
@@ -110,8 +119,7 @@ io.on("connection", (socket) => {
                     admins[socket.id] = {
                         username: credentials.username,
                         sid: crypto.createHash('md5').update(socket.id + process.env.SALT).digest("hex"),
-                        date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " at "
-                            + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+                        date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
                         socket: socket,
                         components_status: clone_component_status
                     }
@@ -135,20 +143,34 @@ io.on("connection", (socket) => {
                 notify_single_admin(admins[socket.id])
                 callback({"result": "notified"});
             } else {
-                callback({"result": "failed", "msg": "Invalid session id please login again."})
+                callback({"result": "failed", "msg": "Invalid session id please login again."});
             }
         } else {
-            callback({"result": "failed", "msg": "Session lost please login again."})
+            callback({"result": "failed", "msg": "Session lost please login again."});
         }
     })
 
+    socket.on("scrape_system", async function (sid, callback) {
+        handlerAdminRequest("scraper_pages", socket.id, sid, callback);
+    })
+
+    socket.on("view_scraped_documents", async function (sid, callback) {
+        handlerAdminRequest("view_scraped_data", socket.id, sid, callback);
+    })
+
+    socket.on("change_max_ai_processes", async function(sid, value, callback){
+        handlerAdminRequest("change_ai_max_process_by", socket.id, sid, callback, value)
+    })
+
+    socket.on("execute_tests", async function(sid,callback){
+      handlerAdminRequest("system_test", socket.id, sid,callback);
+    })
+
     socket.on("check_sid", async function (sid, callback) {
-        if (admins[socket.id] !== undefined) {
-            if (admins[socket.id].sid !== sid) {
-                callback({"result": "failed"})
-            }
-        } else {
+        if (admins[socket.id] !== undefined || admins[socket.id].sid !== sid) {
             callback({"result": "failed"})
+        } else {
+            callback({"result": "success"})
         }
     })
 

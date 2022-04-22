@@ -27,6 +27,7 @@ class Main:
         self.updating = False
         self.gettingDocuments = False
         self.runningQueries = False
+        self.testing = False
 
         self.database = DbHelper(sys.argv[1], sys.argv[2], output_buffer)  # sql username and password
         self.database.set_database(sys.argv[3])  # database name
@@ -97,7 +98,10 @@ class Main:
             {
                 type: success_admin,
                 id: message[id],
-                data: JSON({})
+                response:{
+                    data: JSON({})
+                }
+
             }
             onFailure:
             {
@@ -110,15 +114,27 @@ class Main:
                     id: str
                 }
         """
+        if bool(self.scraped_data):
+            def threadFunction():
+                self.gettingDocuments = True
+                while self.updating:  # wait till system being is updated
+                    time.sleep(1)
+                output_buffer.put({
+                    "type": "success_admin",
+                    "id": message["id"],
+                    "response": {
+                        "data": json.dumps(self.scraped_data)
+                    }
+                })
+                self.gettingDocuments = False
 
-        def threadFunction():
-            self.gettingDocuments = True
-            while self.updating:  # wait till system being is updated
-                time.sleep(1)
-            # --------JSON PRINT LATEST SCRAPED DATA------------
-            self.gettingDocuments = False
-
-        Thread(target=threadFunction).start()
+            Thread(target=threadFunction).start()
+        else:
+            output_buffer.put({
+                "type": "failed_admin",
+                "id": message["id"],
+                "error": "The data is not scraped please run the scraping component."
+            })
 
     def __change_max_ai_process(self, message: {}) -> None:
         """
@@ -138,11 +154,25 @@ class Main:
             }
         :param message: Message from admin
             format -> {
-                        value: int,
+                        input_data:{
+                            value:int
+                        },
                         id: str,
                     }
         """
-        self.max_ai_processes = max(0, self.max_ai_processes + int(message["value"]))
+        if self.max_ai_processes + int(message["input_data"]["value"]) < 1:
+            output_buffer.put({
+                "type": "failed_admin",
+                "id": message["id"],
+                "error": "Cannot be less than 1."
+            })
+        else:
+            self.max_ai_processes = self.max_ai_processes + int(message["value"])
+            output_buffer.put(json.dumps({"type": "success_admin",
+                                          "id": message["id"],
+                                          "response": "Successfully changed the max process to {}.".format(
+                                              self.max_ai_processes)
+                                          }))
 
     def __scrape_pages(self, message: {}) -> None:
         """
@@ -167,30 +197,18 @@ class Main:
         if not self.scraping:
             def threadFunction():
                 self.scraping = True
-                try:
-                    self.scraper = Scraper(output_buffer)
-                    self.scraped_data = self.scraper.scrape()
-                    self.database.set_documents(self.scraped_data)
-                    self.data = self.database.get_documents()
-                    self.restarting = True
-                    self.ai = Ai(self.data, output_buffer)
-                    self.restarting = False
-                    output_buffer.put(json.dumps({"type": "success_admin",
-                                                  "id": message["id"]
-                                                  }))
-                except BaseException as e:
-                    output_buffer.put(json.dumps({"type": "update",
-                                                  "component": "scraper",
-                                                  "update": "error",
-                                                  "update_message": 'Failed to Scrape, \n system message: {}'.
-                                                 format(e)
-                                                  }))
-                    output_buffer.put(json.dumps({"type": "failed_admin",
-                                                  "id": message["id"],
-                                                  "error": 'Failed to Scrape, \n system message: {}'.format(e)
-                                                  }))
+                self.scraper = Scraper(output_buffer)
+                self.scraped_data = self.scraper.scrape()
+                self.database.set_documents(self.scraped_data)
+                self.data = self.database.get_documents()
+                self.restarting = True
+                self.ai = Ai(self.data, output_buffer)
+                self.restarting = False
+                output_buffer.put(json.dumps({"type": "success_admin",
+                                              "id": message["id"],
+                                              "response": "Successfully Scraped and Updated."
+                                              }))
                 self.scraping = False
-
             Thread(target=threadFunction).start()
         else:
             output_buffer.put(json.dumps({"type": "failed_admin",
@@ -206,8 +224,13 @@ class Main:
             {
                 type: success_admin,
                 id: message[id],
-                passed: [str],
-                failed: [str]
+                response:{
+                    results:{
+                        passed: [str],
+                        failed: [str]
+                    }
+                }
+
             }
             onFailure:
             {
@@ -220,9 +243,28 @@ class Main:
                         id: str
                     }
         """
-        self.testing = True
 
-        self.testing = False
+        def threadFunction():
+            self.testingResult = {
+                "passed": ["test1", "test2"],
+                "failed": ["test3"]
+            }
+            output_buffer.put({
+                "type": "success_admin",
+                "id": message["id"],
+                "response": {
+                    "results": self.testingResult
+                }
+            })
+
+        try:
+            Thread(target=threadFunction).start()
+        except BaseException as e:
+            output_buffer.put({
+                "type": "failed_admin",
+                "id": message["id"],
+                "error": "Testing thread failed, system message {}".format(e)
+            })
 
     def execute(self, message: {}) -> None:
         """
@@ -254,7 +296,7 @@ def output_message_handler() -> None:
 
 Thread(target=output_message_handler).start()
 
-dev_mode = True
+dev_mode = False
 main_obj = None
 if dev_mode:
     sys.argv.append("root")
