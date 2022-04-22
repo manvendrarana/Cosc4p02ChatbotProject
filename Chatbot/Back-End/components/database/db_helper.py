@@ -67,6 +67,7 @@ class DbHelper:
             self.__cursor.execute("DROP DATABASE IF EXISTS " + database_name)
             self.__cursor.execute("CREATE DATABASE " + database_name)
             self.__cursor.execute("ALTER DATABASE " + database_name + " CHARACTER SET utf8")
+            self.set_database(database_name, admin_req_id)
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",
                                                "update": "working",
@@ -113,6 +114,7 @@ class DbHelper:
                 for value in document["values"]:
                     self.__insert(insert_sql % tuple([tuple_id] + value))
                     tuple_id += 1
+                self.__db_connection.commit()
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",
                                                "update": "working",

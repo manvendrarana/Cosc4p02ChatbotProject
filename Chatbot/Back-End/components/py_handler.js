@@ -89,7 +89,7 @@ class py_handler {
 
     request(request_type, id) {
         return new Promise((resolve, reject) => {
-            this.pyshell.send({"type": request_type, "id": id})
+            this.pyshell.send({"id": id, "type": request_type})
             if (this.admin_request_buffer[id] === undefined) {
                 this.admin_request_buffer[id] = {
                     request_type: {
