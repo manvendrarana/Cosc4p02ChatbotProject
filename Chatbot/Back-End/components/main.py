@@ -200,32 +200,38 @@ class Main:
 
     def __system_test(self, message: {}) -> None:
         """
-            This method initializes the Test class.
-            Output:
-                onSuccess:
-                {
-                    type: success_admin,
-                    id: message[id],
-                    passed: [str],
-                    failed: [str]
-                }
-                onFailure:
-                {
-                    type: failed_admin,
-                    id: message[id],
-                    error: str
-                }
+        This method initializes the Test class.
+        Output:
+            onSuccess:
+            {
+                type: success_admin,
+                id: message[id],
+                passed: [str],
+                failed: [str]
+            }
+            onFailure:
+            {
+                type: failed_admin,
+                id: message[id],
+                error: str
+            }
         :param message: request sent by admin.
-                format -> {
-                            query: str,
-                            id: str,
-                        }
+            format -> {
+                        id: str
+                    }
         """
         self.testing = True
 
         self.testing = False
 
-    def execute(self, message):
+    def execute(self, message: {}) -> None:
+        """
+        This method executes the type of request send by the Node.js server.
+        :param message: message sent by customer/admin.
+            format -> {
+                        id: str
+                    }
+        """
         switcher = {
             "ai_query": self.__add_ai_query,
             "scrape_pages": self.__scrape_pages,
@@ -236,7 +242,10 @@ class Main:
         switcher[message["type"]](message)
 
 
-def output_message_handler():
+def output_message_handler() -> None:
+    """
+        This method prints all the queued up messages in the output buffer.
+    """
     while True:  # inefficient method :(
         while not output_buffer.empty():
             print(output_buffer.get())
