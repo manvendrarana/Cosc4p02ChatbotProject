@@ -1,6 +1,10 @@
 import json
 
 from scraping.modules.event import EventScraper  # add components to run in python only mode
+from scraping.modules.all_teams import TeamScraper
+from scraping.modules.province_medals import ProvinceMedalScraper
+from scraping.modules.sport_dates import SportsDateScraper
+from scraping.modules.all_individual_athletes import AthleteScrape
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 
