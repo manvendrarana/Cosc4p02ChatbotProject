@@ -115,28 +115,6 @@ class TeamScraper:
         #print("key " + key)
         key = "team_info"
         #main_events.append(key)
- 
-        print("-------------------------------")
-        print("lengths")
-        print(len(txtTeamName))
-        print(len(teamMembers))
-        print(len(teamMatches))
-        print(len(txtEvent))
-        print(len(txtContingent))
-        print(len(txtFinalPosition))
-        print(len(txtURL))
-        print("-------------------------------")
-
-        print("-------------------------------")
-        print("contents")
-        print(txtTeamName)
-        print(teamMembers)
-        print(teamMatches)
-        print(txtEvent)
-        print(txtContingent)
-        print(txtFinalPosition)
-        print(txtURL)
-        print("-------------------------------")
 
         documents[key] = {
             "url": "https://cg2017.gems.pro/Result/ShowTeam.aspx",
