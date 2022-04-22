@@ -63,7 +63,8 @@ class TeamScraper:
         teamList = []
         for team in teamGUIDList:
             teamDict = scrape_team(team, driver)
-
+            lng = 405
+            
             teamEvent = teamDict.get('Team Event')
             txtEvent.append(teamEvent)
 
@@ -71,16 +72,26 @@ class TeamScraper:
             txtContingent.append(teamContingent)
 
             teamName = teamDict.get('Team Name')
-            txtTeamName.append(teamName)
+            teamName = re.sub('[^A-Za-z0-9 ]+', '', str(teamName))
+            teamName = (teamName[:lng] + '..') if len(teamName) > lng else teamName
+            txtTeamName.append(teamMatches)
+
 
             teamFinalPosition = teamDict.get('Team Final Position')
-            txtFinalPosition.append(teamFinalPosition)
+            teamFinalPosition = re.sub('[^A-Za-z0-9 ]+', '', str(teamFinalPosition))
+            teamFinalPosition = (teamFinalPosition[:lng] + '..') if len(teamFinalPosition) > lng else teamFinalPosition
+            txtFinalPosition.append(teamMatches)
+
 
             varTeamMembers = teamDict.get('Team Members')
-            teamMembers.append(unidecode.unidecode(varTeamMembers))
+            varTeamMembers = re.sub('[^A-Za-z0-9 ]+', '', str(varTeamMembers))
+            varTeamMembers = (varTeamMembers[:lng] + '..') if len(varTeamMembers) > lng else varTeamMembers
+            teamMembers.append(teamMatches)
 
             varTeamMatches = teamDict.get('Team Competitions')
-            teamMatches.append(varTeamMatches)
+            varTeamMatches = re.sub('[^A-Za-z0-9 ]+', '', str(varTeamMatches))
+            varTeamMatches = (varTeamMatches[:lng] + '..') if len(varTeamMatches) > lng else varTeamMatches
+            teamMatches.append(teamMatches)
 
             url = "https://cg2017.gems.pro/Result/ShowTeam.aspx?Team_GUID=" + team + "&SetLanguage=en-CA"
             txtURL.append(url)
@@ -115,6 +126,28 @@ class TeamScraper:
         #print("key " + key)
         key = "team_info"
         #main_events.append(key)
+ 
+        print("-------------------------------")
+        print("lengths")
+        print(len(txtTeamName))
+        print(len(teamMembers))
+        print(len(teamMatches))
+        print(len(txtEvent))
+        print(len(txtContingent))
+        print(len(txtFinalPosition))
+        print(len(txtURL))
+        print("-------------------------------")
+
+        print("-------------------------------")
+        print("contents")
+        print(txtTeamName)
+        print(teamMembers)
+        print(teamMatches)
+        print(txtEvent)
+        print(txtContingent)
+        print(txtFinalPosition)
+        print(txtURL)
+        print("-------------------------------")
 
         documents[key] = {
             "url": "https://cg2017.gems.pro/Result/ShowTeam.aspx",
