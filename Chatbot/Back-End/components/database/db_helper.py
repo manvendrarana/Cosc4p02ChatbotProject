@@ -32,7 +32,7 @@ class DbHelper:
 
     def __check_document_info_table(self):
         self.__create_table("document_info", "`key` VARCHAR(255), `url` VARCHAR(255), `title` VARCHAR(255), "
-                                             "`section_title` VARCHAR(255), PRIMARY KEY(`key`)")
+                                             "`section_title` VARCHAR(1900), PRIMARY KEY(`key`)")
 
     def __init__(self, username, password, output_buffer, host="127.0.0.1", msg_id=None):
         try:
@@ -105,7 +105,7 @@ class DbHelper:
                 indicator = "%s, "
                 indicator += (len(document["columns"])) * "'%s', "
                 for column in document["columns"]:
-                    config += "`" + column.replace(" ", "_") + "`" + " VARCHAR(255), "
+                    config += "`" + column.replace(" ", "_") + "`" + " VARCHAR(500), "
                 config += "PRIMARY KEY (`id`)"
                 indicator = indicator[:-2]
                 self.__create_table(key, config)
