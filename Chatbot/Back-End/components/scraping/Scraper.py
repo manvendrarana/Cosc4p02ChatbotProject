@@ -24,6 +24,34 @@ class Scraper:
                                            "update_message": "Starting Scraping"
                                            }))
         # --- All Scraping calls ----
+        documents |= AthleteScrape(self.driver).scrape()
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "scraper",
+                                           "update": "busy",
+                                           "update_message": "Athletes Scraped"
+                                           }))
+
+        documents |= SportsDateScraper(self.driver).scrape()
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "scraper",
+                                           "update": "busy",
+                                           "update_message": "Sports Dates Scraped"
+                                           }))
+
+        documents |= ProvinceMedalScraper(self.driver).scrape()
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "scraper",
+                                           "update": "busy",
+                                           "update_message": "Province Scraped"
+                                           }))
+
+        documents |= TeamScraper(self.driver).scrape()
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "scraper",
+                                           "update": "busy",
+                                           "update_message": "Teams Scraped"
+                                           }))
+
         documents |= EventScraper(self.driver).scrape()
         self.output_buffer.put(json.dumps({"type": "update",
                                            "component": "scraper",
