@@ -92,7 +92,7 @@ class ProvinceMedalScraper:
         key = "info_province_medals"
         documents = {}
         documents[key] = {
-            "url": "yes",
+            "url": "https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA",
             "title": key.replace("_", " ").capitalize(),
             "section_title":     "Province Name, Province Gold Medals, Province Silver Medals, Province Bronze Medals, Province Total Medals",
             "columns":          ["Province Name", "Province Gold Medals", "Province Silver Medals", "Province Bronze Medals", "Province Total Medals"],
