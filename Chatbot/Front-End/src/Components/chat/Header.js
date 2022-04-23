@@ -26,7 +26,7 @@ function Header({wifi}) {
                 <DropdownMenu/>
             }
             </NavItem>
-            <title>CHAT BOT NAME HERE</title>
+            <title>Niagara 2022 Games ChatBot</title>
             <NavItem icon={<FaHandsHelping/>}>{
                 <DevsDropdownMenu/>
             }
