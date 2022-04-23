@@ -91,7 +91,7 @@ function Chat({connected_to_server, socket, username}) {
                        rel="noreferrer">
                         <FaTwitter/>
                     </a>
-                    <a className='social-button' href='src/Components/chat/Chat' target="_blank"
+                    <a className='social-button' href='https://www.facebook.com/2022CanadaGames/' target="_blank"
                        rel="noreferrer">
                         <FaFacebook/>
                     </a>
@@ -99,7 +99,7 @@ function Chat({connected_to_server, socket, username}) {
                        rel="noreferrer">
                         <FaInstagram/>
                     </a>
-                    <a className='social-button' href='https://www.youtube.com/channel/UCpWP6p7_J_aWuP8TpbTQJnAc'
+                    <a className='social-button' href='https://www.youtube.com/channel/UCpWP6p7_J_aWuP8TpbTQJnA'
                        target="_blank" rel="noreferrer">
                         <FaYoutube/>
                     </a>
