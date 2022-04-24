@@ -184,9 +184,11 @@ class AthleteScrape:
             txPlacings = (txPlacings[:lng] + '..') if len(txPlacings) > lng else txPlacings
             aPlacings.append(txPlacings)
 
-            athleteList.append([player, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition, txPrevSameGames, txPrev, txGoals, txPersonal, 
+            url = 'https://cg2019.gems.pro/Result/ShowPerson.aspx?Person_GUID=' + player + '&SetLanguage=en-CA'
+            
+            athleteList.append([url, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition, txPrevSameGames, txPrev, txGoals, txPersonal, 
             txAwards, txRoleModel, txEvents, txGolds, txSilvers, txBronze, txPlacings])
-
+            
             athleteDict = {
                 dictName: aName,
                 dictContingent: aContingent,
