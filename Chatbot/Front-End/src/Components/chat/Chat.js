@@ -70,7 +70,7 @@ function Chat({connected_to_server, socket, username}) {
     const startNewChat = async () => {
         const greetingFinal = greetings[Math.floor(Math.random() * greetings.length)];
         setMessageList([]);
-        await sendMessageAsBot(greetingFinal);
+        await sendMessageAsBot({title: "N/A", url: "N/A", answer: greetingFinal});
     }
 
     const clearInput = async () => {
