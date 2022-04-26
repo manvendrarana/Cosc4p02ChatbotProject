@@ -64,9 +64,10 @@ class DbHelper:
                                                "update": "busy",
                                                "update_message": "Deleting all current documents"
                                                }))
-            self.__cursor.execute("DROP DATABASE IF EXISTS " + database_name)
-            self.__cursor.execute("CREATE DATABASE " + database_name)
-            self.__cursor.execute("ALTER DATABASE " + database_name + " CHARACTER SET utf8")
+            self.__db_cursor.execute("SHOW Tables")
+            list_of_tables = self.__db_cursor.fetchall()
+            for table in list_of_tables:
+                self.__db_cursor.execute("DROP TABLE IF EXISTS "+table[0])
             self.set_database(database_name, admin_req_id)
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",

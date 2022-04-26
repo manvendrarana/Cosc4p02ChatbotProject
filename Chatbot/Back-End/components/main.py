@@ -1,5 +1,6 @@
 import json
 import multiprocessing as mp
+import os
 import sys
 import time
 from threading import *
@@ -119,22 +120,24 @@ class Main:
                 self.gettingDocuments = True
                 while self.updating:  # wait till system being is updated
                     time.sleep(1)
-                output_buffer.put({
+                output_buffer.put(json.dumps({
                     "type": "success_admin",
+                    "request_type": message["type"],
                     "id": message["id"],
                     "response": {
                         "data": json.dumps(self.scraped_data)
                     }
-                })
+                }))
                 self.gettingDocuments = False
 
             Thread(target=threadFunction).start()
         else:
-            output_buffer.put({
+            output_buffer.put(json.dumps({
                 "type": "failed_admin",
+                "request_type": message["type"],
                 "id": message["id"],
                 "error": "The data is not scraped please run the scraping component."
-            })
+            }))
 
     def __change_max_ai_process(self, message: {}) -> None:
         """
@@ -161,14 +164,16 @@ class Main:
                     }
         """
         if self.max_ai_processes + int(message["input_data"]["value"]) < 1:
-            output_buffer.put({
+            output_buffer.put(json.dumps({
                 "type": "failed_admin",
+                "request_type": message["type"],
                 "id": message["id"],
                 "error": "Cannot be less than 1."
-            })
+            }))
         else:
             self.max_ai_processes = self.max_ai_processes + int(message["value"])
             output_buffer.put(json.dumps({"type": "success_admin",
+                                          "request_type": message["type"],
                                           "id": message["id"],
                                           "response": "Successfully changed the max process to {}.".format(
                                               self.max_ai_processes)
@@ -197,21 +202,38 @@ class Main:
         if not self.scraping:
             def threadFunction():
                 self.scraping = True
-                self.scraper = Scraper(output_buffer)
-                self.scraped_data = self.scraper.scrape()
-                self.database.set_documents(self.scraped_data)
-                self.data = self.database.get_documents()
-                self.restarting = True
-                self.ai = Ai(self.data, output_buffer)
-                self.restarting = False
-                output_buffer.put(json.dumps({"type": "success_admin",
-                                              "id": message["id"],
-                                              "response": "Successfully Scraped and Updated."
-                                              }))
-                self.scraping = False
+                try:
+                    self.scraper = Scraper(output_buffer)
+                    self.scraped_data = self.scraper.scrape()
+                    if self.database.reset_database(sys.argv[3]):
+                        self.database.set_documents(self.scraped_data)
+                        self.data = self.database.get_documents()
+                        self.restarting = True
+                        self.ai = Ai(self.data, output_buffer)
+                        self.restarting = False
+                        output_buffer.put(json.dumps({"type": "success_admin",
+                                                      "request_type": message["type"],
+                                                      "id": message["id"],
+                                                      "response": "Successfully Scraped and Updated."
+                                                      }))
+                    else:
+                        output_buffer.put(json.dumps({"type": "failed_admin",
+                                                      "request_type": message["type"],
+                                                      "id": message["id"],
+                                                      "error": "Failed to reset database named {}.".format(sys.argv[3])
+                                                      }))
+                except BaseException as e:
+                    output_buffer.put(json.dumps({"type": "failed_admin",
+                                                  "request_type": message["type"],
+                                                  "id": message["id"],
+                                                  "error": "Scraping failed due to {}, {}".format(e, os.listdir())
+                                                  }))
+
+            self.scraping = False
             Thread(target=threadFunction).start()
         else:
             output_buffer.put(json.dumps({"type": "failed_admin",
+                                          "request_type": message["type"],
                                           "id": message["id"],
                                           "error": "Already scraping"
                                           }))
@@ -249,22 +271,24 @@ class Main:
                 "passed": ["test1", "test2"],
                 "failed": ["test3"]
             }
-            output_buffer.put({
+            output_buffer.put(json.dumps({
                 "type": "success_admin",
+                "request_type": message["type"],
                 "id": message["id"],
                 "response": {
                     "results": self.testingResult
                 }
-            })
+            }))
 
         try:
             Thread(target=threadFunction).start()
         except BaseException as e:
-            output_buffer.put({
+            output_buffer.put(json.dumps({
                 "type": "failed_admin",
+                "request_type": message["type"],
                 "id": message["id"],
                 "error": "Testing thread failed, system message {}".format(e)
-            })
+            }))
 
     def execute(self, message: {}) -> None:
         """
@@ -281,7 +305,15 @@ class Main:
             "change_ai_max_process_by": self.__change_max_ai_process,
             "system_test": self.__system_test,
         }
-        switcher[message["type"]](message)
+        if message["type"] in switcher.keys():
+            switcher[message["type"]](message)
+        else:
+            output_buffer.put(json.dumps({
+                "type": "failed_admin",
+                "request_type": message["type"],
+                "id": message["id"],
+                "error": "Invalid request"
+            }))
 
 
 def output_message_handler() -> None:

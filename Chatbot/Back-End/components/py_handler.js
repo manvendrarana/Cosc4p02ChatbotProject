@@ -24,7 +24,6 @@ class py_handler {
         };
         this.pyshell = new PythonShell("main.py", options);
         this.pyshell.on("message", (result) => {
-            log(result)
             switch (result["type"]) {
                 case "init": { // gets back message
                     this.initResolve();
@@ -49,17 +48,16 @@ class py_handler {
                     break;
                 }
                 case "failed_admin": {
-                    if (this.admin_request_buffer[result["id"]] !== undefined) {
-                        this.admin_request_buffer[result["id"]]["reject"](result["error"]);
-                        this.admin_request_buffer[result["id"]] = undefined;
+                    if (this.admin_request_buffer[result["id"]] !== undefined && this.admin_request_buffer[result["id"]][result["request_type"]]) {
+                        this.admin_request_buffer[result["id"]][result["request_type"]]["reject"](result["error"]);
+                        this.admin_request_buffer[result["id"]][result["request_type"]] = undefined;
                     }
-
                     break;
                 }
                 case "success_admin": {
-                    if (this.admin_request_buffer[result["id"]] !== undefined) {
-                        this.admin_request_buffer[result["id"]]["resolve"](result["response"]);
-                        this.admin_request_buffer[result["id"]] = undefined;
+                    if (this.admin_request_buffer[result["id"]] !== undefined && this.admin_request_buffer[result["id"]][result["request_type"]]) {
+                        this.admin_request_buffer[result["id"]][result["request_type"]]["resolve"](result["response"]);
+                        this.admin_request_buffer[result["id"]][result["request_type"]] = undefined;
                     }
                     break;
                 }
@@ -69,7 +67,7 @@ class py_handler {
             this.components_updater("scraper", "crashed", message)
             this.components_updater("database", "crashed", message)
             this.components_updater("ai", "crashed", message)
-            console.log(message)
+            //console.log(message)
         }
         this.pyshell.on("pythonError", (message) => {
             crashed(message);
@@ -94,19 +92,18 @@ class py_handler {
 
     request(request_type, input_data, id) {
         return new Promise((resolve, reject) => {
-            this.pyshell.send({"id": id, "type": request_type, "input_data":input_data})
+            this.pyshell.send({"id": id, "type": request_type, "input_data": input_data})
             if (this.admin_request_buffer[id] === undefined) {
                 this.admin_request_buffer[id] = {}
                 this.admin_request_buffer[id][request_type] = {
                     "resolve": resolve, "reject": reject
                 }
             } else {
-                if(this.admin_request_buffer[id][request_type]===undefined){
+                if (this.admin_request_buffer[id][request_type] === undefined) {
                     this.admin_request_buffer[id][request_type] = {
                         "resolve": resolve, "reject": reject
                     }
-                }
-                else{
+                } else {
                     reject({"error": "Already requested!!"})
                 }
 

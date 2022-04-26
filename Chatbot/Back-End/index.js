@@ -3,7 +3,7 @@ require('dotenv').config()
 // const http = require("http");
 // const cors = require("cors");
 // const {Server} = require("socket.io");
-// app.use(cors());
+/// app.use(cors());
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {cors: {origin: "*"}});
@@ -21,13 +21,13 @@ function log(...args) {
 let num_users_connected = 0
 const components_status = {
     "scraper": {
-        "status": "not_initialized", "msg_log": [""]
+        "status": "not_initialized", "msg_log": []
     }, "database": {
-        "status": "not_initialized", "msg_log": [""]
+        "status": "not_initialized", "msg_log": []
     }, "ai": {
-        "status": "not_initialized", "msg_log": [""]
+        "status": "not_initialized", "msg_log": []
     }, "test": {
-        "status": "not_initialized", "msg_log": [""]
+        "status": "not_initialized", "msg_log": []
     }
 }
 
@@ -70,7 +70,6 @@ const {py_handler} = require("./components/py_handler.js");
 const python_handler = new py_handler();
 python_handler.initialize(components_updater, log).then(r => {
     log("py handler ready");
-    log(components_status)
 });
 
 //---------------------- Init PART END -------------------------------//
@@ -84,18 +83,18 @@ let admins = {}
 function handlerAdminRequest(requestType, socket_id, sid, callback, input_data=undefined) {
     if (admins[socket_id] !== undefined) {
         if (admins[socket_id]["sid"] === sid && admins[socket_id]["socket"] !== undefined) {
-            python_handler.request(requestType, input_data, socket_id).then((resolve, reject) => {
+            python_handler.request(requestType, input_data, socket_id).then((resolve) => {
                 if (resolve) {
-                    callback(resolve["response"]);
-                } else {
-                    callback(reject["error"]);
+                    callback({"result": "success", "response": resolve});
                 }
+            }).catch((error)=>{
+                callback({"result": "failed", "response": error});
             });
         } else {
-            callback({"result": "failed", "msg": "Invalid session id please login again."});
+            callback({"result": "failed", "response": "Invalid session id please login again."});
         }
     } else {
-        callback({"result": "failed", "msg": "Session lost please login again."});
+        callback({"result": "failed", "response": "Session lost please login again."});
     }
 }
 
@@ -124,8 +123,9 @@ io.on("connection", (socket) => {
                         components_status: clone_component_status
                     }
                     callback({result: "verified", sid: admins[socket.id].sid, status: components_status});
+                    log("Created session for "+ credentials.username+", session id "+ admins[socket.id]["sid"])
                     notify_single_admin(admins[socket.id]);
-                    log("Created session for ", credentials.username, "session id ", admins[socket.id]["sid"])
+
                 } else {
                     callback({result: "failed", msg: "Invalid Password"});
                 }
@@ -151,7 +151,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("scrape_system", async function (sid, callback) {
-        handlerAdminRequest("scraper_pages", socket.id, sid, callback);
+        handlerAdminRequest("scrape_pages", socket.id, sid, callback);
     })
 
     socket.on("view_scraped_documents", async function (sid, callback) {
@@ -167,25 +167,24 @@ io.on("connection", (socket) => {
     })
 
     socket.on("check_sid", async function (sid, callback) {
-        if (admins[socket.id] !== undefined || admins[socket.id].sid !== sid) {
+        if (admins[socket.id] !== undefined && admins[socket.id].sid !== sid) {
             callback({"result": "failed"})
         } else {
-            callback({"result": "success"})
+            callback({"result": "verified"})
         }
     })
 
     socket.on("logout", async function (user, callback) {
-        if (admins[socket.id] === user.sid) {
-            admins.splice(socket.id);
+         if (admins[socket.id] === undefined) {
+             callback({result: "user already logged out"})
+        }
+        else if (admins[socket.id].sid === user.sid) {
+            delete admins[socket.id]
             log("logged out " + socket.id)
             callback({result: "logged out"});
         } else {
-            if (admins[socket.id] === undefined) {
-                callback({result: "user already logged out"})
-            } else {
-                log(admins[socket.id])
-                callback({result: "WTF"})
-            }
+            log("Possible leaked admin id " + admins[socket.id])
+            callback({result: "WTF"})
         }
     })
 
