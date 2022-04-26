@@ -141,7 +141,7 @@ function Chat({connected_to_server, socket, username}) {
                 </ScrollToBottom>
             </div>
             <div className="chat-footer">
-                <button onClick={clearInput}><FaEraser/></button>
+                <button onClick={clearInput} className="eraseBut"><FaEraser/></button>
                 <textarea type="text"
                           value={currentMessage}
                           placeholder={chatbot_ready ? "Type Inquire Here..." : "Chat-bot is responding"}
@@ -156,7 +156,7 @@ function Chat({connected_to_server, socket, username}) {
                           }}
                           disabled={!chatbot_ready}
                 />
-                <button onClick={sendMessage}><FaChevronCircleRight/></button>
+                <button onClick={sendMessage} className="sendBut"><FaChevronCircleRight/></button>
             </div>
             <div className='new-chat'>
                 <button onClick={saveList}>SAVE CHAT LOG</button>
