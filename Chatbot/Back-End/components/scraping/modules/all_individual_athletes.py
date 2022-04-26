@@ -1,13 +1,12 @@
-from selenium.common.exceptions import TimeoutException
-import pandas as pd
+import re
+
+from scraping.modules.individual_athlete import scrape_individual_athlete
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-import re
 
-from scraping.modules.individual_athlete import scrape_individual_athlete
 
 class AthleteScrape:
 
@@ -51,7 +50,7 @@ class AthleteScrape:
 
             awaitElement = WebDriverWait(self.driver, delay).until(
                 EC.presence_of_element_located((By.CLASS_NAME, 'LM_ResultFlagContainer')))
-            print("Ready!")
+            # print("Ready!")
 
             tblPeople = self.driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblParticipant")
             tblElements = tblPeople.find_elements(By.CLASS_NAME, "DataCell")
@@ -66,7 +65,8 @@ class AthleteScrape:
                     continue
 
         except NoSuchElementException:
-            print("Element not on this athletes page.")
+            pass
+            # print("Element not on this athletes page.")
 
         aName = []
         aContingent = []
@@ -185,10 +185,12 @@ class AthleteScrape:
             aPlacings.append(txPlacings)
 
             url = 'https://cg2019.gems.pro/Result/ShowPerson.aspx?Person_GUID=' + player + '&SetLanguage=en-CA'
-            
-            athleteList.append([url, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition, txPrevSameGames, txPrev, txGoals, txPersonal, 
-            txAwards, txRoleModel, txEvents, txGolds, txSilvers, txBronze, txPlacings])
-            
+
+            athleteList.append(
+                [url, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition,
+                 txPrevSameGames, txPrev, txGoals, txPersonal,
+                 txAwards, txRoleModel, txEvents, txGolds, txSilvers, txBronze, txPlacings])
+
             athleteDict = {
                 dictName: aName,
                 dictContingent: aContingent,
@@ -214,29 +216,41 @@ class AthleteScrape:
                 dictPlacings: aPlacings
             }
 
-        try:
-            table_csv = pd.DataFrame(athleteDict,
-                                    columns=[dictName, dictContingent, dictType, dictSport, dictAge, dictHeight, dictWeight,
-                                            dictClubTeam, dictCoach, dictTeamPosition, dictPrevGames, dictPrevGames,
-                                            dictGoals, dictPersonalBest, dictAwards, dictRoleModel, dictMediaInfo,
-                                            dictEvents, dictGolds, dictSilvers, dictBronzes, dictPlacings
-                                            ])
-            table_csv.to_csv("players.csv", index=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-                            encoding='utf-8-sig')
-            print(table_csv)
-            print("Done.")
-            #return table_csv
-        except:
-            print("Couldn't print CSV")
+        # try:
+        #     table_csv = pd.DataFrame(athleteDict,
+        #                              columns=[dictName, dictContingent, dictType, dictSport, dictAge, dictHeight,
+        #                                       dictWeight,
+        #                                       dictClubTeam, dictCoach, dictTeamPosition, dictPrevGames, dictPrevGames,
+        #                                       dictGoals, dictPersonalBest, dictAwards, dictRoleModel, dictMediaInfo,
+        #                                       dictEvents, dictGolds, dictSilvers, dictBronzes, dictPlacings
+        #                                       ])
+        #     table_csv.to_csv("players.csv",
+        #                      index=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+        #                      encoding='utf-8-sig')
+        #     # print(table_csv)
+        #     # print("Done.")
+        #     # return table_csv
+        # except:
+        #     # print("Couldn't print CSV")
+        #     pass
 
         key = "info_athletes"
-        documents = {}
-        documents[key] = {
-            "url": "https://cg2019.gems.pro/Result/ShowPerson_List.aspx?SetLanguage=en-CA",
-            "title": key.replace("_", " ").capitalize(),
-            "section_title":     "URL, Athlete Name, Athlete Province, Athlete Sport, Athlete Age, Athlete Height, Athlete Weight, Athlete Club, Athlete Coach, Athlete Team Position, Athlete Previous Alias, Athlete Alias, Athlete Goals, Athlete Personal Best, Athlete Awards, Athlete Role Model, Athlete Events, Athlete Gold Medals, Athlete Silver Medals, Athlete Bronze Medals, Athlete Placings",
-            "columns":          ["URL", "Athlete Name", "Athlete Province", "Athlete Sport", "Athlete Age", "Athlete Height", "Athlete Weight", "Athlete Club", "Athlete Coach", "Athlete Team Position", "Athlete Previous Alias", "Athlete Alias", "Athlete Goals", "Athlete Personal Best", "Athlete Awards", "Athlete Role Model", "Athlete Events", "Athlete Gold Medals", "Athlete Silver Medals", "Athlete Bronze Medals", "Athlete Placings"],
-            "values": athleteList
-        }
+        documents = {
+            key: {
+                "url": "https://cg2019.gems.pro/Result/ShowPerson_List.aspx?SetLanguage=en-CA",
+                "title": key.replace("_", " ").capitalize(),
+                "section_title": "URL, Athlete Name, Athlete Province, Athlete Sport, Athlete Age, "
+                                 "Athlete Height, Athlete Weight, Athlete Club, Athlete Coach,"
+                                 " Athlete Team Position, Athlete Previous Alias, Athlete Alias, "
+                                 "Athlete Goals, Athlete Personal Best, Athlete Awards, Athlete Role Model,"
+                                 " Athlete Events, Athlete Gold Medals, Athlete Silver Medals, "
+                                 "Athlete Bronze Medals, Athlete Placings",
+                "columns": ["URL", "Athlete Name", "Athlete Province", "Athlete Sport", "Athlete Age", "Athlete Height",
+                            "Athlete Weight", "Athlete Club", "Athlete Coach", "Athlete Team Position",
+                            "Athlete Previous Alias", "Athlete Alias", "Athlete Goals", "Athlete Personal Best",
+                            "Athlete Awards", "Athlete Role Model", "Athlete Events", "Athlete Gold Medals",
+                            "Athlete Silver Medals", "Athlete Bronze Medals", "Athlete Placings"],
+                "values": athleteList
+            }}
 
         return documents

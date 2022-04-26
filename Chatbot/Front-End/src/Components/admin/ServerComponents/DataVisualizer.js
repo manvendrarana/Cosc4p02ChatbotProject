@@ -1,4 +1,5 @@
 import React from 'react';
+import "./DataVisualizer.scss";
 
 function DataVisualizer({connected_to_server, sid, socket, showError, data, setData}) {
     return (
@@ -25,13 +26,13 @@ function DataVisualizer({connected_to_server, sid, socket, showError, data, setD
                     <div className="table-container">
                         <div className="table-info-header">
                             <div className="url">
-                                {details["url"]}
+                                Url : <br/><a href={details["url"]} target="_blank" rel="noreferrer" >{details["url"]}</a>
                             </div>
                             <div className="title">
-                                {details["title"]}
+                                Title : <br/>{details["title"]}
                             </div>
                             <div className="section_title">
-                                {details["section_title"]}
+                                Section Title :  <br/>{details["section_title"]}
                             </div>
                         </div>
                         <table>

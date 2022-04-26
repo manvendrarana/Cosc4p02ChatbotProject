@@ -94,112 +94,129 @@ def scrape_individual_athlete(GUID, driver):
     try:
         try:
             txtName = driver.find_element(By.ID, 'txtPersonNameFML').text
-            print(txtName)
+            # print(txtName)
         except:
-            print("Couldn't find player name.")
+            pass
+            # print("Couldn't find player name.")
 
         try:
             # province
             txtContingent = driver.find_element(By.ID, 'txtContingent').text
-            print(txtContingent)
+            # print(txtContingent)
         except:
-            print("Couldn't find players contingent.")
+            pass
+            # print("Couldn't find players contingent.")
 
         try:
             # athlete/coach
             txtType = driver.find_element(By.ID, 'txtParticipantTypeName').text
-            print(txtType)
+            # print(txtType)
         except:
-            print("Couldn't find player type.")
+            pass
+            # print("Couldn't find player type.")
 
         try:
             txtSport = driver.find_element(By.ID, 'txtSportName').text
-            print(txtSport)
+            # print(txtSport)
         except:
-            print("Couldn't find players sport.")
+            pass
+            # print("Couldn't find players sport.")
 
         try:
             txtAge = driver.find_element(By.ID, 'txtAge').text
-            print(txtAge)
+            # print(txtAge)
         except:
-            print("Couldn't find players age.")
+            pass
+            # print("Couldn't find players age.")
 
         try:
             txtHeight = driver.find_element(By.ID, 'txtHeight').text
-            print(txtHeight)
+            # print(txtHeight)
         except:
-            print("Couldn't find players height.")
+            pass
+            # print("Couldn't find players height.")
 
         try:
             txtWeight = driver.find_element(By.ID, 'txtWeight').text
-            print(txtWeight)
+            # print(txtWeight)
         except:
-            print("Couldn't find players height.")
+            pass
+            # print("Couldn't find players height.")
 
         try:
             # club or team affiliation
             txtClubTeam = driver.find_element(By.ID, 'txtSchool').text
-            print(txtClubTeam)
+            # print(txtClubTeam)
         except:
-            print("Couldn't find players club name.")
+            pass
+            # print("Couldn't find players club name.")
 
         try:
             # coaches name
             txtCoach = driver.find_element(By.ID, 'txtCoach').text
-            print(txtCoach)
+            # print(txtCoach)
         except:
-            print("Couldn't find players coach.")
+            pass
+            # print("Couldn't find players coach.")
 
         try:
             # forward/ext in hockey
             txtTeamPosition = driver.find_element(By.ID, 'txtTeamPosition').text
-            print(txtTeamPosition)
+            # print(txtTeamPosition)
         except:
-            print("Couldn't find team position")
+            pass
+            # print("Couldn't find team position")
 
         try:
             # idk, 'Abbysoyko_', name they used elsewhere?
             txtPrevSameGames = driver.find_element(By.ID, 'txtPrevSameGames').text
-            print(txtPrevSameGames)
+            # print(txtPrevSameGames)
         except:
-            print("Couldn't find previous same games")
+            pass
+            # print("Couldn't find previous same games")
 
         try:
             # same as above, 'abbysoyko_10'
             txtPrevGames = driver.find_element(By.ID, 'txtPrevGames').text
-            print(txtPrevGames)
+            # print(txtPrevGames)
         except:
-            print("Couldn't find previous games")
+            pass
+            # print("Couldn't find previous games")
 
         try:
             txtGoals = driver.find_element(By.ID, 'txtGamesGoal').text
-            print(txtGoals)
+            # print(txtGoals)
         except:
-            print("Couldn't find athlete goals.")
+            pass
+            # print("Couldn't find athlete goals.")
 
         try:
             txtPersonalBest = driver.find_element(By.ID, 'txtBestResult').text
-            print(txtPersonalBest)
+            # print(txtPersonalBest)
         except:
-            print("Couldn't find athlete personal best")
+            pass
+            # print("Couldn't find athlete personal best")
 
         try:
             txtAwards = driver.find_element(By.ID, 'txtAwards').text
-            print(txtAwards)
+            # print(txtAwards)
         except:
-            print("Couldn't find awards")
+            pass
+            # print("Couldn't find awards")
 
         try:
             txtRoleModel = driver.find_element(By.ID, 'txtRoleModel').text
-            print(txtRoleModel)
+            # print(txtRoleModel)
         except:
-            print("Couldn't find role model")
+            pass
+            # print("Couldn't find role model")
 
         try:
             txtMediaInfo = driver.find_element(By.ID, 'txtMediaInfo').text
-            print(txtMediaInfo)
+            # print(txtMediaInfo)
         except:
-            print("Couldn't find media info")
+            pass
+            # print("Couldn't find media info")
 
         try:
             # all elements at the top of an individual event, descending as
@@ -222,18 +239,21 @@ def scrape_individual_athlete(GUID, driver):
                 # appending to arrays our values we've scraped
                 athleteEvents.append(event)
                 athletePlacings.append(txtAthletePlacing)
-                print(txtAthletePlacing)
+                # print(txtAthletePlacing)
         except:
-            print("Couldn't find events.")
+            pass
+            # print("Couldn't find events.")
 
         try:
             # will be harder, [ year / competition name / placing ]
             accomplishmentTable = driver.find_elements(By.CLASS_NAME, 'Gems_RwdContentContainer')
         except:
-            print("Couldn't find accomplishments.")
+            pass
+        # print("Couldn't find accomplishments.")
 
     except NoSuchElementException:
-        print("Error.")
+        pass
+        # print("Error.")
 
     finally:
 
@@ -246,7 +266,7 @@ def scrape_individual_athlete(GUID, driver):
         athleteBronzesCount = countMedals(athletePlacings, "bronze")
         athleteBronzesCount = athleteBronzesCount + countMedals(athletePlacings, "Bronze")
 
-        print("I counted bronze: " + str(athleteBronzesCount))
+        # print("I counted bronze: " + str(athleteBronzesCount))
         athletePlacingsCount = athleteGoldsCount + athleteSilversCount + athleteBronzesCount
 
         athleteDict = {

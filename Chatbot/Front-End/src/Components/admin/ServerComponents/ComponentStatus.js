@@ -56,16 +56,20 @@ function ComponentStatus({connected_to_server, sid, socket, showError, status_co
     }, [seconds_passed])
 
     useEffect(() => {
-        socket.on("update_components", (details) => {
-            setSecondsPassed(0);
-            setNumConnectedUsers(details["num_users_connected"]);
-            let tempDetails = status_components
-            for (const [type, values] of Object.entries(status_components)) {
-                tempDetails[type]["status"] = details["components_status"][type]["status"]
-                tempDetails[type]["msg_log"].push(...details["components_status"][type]["msg_log"])
-            }
-            setStatusComponents(tempDetails);
-        })
+        try{
+            socket.on("update_components", (details) => {
+                setSecondsPassed(0);
+                setNumConnectedUsers(details["num_users_connected"]);
+                let tempDetails = status_components
+                for (const [type, values] of Object.entries(status_components)) {
+                    tempDetails[type]["status"] = details["components_status"][type]["status"]
+                    tempDetails[type]["msg_log"].push(...details["components_status"][type]["msg_log"])
+                }
+                setStatusComponents(tempDetails);
+            })
+        }catch (error){
+            console.log(error)
+        }
     }, [socket])
 
     useEffect(() => {

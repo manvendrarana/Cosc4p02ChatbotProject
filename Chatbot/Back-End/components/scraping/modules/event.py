@@ -397,11 +397,11 @@ class EventScraper:
 
         documents |= self.sports(main_section="canoe", main_url="not available", urls=canoekayak_urls,
                                  columns=["score"])
-        return documents
+
         documents |= self.sports(main_section="cycling timed", main_url="not available", urls=cycling_timed_urls,
-                                 columns=["time"])
+                                 columns=["scored time"])
         documents |= self.sports(main_section="cycling points", main_url="not available", urls=cycling_timed_urls,
-                                 columns=["time"])
+                                 columns=["scored time"])
         documents |= self.sports(main_section="cycling position", main_url="not available", urls=cycling_pos_urls,
                                  columns=["position"])
         documents |= self.sports(main_section="diving", main_url="not available", urls=diving_urls, columns=["points"])
@@ -417,7 +417,7 @@ class EventScraper:
         documents |= self.sports(main_section="steeplechase", main_url="not available", urls=steeplechase_urls,
                                  columns=["time"])
         documents |= self.sports(main_section="relay", main_url="not available", urls=relay_urls, columns=["time"])
-
+        return documents
         # # JUMPS DO NOT WORK WITH 2017/2019 SITE DATA, WILL WORK WITH 2022 VERSION
         # # self.sports(urls=high_jump_urls, filename="high_jump.csv", columns=["group A", "group B", "length"])
         # # self.sports(urls=long_jump_urls,filename="long_jump.csv",columns=["group A", "group B", "length"])

@@ -22,27 +22,31 @@ def scrape_team(GUID, driver):
 
     try:
         txtEvent = driver.find_element(By.ID, 'txtEventName').text
-        print("Team Event: " + txtEvent)
+        # print("Team Event: " + txtEvent)
     except:
-        print("No team event name.")
+        pass
+        # print("No team event name.")
 
     try:
         txtTeamName = driver.find_element(By.ID, 'txtName').text
-        print("Team Name: " + txtTeamName)
+        # print("Team Name: " + txtTeamName)
     except:
-        print("No team Name.")
+        pass
+        # print("No team Name.")
 
     try:
         txtContingent = driver.find_element(By.ID, 'txtContingent').text
-        print("Team Contingent: " + txtContingent)
+        # print("Team Contingent: " + txtContingent)
     except:
-        print("No team contingent.")
+        pass
+        # print("No team contingent.")
 
     try:
         txtFinalPosition = driver.find_element(By.ID, 'txtFinalPosition').text
-        print("Team Final Position: " + txtFinalPosition)
+        # print("Team Final Position: " + txtFinalPosition)
     except:
-        print("No final position.")
+        pass
+        # print("No final position.")
 
     try:
         tblOdd = driver.find_elements(By.CLASS_NAME, "LM_ListDataRowOdd")
@@ -51,7 +55,8 @@ def scrape_team(GUID, driver):
             # for item in row.find_elements(By.CLASS_NAME, "LM_ListDataCell"):
             # print(item.text)
     except:
-        print("No matches.")
+        pass
+        # print("No matches.")
 
     try:
         tblEven = driver.find_elements(By.CLASS_NAME, "LM_ListDataRowEven")
@@ -60,7 +65,8 @@ def scrape_team(GUID, driver):
         # for item in row.find_elements(By.CLASS_NAME, "LM_ListDataCell"):
         # print(item.text)
     except:
-        print("No even row matches.")
+        pass
+        # print("No even row matches.")
 
     try:
         tblTeamMembers = driver.find_element(By.CLASS_NAME, "LM_ShowTeamMemberTable")
@@ -69,21 +75,23 @@ def scrape_team(GUID, driver):
             teamMembers.append(row.find_elements(By.CSS_SELECTOR, "td")[1].text)
 
     except:
-        print("No team table available.")
+        pass
+        # print("No team table available.")
 
     try:
-        print("Team Matches: ")
+        # print("Team Matches: ")
         joinedTeamMatches = ", ".join(teamMatches)
-        print(joinedTeamMatches)
+        # print(joinedTeamMatches)
         joinedTeamMembers = ", ".join(teamMembers)
-        print("Team Members: ")
-        print(joinedTeamMembers)
+        # print("Team Members: ")
+        # print(joinedTeamMembers)
 
     except:
-        print("Unable to print.")
+        pass
+        # print("Unable to print.")
 
     finally:
-        print("Scraped from: " + GUID)
+        # print("Scraped from: " + GUID)
         teamDict = {
             'Team Name': txtTeamName,
             'Team Members': joinedTeamMembers,

@@ -101,7 +101,6 @@ class DbHelper:
             self.__check_document_info_table()
             table_info_sql = "INSERT INTO document_info VALUES ('%s','%s','%s','%s')"
             for key, document in documents.items():
-                self.__insert(table_info_sql % (key, document["url"], document["title"], document["section_title"]))
                 config = "`id` INT, "
                 indicator = "%s, "
                 indicator += (len(document["columns"])) * "'%s', "
@@ -115,6 +114,7 @@ class DbHelper:
                 for value in document["values"]:
                     self.__insert(insert_sql % tuple([tuple_id] + value))
                     tuple_id += 1
+                self.__insert(table_info_sql % (key, document["url"], document["title"], document["section_title"]))
                 self.__db_connection.commit()
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",

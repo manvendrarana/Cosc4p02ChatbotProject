@@ -1,10 +1,6 @@
-import pandas as pd
-from selenium.webdriver.common.by import By
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+
 
 # DRIVER_PATH = "C:\webdriver\chromedriver.exe"
 # driver = webdriver.Chrome(executable_path=DRIVER_PATH)
@@ -35,7 +31,8 @@ class ProvinceMedalScraper:
                         if data.isnumeric():
                             medalDict[contigent].append(data)
                 except:
-                    print("Datacell unavailable.")
+                    pass
+                    # print("Datacell unavailable.")
 
             provinceName = []
             provinceGold = []
@@ -45,12 +42,12 @@ class ProvinceMedalScraper:
 
             medArray = []
             for province, values in medalDict.items():
-                print("Province Name: " + province)
-                print("Gold Medals: " + values[0])
-                print("Silver Medals: " + values[1])
-                print("Bronze Medals: " + values[2])
-                print("Total Medals: " + values[3])
-                print("\n")
+                # print("Province Name: " + province)
+                # print("Gold Medals: " + values[0])
+                # print("Silver Medals: " + values[1])
+                # print("Bronze Medals: " + values[2])
+                # print("Total Medals: " + values[3])
+                # print("\n")
 
                 # medalTuple = (province, values[0], values[1], values[2], values[3])
                 medArray.append([province, values[0], values[1], values[2], values[3]])
@@ -68,37 +65,41 @@ class ProvinceMedalScraper:
 
 
         except:
-            print("Table unavailable.")
+            # print("Table unavailable.")
+            pass
         # driver.close()
 
-        newDict = {
-            'Province Name': provinceName,
-            'Province Gold Medals': provinceGold,
-            'Province Silver Medals': provinceSilver,
-            'Province Bronze Medals': provinceBronze,
-            "Province Total Medals": provinceTotal,
-        }
+        # newDict = {
+        #     'Province Name': provinceName,
+        #     'Province Gold Medals': provinceGold,
+        #     'Province Silver Medals': provinceSilver,
+        #     'Province Bronze Medals': provinceBronze,
+        #     "Province Total Medals": provinceTotal,
+        # }
 
-        try:
-            table_csv = pd.DataFrame(newDict, columns=['Province Name', 'Province Gold Medals', 'Province Silver Medals',
-                                                    'Province Bronze Medals', "Province Total Medals"])
-            table_csv.to_csv("provincemedals.csv", index=[0, 1, 2, 3, 4], encoding='utf-8-sig')
-            print(table_csv)
-            print("Done.")
-            #return table_csv
-        except:
-            print("Couldn't make CSV.")
-        
+        # try:
+        #     table_csv = pd.DataFrame(newDict,
+        #                              columns=['Province Name', 'Province Gold Medals', 'Province Silver Medals',
+        #                                       'Province Bronze Medals', "Province Total Medals"])
+        #     table_csv.to_csv("provincemedals.csv", index=[0, 1, 2, 3, 4], encoding='utf-8-sig')
+        #     print(table_csv)
+        #     print("Done.")
+        #     # return table_csv
+        # except:
+        #     print("Couldn't make CSV.")
+
         key = "info_province_medals"
-        documents = {}
-        documents[key] = {
-            "url": "https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA",
-            "title": key.replace("_", " ").capitalize(),
-            "section_title":     "Province Name, Province Gold Medals, Province Silver Medals, Province Bronze Medals, Province Total Medals",
-            "columns":          ["Province Name", "Province Gold Medals", "Province Silver Medals", "Province Bronze Medals", "Province Total Medals"],
-            "values": medArray
-        }
-        print(documents)
+        documents = {
+            key: {
+                "url": "https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA",
+                "title": key.replace("_", " ").capitalize(),
+                "section_title": "Province Name, Province Gold Medals, Province Silver Medals, Province Bronze Medals, "
+                                 "Province Total Medals",
+                "columns": ["Province Name", "Province Gold Medals", "Province Silver Medals", "Province Bronze Medals",
+                            "Province Total Medals"],
+                "values": medArray
+            }}
+        # print(documents)
         return documents
 
     '''
