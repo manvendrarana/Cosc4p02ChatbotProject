@@ -184,9 +184,11 @@ class AthleteScrape:
             txPlacings = (txPlacings[:lng] + '..') if len(txPlacings) > lng else txPlacings
             aPlacings.append(txPlacings)
 
-            athleteList.append([player, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition, txPrevSameGames, txPrev, txGoals, txPersonal, 
-            txAwards, txRoleModel, txMediaInfo, txEvents, txGolds, txSilvers, txBronze, txPlacings])
-
+            url = 'https://cg2019.gems.pro/Result/ShowPerson.aspx?Person_GUID=' + player + '&SetLanguage=en-CA'
+            
+            athleteList.append([url, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition, txPrevSameGames, txPrev, txGoals, txPersonal, 
+            txAwards, txRoleModel, txEvents, txGolds, txSilvers, txBronze, txPlacings])
+            
             athleteDict = {
                 dictName: aName,
                 dictContingent: aContingent,
@@ -232,8 +234,8 @@ class AthleteScrape:
         documents[key] = {
             "url": "https://cg2019.gems.pro/Result/ShowPerson_List.aspx?SetLanguage=en-CA",
             "title": key.replace("_", " ").capitalize(),
-            "section_title":     "URL, Athlete Name, Athlete Province, Athlete Type, Athlete Sport, Athlete Age, Athlete Height, Athlete Weight, Athlete Club, Athlete Coach, Athlete Team Position, Athlete Previous Alias, Athlete Alias, Athlete Goals, Athlete Personal Best, Athlete Awards, Athlete Role Model, Athlete Events, Athlete Gold Medals, Athlete Silver Medals, Athlete Bronze Medals, Athlete Placings",
-            "columns":          ["URL", "Athlete Name", "Athlete Province", "Athlete Type", "Athlete Sport", "Athlete Age", "Athlete Height", "Athlete Weight", "Athlete Club", "Athlete Coach", "Athlete Team Position", "Athlete Previous Alias", "Athlete Alias", "Athlete Goals", "Athlete Personal Best", "Athlete Awards", "Athlete Role Model", "Athlete Events", "Athlete Gold Medals", "Athlete Silver Medals", "Athlete Bronze Medals", "Athlete Placings"],
+            "section_title":     "URL, Athlete Name, Athlete Province, Athlete Sport, Athlete Age, Athlete Height, Athlete Weight, Athlete Club, Athlete Coach, Athlete Team Position, Athlete Previous Alias, Athlete Alias, Athlete Goals, Athlete Personal Best, Athlete Awards, Athlete Role Model, Athlete Events, Athlete Gold Medals, Athlete Silver Medals, Athlete Bronze Medals, Athlete Placings",
+            "columns":          ["URL", "Athlete Name", "Athlete Province", "Athlete Sport", "Athlete Age", "Athlete Height", "Athlete Weight", "Athlete Club", "Athlete Coach", "Athlete Team Position", "Athlete Previous Alias", "Athlete Alias", "Athlete Goals", "Athlete Personal Best", "Athlete Awards", "Athlete Role Model", "Athlete Events", "Athlete Gold Medals", "Athlete Silver Medals", "Athlete Bronze Medals", "Athlete Placings"],
             "values": athleteList
         }
 
