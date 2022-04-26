@@ -380,7 +380,7 @@ a {
         position: absolute;
         top: 58px;
         width: 375px;
-        transform: translateX(-32.5vw);
+        transform: translateX(-25vw);
         color: black;
         background-color: white;
         border: var(--boarder);
@@ -410,7 +410,7 @@ a {
         position: absolute;
         top: var(--nav-size);
         width: 355px;
-        transform: translateX(-42.5vw);
+        transform: translateX(-35vw);
         background-color: var(--bg-accent);
         border: var(--boarder);
         border-radius: var(--boarder-radius);
