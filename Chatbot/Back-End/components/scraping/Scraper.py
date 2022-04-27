@@ -5,6 +5,7 @@ from scraping.modules.all_teams import TeamScraper
 from scraping.modules.province_medals import ProvinceMedalScraper
 from scraping.modules.sport_dates import SportsDateScraper
 from scraping.modules.all_individual_athletes import AthleteScrape
+from scraping.modules.misc_data import MiscData
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 
@@ -58,6 +59,7 @@ class Scraper:
                                            "update": "busy",
                                            "update_message": "Events Scraped"
                                            }))
+        documents |= MiscData().scrape()
         self.driver.close()
         self.output_buffer.put(json.dumps({"type": "update",
                                            "component": "scraper",

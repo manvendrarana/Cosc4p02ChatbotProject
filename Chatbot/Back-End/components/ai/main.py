@@ -7,6 +7,9 @@ from haystack.nodes import TableReader
 from haystack.nodes.retriever import TableTextRetriever
 
 
+# from components.database.db_helper import DbHelper
+# import multiprocessing as mp
+
 class Ai:
     def __printError(self, admin_req_id, error):
         if admin_req_id is not None:
@@ -109,6 +112,7 @@ class Ai:
                     if query_msg is not None:
                         retrieved_tables = self.retriever.retrieve(query, top_k=5)
                         # Get highest scored table
+                        retrieved_tables = [table for table in retrieved_tables if table.score >= 0.85]
                         if len(retrieved_tables) > 0:
                             # print(retrieved_tables[0].id)
                             table_doc = self.document_store.get_document_by_id(retrieved_tables[0].id)
@@ -117,7 +121,16 @@ class Ai:
                                       "id": query_msg_id,
                                       "url": table_doc.meta["url"],
                                       "title": table_doc.meta["title"],
-                                      "answer": " ".join([obj.answer for obj in prediction["answers"]])
+                                      "answer": " ".join(
+                                          [obj.answer for obj in prediction["answers"]])
+                                      }
+                            output_buffer.put(json.dumps(output))
+                        else:
+                            output = {"type": "ai_query",
+                                      "id": query_msg_id,
+                                      "url": "N/A",
+                                      "title": "N/A",
+                                      "answer": "Unfortunately the ai is not trained to respond for this question"
                                       }
                             output_buffer.put(json.dumps(output))
                 except BaseException as e:
@@ -135,3 +148,20 @@ class Ai:
         except BaseException as e:
             self.__printError(admin_req_id, "Ai did not process the query, system message {}".format(e))
 
+# output_buffer = mp.Queue()
+# database = DbHelper("root", "e#uoo!5YPZMQ3G", output_buffer)  # sql username and password
+# database.set_database("testDb")  # database name
+# query_buffer = mp.Queue()
+# max_ai_processes = 1  # max num of ai processes
+# data = database.get_documents()
+# ai = Ai(data, output_buffer)
+# ai.ask(("123", "Where do i go?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "Who are you?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "How do i get there?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "How can i find the bus?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "tickets?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "Where can i get the tickets?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "Latest news on the canada games?"), len(ai) >= max_ai_processes)
+# ai.ask(("123", "What was the score of ON in K 4 1000m Canoe event?"), len(ai) >= max_ai_processes)
+# while not output_buffer.empty():
+#     print(output_buffer.get())
