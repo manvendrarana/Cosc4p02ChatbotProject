@@ -45,6 +45,8 @@ class AthleteScrape:
 
         try:
             self.driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_txtFirstName").send_keys("av")
+            # use only a for 250 athletes,
+            # comment the line to scrape all athletes(Warning your system might run out memory)
 
             btnFind = self.driver.find_element(By.ID, 'ctl00_ContentPlaceHolder1_btnFind').click()
 
@@ -68,188 +70,80 @@ class AthleteScrape:
             pass
             # print("Element not on this athletes page.")
 
-        aName = []
-        aContingent = []
-        aType = []
-        aSport = []
-        aAge = []
-        aHeight = []
-        aWeight = []
-        aClubTeam = []
-        aCoach = []
-        aTeamPosition = []
-        aPrevSameGames = []
-        aPrevGames = []
-        aGoals = []
-        aPersonalBest = []
-        aAwards = []
-        aRoleModel = []
-        aMediaInfo = []
-        aEvents = []
-        aGolds = []
-        aSilvers = []
-        aBronzes = []
-        aPlacings = []
+        def filter(value, max_char):
+            value = re.sub('[^A-Za-z0-9 ]+', '', value)
+            value = value.strip()
+            if len(value) > 0:
+                return (value[:max_char] + '..') if len(value) > max_char else value
+            else:
+                return "Not Available"
 
         athleteList = []
         for player in playerGUIDList:
             playerDict = scrape_individual_athlete(player, self.driver)
             lng = 405
 
-            txName = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictName)))
-            txName = (txName[:lng] + '..') if len(txName) > lng else txName
-            aName.append(txName)
-
-            txContingent = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictContingent)))
-            txContingent = (txContingent[:lng] + '..') if len(txContingent) > lng else txContingent
-            aContingent.append(txContingent)
-
-            txType = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictType)))
-            txType = (txType[:lng] + '..') if len(txType) > lng else txType
-            aType.append(txType)
-
-            txSport = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictSport)))
-            txSport = (txSport[:lng] + '..') if len(txSport) > lng else txSport
-            aSport.append(txSport)
-
-            txAge = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictAge)))
-            txAge = (txAge[:lng] + '..') if len(txAge) > lng else txAge
-            aAge.append(txAge)
-
-            txHeight = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictHeight)))
-            txHeight = (txHeight[:lng] + '..') if len(txHeight) > lng else txHeight
-            aHeight.append(txHeight)
-
-            txWeight = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictWeight)))
-            txWeight = (txWeight[:lng] + '..') if len(txWeight) > lng else txWeight
-            aWeight.append(txWeight)
-
-            txClub = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictClubTeam)))
-            txClub = (txClub[:lng] + '..') if len(txClub) > lng else txClub
-            aClubTeam.append(txClub)
-
-            txCoach = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictCoach)))
-            txCoach = (txCoach[:lng] + '..') if len(txCoach) > lng else txCoach
-            aCoach.append(txCoach)
-
-            txPosition = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictTeamPosition)))
-            txPosition = (txPosition[:lng] + '..') if len(txPosition) > lng else txPosition
-            aTeamPosition.append(txPosition)
-
-            txPrevSameGames = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictPrevSameGames)))
-            txPrevSameGames = (txPrevSameGames[:lng] + '..') if len(txPrevSameGames) > lng else txPrevSameGames
-            aPrevSameGames.append(txPrevSameGames)
-
-            txPrev = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictPrevGames)))
-            txPrev = (txPrev[:lng] + '..') if len(txPrev) > lng else txPrev
-            aPrevGames.append(txPrev)
-
-            txGoals = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictGoals)))
-            txGoals = (txGoals[:lng] + '..') if len(txGoals) > lng else txGoals
-            aGoals.append(txGoals)
-
-            txPersonal = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictPersonalBest)))
-            txPersonal = (txPersonal[:lng] + '..') if len(txPersonal) > lng else txPersonal
-            aPersonalBest.append(txPersonal)
-
-            txAwards = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictAwards)))
-            txAwards = (txAwards[:lng] + '..') if len(txAwards) > lng else txAwards
-            aAwards.append(txAwards)
-
-            txRoleModel = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictRoleModel)))
-            txRoleModel = (txRoleModel[:lng] + '..') if len(txRoleModel) > lng else txRoleModel
-            aRoleModel.append(txRoleModel)
-
-            txMediaInfo = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictMediaInfo)))
-            txMediaInfo = (txMediaInfo[:lng] + '..') if len(txMediaInfo) > lng else txMediaInfo
-            aMediaInfo.append(txMediaInfo)
-
-            txEvents = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictEvents)))
-            txEvents = (txEvents[:lng] + '..') if len(txEvents) > lng else txEvents
-            aEvents.append(txEvents)
-
-            txGolds = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictGolds)))
-            txGolds = (txGolds[:lng] + '..') if len(txGolds) > lng else txGolds
-            aGolds.append(playerDict.get(dictGolds))
-
-            txSilvers = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictSilvers)))
-            txSilvers = (txSilvers[:lng] + '..') if len(txSilvers) > lng else txSilvers
-            aSilvers.append(txSilvers)
-
-            txBronze = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictBronzes)))
-            txBronze = (txBronze[:lng] + '..') if len(txBronze) > lng else txBronze
-            aBronzes.append(txBronze)
-
-            txPlacings = re.sub('[^A-Za-z0-9 ]+', '', str(playerDict.get(dictPlacings)))
-            txPlacings = (txPlacings[:lng] + '..') if len(txPlacings) > lng else txPlacings
-            aPlacings.append(txPlacings)
+            txName = filter(str(playerDict.get(dictName)), lng)
+            txContingent = filter(str(playerDict.get(dictContingent)), lng)
+            txType = filter(str(playerDict.get(dictType)), lng)
+            txSport = filter(str(playerDict.get(dictSport)), lng)
+            txAge = filter(str(playerDict.get(dictAge)), lng)
+            txHeight = filter(str(playerDict.get(dictHeight)), lng)
+            txWeight = filter(str(playerDict.get(dictWeight)), lng)
+            txClub = filter(str(playerDict.get(dictClubTeam)), lng)
+            txCoach = filter(str(playerDict.get(dictCoach)), lng)
+            txPosition = filter(str(playerDict.get(dictTeamPosition)), lng)
+            txPrevSameGames = filter(str(playerDict.get(dictPrevSameGames)), lng)
+            txPrev = filter(str(playerDict.get(dictPrevGames)), lng)
+            txGoals = filter(str(playerDict.get(dictGoals)), lng)
+            txPersonal = filter(str(playerDict.get(dictPersonalBest)), lng)
+            txAwards = filter(str(playerDict.get(dictAwards)), lng)
+            txRoleModel = filter(str(playerDict.get(dictRoleModel)), lng)
+            txMediaInfo = filter(str(playerDict.get(dictMediaInfo)), lng)
+            txEvents = filter(str(playerDict.get(dictEvents)), lng)
+            txGolds = filter(str(playerDict.get(dictGolds)), lng)
+            txSilvers = filter(str(playerDict.get(dictSilvers)), lng)
+            txBronze = filter(str(playerDict.get(dictBronzes)), lng)
+            txPlacings = filter(str(playerDict.get(dictPlacings)), lng)
 
             url = 'https://cg2019.gems.pro/Result/ShowPerson.aspx?Person_GUID=' + player + '&SetLanguage=en-CA'
-
             athleteList.append(
-                [url, txName, txContingent, txSport, txAge, txHeight, txWeight, txClub, txCoach, txPosition,
-                 txPrevSameGames, txPrev, txGoals, txPersonal,
-                 txAwards, txRoleModel, txEvents, txGolds, txSilvers, txBronze, txPlacings])
+                [url,
+                 txName,
+                 txName + "''s contingent is " + txContingent,
+                 txName + " participates in " + txSport,
+                 txName + "''s age is " + txAge,
+                 txName + "''s height is " + txHeight,
+                 txName + "''s weight is " + txWeight,
+                 txName + " belongs to " + txClub,
+                 txName + "''s coach is " + txCoach,
+                 txName + "''s position is " + txPosition,
+                 txName + "''s previous aliases was " + txPrevSameGames,
+                 txName + "''s alias is " + txPrev,
+                 txName + "''s goals are " + txGoals,
+                 txName + "''s personal best is " + txPersonal,
+                 "Awards earned by " + txName + " are " + txAwards,
+                 txName + "''s role model is " + txRoleModel,
+                 txName + " participates in " + txEvents + " events ",
+                 txName + " earned " + txGolds + " Gold medals",
+                 txName + " earned " + txSilvers + " Silver medals",
+                 txName + " earned " + txBronze + " Bronze medals",
+                 txName + " had " + txPlacings + " placings."]
+            )
 
-            athleteDict = {
-                dictName: aName,
-                dictContingent: aContingent,
-                dictType: aType,
-                dictSport: aSport,
-                dictAge: aAge,
-                dictHeight: aHeight,
-                dictWeight: aWeight,
-                dictClubTeam: aClubTeam,
-                dictCoach: aCoach,
-                dictTeamPosition: aTeamPosition,
-                dictPrevSameGames: aPrevSameGames,
-                dictPrevGames: aPrevGames,
-                dictGoals: aGoals,
-                dictPersonalBest: aPersonalBest,
-                dictAwards: aAwards,
-                dictRoleModel: aRoleModel,
-                dictMediaInfo: aMediaInfo,
-                dictEvents: aEvents,
-                dictGolds: aGolds,
-                dictSilvers: aSilvers,
-                dictBronzes: aBronzes,
-                dictPlacings: aPlacings
-            }
-
-        # try:
-        #     table_csv = pd.DataFrame(athleteDict,
-        #                              columns=[dictName, dictContingent, dictType, dictSport, dictAge, dictHeight,
-        #                                       dictWeight,
-        #                                       dictClubTeam, dictCoach, dictTeamPosition, dictPrevGames, dictPrevGames,
-        #                                       dictGoals, dictPersonalBest, dictAwards, dictRoleModel, dictMediaInfo,
-        #                                       dictEvents, dictGolds, dictSilvers, dictBronzes, dictPlacings
-        #                                       ])
-        #     table_csv.to_csv("players.csv",
-        #                      index=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-        #                      encoding='utf-8-sig')
-        #     # print(table_csv)
-        #     # print("Done.")
-        #     # return table_csv
-        # except:
-        #     # print("Couldn't print CSV")
-        #     pass
-
-        key = "info_athletes"
+        key = "Athletes_Info"
         documents = {
             key: {
                 "url": "https://cg2019.gems.pro/Result/ShowPerson_List.aspx?SetLanguage=en-CA",
                 "title": key.replace("_", " ").capitalize(),
-                "section_title": "URL, Athlete Name, Athlete Province, Athlete Sport, Athlete Age, "
-                                 "Athlete Height, Athlete Weight, Athlete Club, Athlete Coach,"
-                                 " Athlete Team Position, Athlete Previous Alias, Athlete Alias, "
-                                 "Athlete Goals, Athlete Personal Best, Athlete Awards, Athlete Role Model,"
-                                 " Athlete Events, Athlete Gold Medals, Athlete Silver Medals, "
-                                 "Athlete Bronze Medals, Athlete Placings",
-                "columns": ["URL", "Athlete Name", "Athlete Province", "Athlete Sport", "Athlete Age", "Athlete Height",
-                            "Athlete Weight", "Athlete Club", "Athlete Coach", "Athlete Team Position",
-                            "Athlete Previous Alias", "Athlete Alias", "Athlete Goals", "Athlete Personal Best",
-                            "Athlete Awards", "Athlete Role Model", "Athlete Events", "Athlete Gold Medals",
-                            "Athlete Silver Medals", "Athlete Bronze Medals", "Athlete Placings"],
+                "section_title": "Information on Athlete URL, Name, Province, Sport, Age, Height, Weight, Club, "
+                                 "Coach, Team Position, Previous Alias, Alias, Goals, Personal Best, Awards, "
+                                 "Role Model, Events, Gold Medals, Silver Medals, Bronze Medals, Placings",
+                "columns": ["URL", "Name", "Province", "Sport", "Age", "Height",
+                            "Weight", "Club", "Coach", "Team Position",
+                            "Previous Alias", "Alias", "Goals", "Personal Best",
+                            "Awards", "Role Model", "Events", "Gold Medals",
+                            "Silver Medals", "Bronze Medals", "Placings"],
                 "values": athleteList
             }}
 

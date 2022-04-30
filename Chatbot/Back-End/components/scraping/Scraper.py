@@ -11,12 +11,25 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 
 
 class Scraper:
+    """
+    This is the Main class for Scraper.
+    It consolidates the documents returned from submodules and returns them.
+    """
     def __init__(self, output_buffer):
+        """
+        This method initializes the scraper service.
+        :param output_buffer: mp([])
+        """
         self.driver = None
         self.service = ChromeService(executable_path="./components/scraping/chromedriver.exe")#./components/scraping/
         self.output_buffer = output_buffer
 
     def scrape(self):
+        """
+        This runs all the submodules and returns the consolidated documents in db Format.
+        Uncomment all document calls to scrape the whole system.
+        :return: [{}]
+        """
         self.driver = webdriver.Chrome(service=self.service)
         documents = {}
         self.output_buffer.put(json.dumps({"type": "update",
@@ -25,13 +38,13 @@ class Scraper:
                                            "update_message": "Starting Scraping"
                                            }))
         # --- All Scraping calls ----
-        # documents |= AthleteScrape(self.driver).scrape()
-        # self.output_buffer.put(json.dumps({"type": "update",
-        #                                    "component": "scraper",
-        #                                    "update": "busy",
-        #                                    "update_message": "Athletes Scraped"
-        #                                    }))
-        #
+        documents |= AthleteScrape(self.driver).scrape()
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "scraper",
+                                           "update": "busy",
+                                           "update_message": "Athletes Scraped"
+                                           }))
+
         # documents |= SportsDateScraper(self.driver).scrape()
         # self.output_buffer.put(json.dumps({"type": "update",
         #                                    "component": "scraper",
@@ -39,13 +52,13 @@ class Scraper:
         #                                    "update_message": "Sports Dates Scraped"
         #                                    }))
         #
-        # documents |= ProvinceMedalScraper(self.driver).scrape()
-        # self.output_buffer.put(json.dumps({"type": "update",
-        #                                    "component": "scraper",
-        #                                    "update": "busy",
-        #                                    "update_message": "Province Scraped"
-        #                                    }))
-        #
+        documents |= ProvinceMedalScraper(self.driver).scrape()
+        self.output_buffer.put(json.dumps({"type": "update",
+                                           "component": "scraper",
+                                           "update": "busy",
+                                           "update_message": "Province Scraped"
+                                           }))
+
         # documents |= TeamScraper(self.driver).scrape()
         # self.output_buffer.put(json.dumps({"type": "update",
         #                                    "component": "scraper",

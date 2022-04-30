@@ -5,8 +5,16 @@ import pandas as pd
 
 
 class DbHelper:
+    """
+    This class loads documents to mysql db and returns documents upon request.
+    It breaks down each document into table and tuple in document_info table.
+    The document_info table stores url, title and information stored in the table.
+    """
 
     def __printError(self, admin_req_id, error):
+        """
+        This method puts the error in the output buffer.
+        """
         if admin_req_id is not None:
             self.output_buffer.put(json.dumps({"type": "failed_admin",
                                                "id": admin_req_id,
@@ -18,6 +26,9 @@ class DbHelper:
                                                "update_message": error}))
 
     def __create_table(self, table_name, config):
+        """
+        This method creates a new table sql executes it on the db cursor.
+        """
         self.output_buffer.put(json.dumps({"type": "update",
                                            "component": "database",
                                            "update": "busy",
@@ -27,14 +38,23 @@ class DbHelper:
         if self.__db_connection is not None:
             self.__db_cursor.execute(sql_statement)
 
-    def __insert(self, sql):
+    def __run_sql(self, sql):
+        """
+        This method runs a sql query.
+        """
         self.__db_cursor.execute(sql)
 
     def __check_document_info_table(self):
+        """
+           This creates document info table if it doesn't exists.
+        """
         self.__create_table("document_info", "`key` VARCHAR(255), `url` VARCHAR(255), `title` VARCHAR(255), "
                                              "`section_title` VARCHAR(1900), PRIMARY KEY(`key`)")
 
     def __init__(self, username, password, output_buffer, host="127.0.0.1", msg_id=None):
+        """
+        This method initializes the cursor on the root level.
+        """
         try:
             self.output_buffer = output_buffer
             self.output_buffer.put(json.dumps({"type": "update",
@@ -57,7 +77,10 @@ class DbHelper:
         except BaseException as e:
             self.__printError(msg_id, 'Database not initialized, \n system message: {}'.format(e))
 
-    def reset_database(self, database_name, admin_req_id=None) -> bool:
+    def reset_database(self, database_name, admin_req_id=None):
+        """
+        This method removes all the tables stored in the given database.
+        """
         try:
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",
@@ -67,31 +90,38 @@ class DbHelper:
             self.__db_cursor.execute("SHOW Tables")
             list_of_tables = self.__db_cursor.fetchall()
             for table in list_of_tables:
-                self.__db_cursor.execute("DROP TABLE IF EXISTS "+table[0])
+                self.__db_cursor.execute("DROP TABLE IF EXISTS " + table[0])
             self.set_database(database_name, admin_req_id)
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",
                                                "update": "working",
                                                "update_message": "Documents db reset"
                                                }))
-            return True
         except BaseException as e:
             self.__printError(admin_req_id, 'Failed to reset {}, \n system message: {}'.format(database_name, e))
-            return False
 
-    def set_database(self, database_name, admin_req_id=None) -> bool:
+    def set_database(self, database_name, admin_req_id=None):
+        """
+        This method set the db cursor to a given database name.
+        :param database_name: str
+        :param admin_req_id: str
+        """
         try:
             self.__db_connection = mysql.connector.connect(user=self.__user, password=self.__password, host=self.__host,
                                                            database=database_name)
             self.__db_cursor = self.__db_connection.cursor()
-            return True
         except BaseException as e:
             self.__printError(admin_req_id, 'Failed to reset {}, \n system message: {}'.format(database_name, e))
             self.__db_connection = None
             self.__db_cursor = None
-            return False
 
-    def set_documents(self, documents, admin_req_id=None) -> bool:
+    def set_documents(self, documents, admin_req_id=None):
+        """
+        This method creates tables and adds additional info to document table.
+        :param documents: [{}]
+        :param admin_req_id: str
+        :return:
+        """
         try:
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",
@@ -112,21 +142,24 @@ class DbHelper:
                 tuple_id = 0
                 insert_sql = "INSERT INTO " + key + " VALUES (" + indicator + ")"
                 for value in document["values"]:
-                    self.__insert(insert_sql % tuple([tuple_id] + value))
+                    self.__run_sql(insert_sql % tuple([tuple_id] + value))
                     tuple_id += 1
-                self.__insert(table_info_sql % (key, document["url"], document["title"], document["section_title"]))
+                self.__run_sql(table_info_sql % (key, document["url"], document["title"], document["section_title"]))
                 self.__db_connection.commit()
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",
                                                "update": "working",
                                                "update_message": "All documents loaded"
                                                }))
-            return True
         except BaseException as e:
             self.__printError(admin_req_id, 'Failed to set documents \n system message: {}'.format(e))
-            return False
 
     def get_documents(self, admin_req_id=None) -> {}:
+        """
+        This method reads the sql tables and returns the documents in Ai's data input format.
+        :param admin_req_id: str
+        :return: [{}]
+        """
         try:
             self.output_buffer.put(json.dumps({"type": "update",
                                                "component": "database",

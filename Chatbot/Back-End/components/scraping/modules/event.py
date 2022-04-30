@@ -70,19 +70,20 @@ class EventScraper:
         except:
             return []
 
-    def sports(self, main_section, main_url, urls, columns):
-        """ Scrapes the Sports type events that don't conform to the 'Team' type, and puts all data inside a DataFrame, and exports to a CSV file
+    def sports(self, main_section, main_url, urls, column):
+        """ Scrapes the Sports type events that don't conform to the 'Team' type, and puts all data inside a DataFrame,
+        and exports to a CSV file
 
         Keyword Arguments:
         urls      -- list of URLs to scrape
         filename  -- name of CSV to create
-        columns   -- extra columns associated with the particular sport (score is 'Runs' in Baseball but 'Points' in Basketball for example.)
+        columns   -- extra columns associated with the particular sport (score is 'Runs' in Baseball but 'Points' in
+        Basketball for example.)
         """
         documents = {}
         main_events = []
         try:
             for main_event_name, url in urls:
-                main_events.append([main_event_name])
                 self.driver.get(url)
                 result = []
                 table_headers = self.driver.find_elements(By.CLASS_NAME, "LM_CollapsibleSectionName")[
@@ -111,32 +112,42 @@ class EventScraper:
                                 if len(sub_values) == 6:
                                     sub_values.insert(4, "N/A")
                                 values = sub_values
-                                values[0] += " " + self.clean_key(
-                                    main_event_name.replace("-", "_").replace(" ", "_") + "_" +
-                                    main_section.replace(" ", "_")).replace("_", " ")
+                                # values[0] += " " + self.clean_key(main_event_name.replace("-", " ").replace("_", " "))
                                 # values[1] = values[1].replace("\xa0", "")
                                 values[5] = values[5].replace("\xa0", "")
                                 result.append(values)
                             event_details = []
                 key = self.clean_key(
                     main_section.replace(" ", "_") + "_" + main_event_name.replace("-", "_").replace(" ", "_"))
-
+                main_events.append(
+                    [self.clean_key(main_event_name.replace("-", "_").replace(" ", "_")).replace("_", " ")])
+                results = []
+                for raw_tuple in result:
+                    fixed_tuple = [raw_tuple[0],
+                                   raw_tuple[0] + " takes place on " + raw_tuple[1] + raw_tuple[2],
+                                   raw_tuple[0] + " takes place at " + raw_tuple[3],
+                                   raw_tuple[4],
+                                   raw_tuple[5] + " participated in " + raw_tuple[0] + " event.",
+                                   raw_tuple[5] + " " + column + " " + raw_tuple[6] + " for " + raw_tuple[0] + " event."
+                                   ]
+                    results.append(fixed_tuple)
                 documents[key] = {
                     "url": url,
                     "title": key.replace("_", " ").capitalize(),
-                    "section_title": "Information of events ,location, time, date, participants, " + " ,".join(
-                        columns) + " for " + main_event_name.replace("-", " ") + main_section.replace("_", " "),
-                    "columns": ['event name', "date", "time", "location", "number", "name"] + columns,
-                    "values": result
+                    "section_title": "Information of " + key.replace("_", " ") + " events, time and date, location, "
+                                                                                 "participants, participant " +
+                                     column,
+                    "columns": ['event name', "date and time", "location", "number", "name"] + [column],
+                    "values": results
                 }
-            if len(documents) > 0:
-                documents["list_events_" + main_section.replace(" ", "_")] = {
-                    "url": main_url,
-                    "title": main_section.replace(" ", "_"),
-                    "section_title": "Information of all the events in " + main_section,
-                    "columns": ["Events"],
-                    "values": main_events
-                }
+            key = self.clean_key(main_section.replace(" ", "_"))
+            documents[key] = {
+                "url": main_url,
+                "title": key.replace("_", " ").capitalize(),
+                "section_title": "List of all events in " + key.replace("_", " "),
+                "columns": ["list of events"],
+                "values": main_events
+            }
             return documents
         except:
             return {}
@@ -147,7 +158,8 @@ class EventScraper:
         Keyword Arguments:
         urls      -- list of URLs to scrape
         filename  -- name of CSV to create
-        columns   -- extra columns associated with the particular team sport (score is 'Runs' in Baseball but 'Points' in Basketball for example.)
+        columns   -- extra columns associated with the particular team sport (score is 'Runs' in Baseball but 'Points'
+        in Basketball for example.)
         """
         try:
             documents = {}
@@ -396,27 +408,27 @@ class EventScraper:
         heptathlon_urls = athletics_urls[53:54]
 
         documents |= self.sports(main_section="canoe", main_url="not available", urls=canoekayak_urls,
-                                 columns=["score"])
+                                 column="score")
         return documents
         documents |= self.sports(main_section="cycling timed", main_url="not available", urls=cycling_timed_urls,
-                                 columns=["scored time"])
+                                 column="scored time")
         documents |= self.sports(main_section="cycling points", main_url="not available", urls=cycling_timed_urls,
-                                 columns=["scored time"])
+                                 column="scored time")
         documents |= self.sports(main_section="cycling position", main_url="not available", urls=cycling_pos_urls,
-                                 columns=["position"])
-        documents |= self.sports(main_section="diving", main_url="not available", urls=diving_urls, columns=["points"])
-        documents |= self.sports(main_section="rowing", main_url="not available", urls=rowing_urls, columns=["time"])
+                                 column="position")
+        documents |= self.sports(main_section="diving", main_url="not available", urls=diving_urls, column="points")
+        documents |= self.sports(main_section="rowing", main_url="not available", urls=rowing_urls, column="time")
         documents |= self.sports(main_section="sailing", main_url="not available", urls=sailing_urls,
-                                 columns=["position"])
+                                 column="position")
         documents |= self.sports(main_section="swimming", main_url="not available", urls=swimming_urls,
-                                 columns=["time"])
+                                 column="time")
         documents |= self.sports(main_section="triathlon", main_url="not available", urls=triathlon_urls,
-                                 columns=["time"])
-        documents |= self.sports(main_section="race", main_url="not available", urls=race_urls, columns=["time"])
-        documents |= self.sports(main_section="hurdles", main_url="not available", urls=hurdles_urls, columns=["time"])
+                                 column="time")
+        documents |= self.sports(main_section="race", main_url="not available", urls=race_urls, column="time")
+        documents |= self.sports(main_section="hurdles", main_url="not available", urls=hurdles_urls, column="time")
         documents |= self.sports(main_section="steeplechase", main_url="not available", urls=steeplechase_urls,
-                                 columns=["time"])
-        documents |= self.sports(main_section="relay", main_url="not available", urls=relay_urls, columns=["time"])
+                                 column="time")
+        documents |= self.sports(main_section="relay", main_url="not available", urls=relay_urls, column="time")
         # # JUMPS DO NOT WORK WITH 2017/2019 SITE DATA, WILL WORK WITH 2022 VERSION
         # # self.sports(urls=high_jump_urls, filename="high_jump.csv", columns=["group A", "group B", "length"])
         # # self.sports(urls=long_jump_urls,filename="long_jump.csv",columns=["group A", "group B", "length"])

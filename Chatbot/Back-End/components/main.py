@@ -11,11 +11,12 @@ from scraping.Scraper import Scraper
 
 output_buffer = mp.Queue()  # queue to manage all output messages
 
+"""
+This class handles the node js JSON requests and provides appropriate response to resolve or reject the request.
+"""
+
 
 class Main:
-    # self.database = DbHelper("root", "e#uoo!5YPZMQ3G", output_buffer)  # sql username and password
-    # self.database.reset_database("testDb")
-    # self.database.set_database("testDb")  # database name
     def __init__(self) -> None:
         """
             This is the initialization method.

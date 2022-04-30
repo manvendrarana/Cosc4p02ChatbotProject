@@ -1,9 +1,4 @@
 require('dotenv').config()
-// const app = require("express")();
-// const http = require("http");
-// const cors = require("cors");
-// const {Server} = require("socket.io");
-/// app.use(cors());
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {cors: {origin: "*"}});
@@ -11,6 +6,9 @@ const crypto = require('crypto') // for md5
 
 dev_mode = true
 
+/*
+* Logs info in console if dev mode is on.
+* */
 function log(...args) {
     if (dev_mode) {
         console.log(args);
@@ -31,6 +29,10 @@ const components_status = {
     }
 }
 
+/*
+* This method notifies the single admin and empties the logs for each component for that specific component.
+* It notifies the user by emitting update_components event.
+* */
 function notify_single_admin(admin) {
     admin.socket.emit("update_components", {
         "num_users_connected": num_users_connected, "components_status": admin.components_status
@@ -41,13 +43,14 @@ function notify_single_admin(admin) {
 
 }
 
+// This method notifies all the logged in admins.
 function notify_all_admins() {
     for (const [key, admin] of Object.entries(admins)) {
         notify_single_admin(admin);
     }
 }
 
-
+// This method updates the component status logs for server and each admin.
 function components_updater(component, status, message) {
     log(component, message, status);
     components_status[component]["status"] = status
@@ -68,6 +71,7 @@ function components_updater(component, status, message) {
 const {py_handler} = require("./components/py_handler.js");
 
 const python_handler = new py_handler();
+
 python_handler.initialize(components_updater, log).then(r => {
     log("py handler ready");
 });
@@ -79,7 +83,7 @@ python_handler.initialize(components_updater, log).then(r => {
 let date = new Date();
 let admins = {}
 
-
+// This method handles different requests for admin such as live scrape and show documents .
 function handlerAdminRequest(requestType, socket_id, sid, callback, input_data=undefined) {
     if (admins[socket_id] !== undefined) {
         if (admins[socket_id]["sid"] === sid && admins[socket_id]["socket"] !== undefined) {
@@ -104,10 +108,12 @@ io.on("connection", (socket) => {
     num_users_connected += 1;
     notify_all_admins();
     log(`User Connected: ${socket.id}`);
+
+    // login event observer method, Checks if username and password is correct and provides the session id.
     socket.on("login", async function (credentials, callback) {
         if (admins[socket.id] === undefined) {
-            if (credentials.username === "a") {
-                if (credentials.password === "a") {
+            if (credentials.username === "admin") {
+                if (credentials.password === process.env.ADMIN_PASSWORD) {
                     let clone_component_status = {}
                     for (const [type, values] of Object.entries(components_status)) {
                         clone_component_status[type] = {
@@ -137,6 +143,7 @@ io.on("connection", (socket) => {
         }
     })
 
+    // Component latest state request observer, checks if sid is correct and emits .
     socket.on("components_update_request", async function (sid, callback) {
         if (admins[socket.id] !== undefined) {
             if (admins[socket.id]["sid"] === sid && admins[socket.id]["socket"] !== undefined) {
@@ -150,22 +157,27 @@ io.on("connection", (socket) => {
         }
     })
 
+    // Observer for a live scrape request sent by admin.
     socket.on("scrape_system", async function (sid, callback) {
         handlerAdminRequest("scrape_pages", socket.id, sid, callback);
     })
 
+    // Observer for a request to see documents scraped sent by admin
     socket.on("view_scraped_documents", async function (sid, callback) {
         handlerAdminRequest("view_scraped_data", socket.id, sid, callback);
     })
 
+    // Observer to change the max amount of Ai processing running.
     socket.on("change_max_ai_processes", async function(sid, value, callback){
         handlerAdminRequest("change_ai_max_process_by", socket.id, sid, callback, value)
     })
 
+    // Observer to launch tests
     socket.on("execute_tests", async function(sid,callback){
       handlerAdminRequest("system_test", socket.id, sid,callback);
     })
 
+    // Observer to Check if logged in admin has a valid sid.
     socket.on("check_sid", async function (sid, callback) {
         if (admins[socket.id] !== undefined && admins[socket.id].sid !== sid) {
             callback({"result": "failed"})
@@ -174,6 +186,7 @@ io.on("connection", (socket) => {
         }
     })
 
+    // Observer for logout request.
     socket.on("logout", async function (user, callback) {
          if (admins[socket.id] === undefined) {
              callback({result: "user already logged out"})
@@ -188,6 +201,7 @@ io.on("connection", (socket) => {
         }
     })
 
+    // Observer for handling customer queries.
     socket.on("message", async function (data, callback) {
         if (components_status["ai"]["status"] === "working" && python_handler !== undefined) {
             const ai_response = await python_handler.ask(data.message, socket.id);

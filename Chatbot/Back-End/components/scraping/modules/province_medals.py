@@ -12,6 +12,14 @@ class ProvinceMedalScraper:
 
     def scrape(self):
         self.driver.get("https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA")
+        provinceName = []
+        provinceGold = []
+        provinceSilver = []
+        provinceBronze = []
+        provinceTotal = []
+
+        medArray = []
+        self.driver.get("https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA")
 
         try:
             table = self.driver.find_element(By.ID, "ctl00_ContentPlaceHolder1_tblMedals")
@@ -34,13 +42,6 @@ class ProvinceMedalScraper:
                     pass
                     # print("Datacell unavailable.")
 
-            provinceName = []
-            provinceGold = []
-            provinceSilver = []
-            provinceBronze = []
-            provinceTotal = []
-
-            medArray = []
             for province, values in medalDict.items():
                 # print("Province Name: " + province)
                 # print("Gold Medals: " + values[0])
@@ -50,13 +51,17 @@ class ProvinceMedalScraper:
                 # print("\n")
 
                 # medalTuple = (province, values[0], values[1], values[2], values[3])
-                medArray.append([province, values[0], values[1], values[2], values[3]])
 
-                provinceName.append(province)
-                provinceGold.append(values[0])
-                provinceSilver.append(values[1])
-                provinceBronze.append(values[2])
-                provinceTotal.append(values[3])
+                answerString = "{} got {} total medals, {} gold medals, {} silver medals, {} bronze medals".format(
+                    province, values[3], values[0], values[1], values[2])
+
+                medArray.append([answerString])
+
+                # provinceName.append(province)
+                # provinceGold.append(values[0])
+                # provinceSilver.append(values[1])
+                # provinceBronze.append(values[2])
+                # provinceTotal.append(values[3])
                 # print("Inserting into db: ")
                 # print(medalTuple)
 
@@ -65,17 +70,13 @@ class ProvinceMedalScraper:
 
 
         except:
-            # print("Table unavailable.")
             pass
+            # print("Table unavailable.")
         # driver.close()
 
-        # newDict = {
-        #     'Province Name': provinceName,
-        #     'Province Gold Medals': provinceGold,
-        #     'Province Silver Medals': provinceSilver,
-        #     'Province Bronze Medals': provinceBronze,
-        #     "Province Total Medals": provinceTotal,
-        # }
+        newDict = {
+            'Answer': medArray,
+        }
 
         # try:
         #     table_csv = pd.DataFrame(newDict,
@@ -89,16 +90,14 @@ class ProvinceMedalScraper:
         #     print("Couldn't make CSV.")
 
         key = "info_province_medals"
-        documents = {
-            key: {
-                "url": "https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA",
-                "title": key.replace("_", " ").capitalize(),
-                "section_title": "Province Name, Province Gold Medals, Province Silver Medals, Province Bronze Medals, "
-                                 "Province Total Medals",
-                "columns": ["Province Name", "Province Gold Medals", "Province Silver Medals", "Province Bronze Medals",
-                            "Province Total Medals"],
-                "values": medArray
-            }}
+        documents = {}
+        documents[key] = {
+            "url": "https://cg2019.gems.pro/Result/MedalList.aspx?SetLanguage=en-CA",
+            "title": key.replace("_", " ").capitalize(),
+            "section_title": "Province Medals",
+            "columns": ["Province Medals"],
+            "values": medArray
+        }
         # print(documents)
         return documents
 

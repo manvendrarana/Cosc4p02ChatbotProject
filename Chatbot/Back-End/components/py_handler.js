@@ -1,8 +1,9 @@
 let {PythonShell} = require('python-shell')
 const path = require("path");
-const {response} = require("express");
 
-
+/*
+* This class is responsible for converting the Node js admin/user requests to Json for the Python Main process to handle.
+* And converting the output of the Python Main class from json to a response or reject.*/
 class py_handler {
     pyshell;
     initResolve;
@@ -13,7 +14,6 @@ class py_handler {
 
 
     async initialize(component_updater, log) {
-        //console.log("starting to initialize"+__dirname)
         this.components_updater = component_updater;
         let options = {
             mode: 'json',
@@ -22,8 +22,8 @@ class py_handler {
             scriptPath: __dirname,
             args: [process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, "testDb", 1]
         };
-        this.pyshell = new PythonShell("main.py", options);
-        this.pyshell.on("message", (result) => {
+        this.pyshell = new PythonShell("main.py", options); // Spawns the Main python module.
+        this.pyshell.on("message", (result) => { // observer for handling json prints from Main class
             switch (result["type"]) {
                 case "init": { // gets back message
                     this.initResolve();
@@ -44,17 +44,16 @@ class py_handler {
                     this.user_message_buffer[id]["resolve"]({
                         "title": result["title"], "url": result["url"], "answer": result["answer"]
                     });
-                    // rejection not handled !!!
                     break;
                 }
-                case "failed_admin": {
+                case "failed_admin": { // reject admin request
                     if (this.admin_request_buffer[result["id"]] !== undefined && this.admin_request_buffer[result["id"]][result["request_type"]]) {
                         this.admin_request_buffer[result["id"]][result["request_type"]]["reject"](result["error"]);
                         this.admin_request_buffer[result["id"]][result["request_type"]] = undefined;
                     }
                     break;
                 }
-                case "success_admin": {
+                case "success_admin": {// return results of the request
                     if (this.admin_request_buffer[result["id"]] !== undefined && this.admin_request_buffer[result["id"]][result["request_type"]]) {
                         this.admin_request_buffer[result["id"]][result["request_type"]]["resolve"](result["response"]);
                         this.admin_request_buffer[result["id"]][result["request_type"]] = undefined;
@@ -67,9 +66,8 @@ class py_handler {
             this.components_updater("scraper", "crashed", message)
             this.components_updater("database", "crashed", message)
             this.components_updater("ai", "crashed", message)
-            //console.log(message)
         }
-        this.pyshell.on("pythonError", (message) => {
+        this.pyshell.on("pythonError", (message) => { // observer for a Python error.
             crashed(message);
         })
         this.pyshell.on("error", (message) => {
@@ -81,6 +79,7 @@ class py_handler {
 
     }
 
+    // This function adds the user's query to a buffer. The query is removed once the promise is resolved.
     ask(query, id) {
         return new Promise((resolve, reject) => {
             this.pyshell.send({"type": "ai_query", "id": id, "query": query})
@@ -90,6 +89,7 @@ class py_handler {
         })
     }
 
+    // This function adds the admin requests to the buffer and are removed once resolved or rejected.
     request(request_type, input_data, id) {
         return new Promise((resolve, reject) => {
             this.pyshell.send({"id": id, "type": request_type, "input_data": input_data})
