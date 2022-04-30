@@ -21,8 +21,7 @@
 - install required modules.
 - npm start
 - During initial lauch the Ai module will download Google Tapas models and Bert model which might cause it to take a while to initialize.
-- make sure .env in the root back-end folder has
-- MYSQL_USER, MYSQL_PASSWORD, SALT, ADMIN_PASSWORD.
+- make sure .env in the root back-end folder has MYSQL_USER, MYSQL_PASSWORD, SALT, ADMIN_PASSWORD.
 
 ### Additional info
 
