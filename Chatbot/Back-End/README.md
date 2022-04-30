@@ -17,7 +17,7 @@
 ### Initialization steps
 
 - npm install on the "Back-end" directory.
-- create a local python 3.9.0 library called "venv". 
+- create a local python 3.9.0 enviornment called "venv". 
 - install required modules.
 - npm start
 - During initial lauch the Ai module will download Google Tapas models and Bert model which might cause it to take a while to initialize.
