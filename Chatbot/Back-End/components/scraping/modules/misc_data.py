@@ -14,7 +14,7 @@ class MiscData:
                     ["hello"],
                     ["Niagara Transit information can be found by following the links in the map icon menu on the top "
                      "right"],
-                    ["Link to News on Canada Games is in the menu icon on the top right."],
+                    ["Link to News on Canada Games is in the menu icon on the top left."],
                     ["Canada Games Tickets link is the top left menu"]
                 ]
             }
