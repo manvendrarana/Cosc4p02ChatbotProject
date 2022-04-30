@@ -1,5 +1,6 @@
 Chatbot/Back-End/node_modules
 Chatbot/Back-End/venv
+Chatbot/Back-End/.env
 mlruns
 Chatbot/Front-End/node_modules
 Chatbot/Back-End/components/database/pycache
