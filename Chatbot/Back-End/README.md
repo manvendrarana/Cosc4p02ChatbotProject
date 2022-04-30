@@ -29,3 +29,11 @@
 - The username for admin login on front end is "admin" as functionality for addition or removal of admins to sql server was not implemented.
 - Admin can be access by entering "font-end url"/admin
 - At any point the server is down the wifi icon on the screen will flash both for admin and user. They can try to reconnect by clicking on that icon.
+- MySql can be installed from here https://www.mysql.com/downloads/
+
+### Credit for Ai models
+
+- https://haystack.deepset.ai/tutorials/table-qa
+- https://arxiv.org/abs/2108.04049
+- https://huggingface.co/google/tapas-large-finetuned-sqa
+- https://www.microsoft.com/en-us/research/publication/search-based-neural-structured-learning-sequential-question-answering/
