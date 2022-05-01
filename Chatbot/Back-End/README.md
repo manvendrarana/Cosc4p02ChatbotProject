@@ -3,6 +3,7 @@
 ## Requirements
 
 - Node.js envoirment
+- MySQl
 - Node modules
     - Socket.io
     - python-shell
@@ -19,6 +20,7 @@
 - npm install on the "Back-end" directory.
 - create a local python 3.9.0 enviornment called "venv". 
 - install required modules.
+- Run the following SQL queries in the MySql work bench DROP DATABASE IF EXISTS testDb; CREATE DATABASE testDb; ALTER DATABASE testDb CHARACTER SET utf8;
 - npm start
 - During initial lauch the Ai module will download Google Tapas models and Bert model which might cause it to take a while to initialize.
 - make sure .env in the root back-end folder has MYSQL_USER, MYSQL_PASSWORD, SALT, ADMIN_PASSWORD.
