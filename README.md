@@ -16,7 +16,7 @@ https://miro.com/app/board/uXjVOVYcNxA=/?invite_link_id=823826101299
 | Raghav Bhardwaj | Front-End | 6548580 | rb18nr@brocku.ca | raghavmanc@gmail.com
 | Sawyer Fenwick | Back-End | 6005011 | sf15zx@brocku.ca | sawyerfenwick@gmail.com
 | Sager Kudrick | Back-End | 5919170 | sk15xm@brocku.ca | sagerkudrick@hotmail.com
-| Rikveet Singh Hayer | AI, Scraping | 6590327| rh18vo@brocku.ca | rh18vo@gmail.com
+| Rikveet Singh Hayer | Team Lead, AI, Scraping | 6590327| rh18vo@brocku.ca | rh18vo@gmail.com
  
 
 
